@@ -15,40 +15,20 @@ Links do projeto:
 -   Backend: [Repositório](https://github.com/HenriqueChepli/BackEnd-LaCasaDiFrango) e [Publicação](https://pi-backend.herokuapp.com/)
 -   Frontend: [Repositório](https://github.com/HenriqueChepli/FrontEnd-LaCasaDiFrango) e [Publicação](https://pi-frontend.herokuapp.com/)
 
-
-# 1. Desenvolvimento
-*(Escolha um dos modelos de sistemas para desenvolver o projeto. Apague as informações desnecessárias depois.)*
--   As equipes serão avaliadas por cada etapa da documentação e entregas realizadas.
--   Cada equipe deverá escolher um sistema para o desenvolvimento das atividades, a partir dos modelos apresentados.
-
-**1.1 Modelos de Sistemas**
-
-**Nessa parte a equipe deve escolher um dos modelos de sistemas para desenvolver o projeto. Ao escolher, escreva uma breve descrição do sistema e o motivo da escolha e pode apagar os outros modelos.**
-
-**1.1.1 Ponto de Vendas (PDV)**
-
-**Gerenciamento de vendas para uma padaria**
-
-O nosso cliente, Sr. Genival, tem uma padaria de bairro chamada padaria Pão Genial e, devido a qualidade de seus produtos, ela está crescendo rapidamente. Recentemente, ele contratou mais funcionários para atendimento, caixa, panificação, etc.
-Assim, atualmente, ele consegue concentrar seus esforços para melhorar a gestão da padaria. Para isso, ele quer instalar um sistema de controle de vendas que permita ao caixa lançar as vendas realizadas. Como sua intenção
-é melhorar a gestão do negócio, é muito importante que ele consiga ter
-relatórios, como por exemplo, de vendas.
-
 # 2. Situação Problema
 
-*([A empresa La Casa Di Frango está no ramo alimentício da cidade de Joinville a mais de 30 anos. Gerenciada por Claudinei Bisewski, é uma micro-empresa familiar. 
+*A empresa La Casa Di Frango está no ramo alimentício da cidade de Joinville a mais de 30 anos. Gerenciada por Claudinei Bisewski, é uma micro-empresa familiar. 
 Atualmente, a loja enfrenta dificuldades no gerenciamento de pedidos e no controle de informações entre os clientes e os vendedores. O processo de encomenda é feito de forma manual, o que leva a erros frequentes e a um tempo maior de espera para os clientes. Os clientes precisam ligar ou ir até a loja para fazer pedidos, o que resulta em uma experiência menos prática e mais demorada. Além disso, o vendedor recebe as informações dos pedidos de forma verbal ou por escrito, o que torna difícil rastrear as encomendas e verificar se todos os dados do cliente estão corretos.
 Outro ponto crítico é a falta de controle e visibilidade sobre o desempenho das vendas e a gestão do estoque. Não há um sistema automatizado que forneça relatórios sobre a quantidade de pedidos, vendas realizadas ou itens mais procurados. Isso dificulta a tomada de decisões estratégicas para reposição de estoque ou ajustes nas promoções e cardápio da loja. O vendedor também tem dificuldades em acompanhar as encomendas em tempo real, o que pode gerar confusão no momento de entrega ou retirada dos pedidos.
-Além disso, os clientes frequentemente precisam fornecer seus dados pessoais, como nome e telefone, a cada novo pedido, o que torna o processo repetitivo e ineficiente. Isso também impede que a loja construa um banco de dados com informações valiosas sobre os clientes para promoções ou fidelização.])*
+Além disso, os clientes frequentemente precisam fornecer seus dados pessoais, como nome e telefone, a cada novo pedido, o que torna o processo repetitivo e ineficiente. Isso também impede que a loja construa um banco de dados com informações valiosas sobre os clientes para promoções ou fidelização.*
 
 # 3. Descrição da proposta
 
-*O projeto consiste no desenvolvimento de um app que conecta clientes ao vendedor do restaurante "La Casa di Frango", facilitando o processo de encomenda e retirada de produtos. O aplicativo será dividido em duas interfaces principais: uma para o usuário e outra para o vendedor.
+O projeto consiste no desenvolvimento de um app que conecta clientes ao vendedor do restaurante "La Casa di Frango", facilitando o processo de encomenda e retirada de produtos. O aplicativo será dividido em duas interfaces principais: uma para o usuário e outra para o vendedor.
 
-    Para o usuário: O cliente poderá acessar informações detalhadas sobre o estabelecimento, visualizar o catálogo de produtos disponíveis, e realizar suas encomendas diretamente pelo app. Durante o processo de encomenda, o usuário fornecerá dados como nome, telefone e detalhes do pedido. O sistema garantirá uma experiência simples e rápida, permitindo ao cliente realizar o 
-    pedido de forma prática e sem dificuldades.
+Para o usuário: O cliente poderá acessar informações detalhadas sobre o estabelecimento, visualizar o catálogo de produtos disponíveis, e realizar suas encomendas diretamente pelo app. Durante o processo de encomenda, o usuário fornecerá dados como nome, telefone e detalhes do pedido. O sistema garantirá uma experiência simples e rápida, permitindo ao cliente realizar o pedido de forma prática e sem dificuldades.
 
-    Para o vendedor: O vendedor receberá as informações do pedido em tempo real, podendo visualizar os dados de cada cliente e o que foi solicitado. Após a retirada do pedido, o vendedor também poderá registrar essas informações no aplicativo, garantindo que o sistema esteja sempre atualizado. Além disso, o vendedor terá acesso a relatórios completos sobre pedidos realizados, vendas e outros dados relevantes, facilitando o gerenciamento e a tomada de decisões. *
+Para o vendedor: O vendedor receberá as informações do pedido em tempo real, podendo visualizar os dados de cada cliente e o que foi solicitado. Após a retirada do pedido, o vendedor também poderá registrar essas informações no aplicativo, garantindo que o sistema esteja sempre atualizado. Além disso, o vendedor terá acesso a relatórios completos sobre pedidos realizados, vendas e outros dados relevantes, facilitando o gerenciamento e a tomada de decisões. 
 
 # 4. Modelagem de Dados
 
