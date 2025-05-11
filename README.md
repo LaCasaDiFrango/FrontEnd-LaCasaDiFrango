@@ -38,7 +38,7 @@ Defina as entidades e relacionamentos que farão parte do sistema. Desenhe o dia
 
 
 
-## 5. Regras de Negócio
+# 5. Regras de Negócio
 
 - **RN01** - O sistema deve manter os dados do usuário, sendo eles: nome completo, email e telefone.  
 - **RN02** - O telefone informado deve ser verificado por meio de um código de confirmação via WhatsApp, como parte do processo de cadastro e validação de usuários.  
@@ -56,29 +56,29 @@ Defina as entidades e relacionamentos que farão parte do sistema. Desenhe o dia
 
 ---
 
-## 6. Requisitos Funcionais
+# 6. Requisitos Funcionais
 
-- **RF01** - O sistema deve manter usuários.  
-- **RF02** - O sistema deve manter endereço do usuário.  
-- **RF03** - O sistema deve permitir acesso às informações do estabelecimento.  
-- **RF04** - O sistema deve permitir que o usuário visualize o histórico de pedidos.  
-- **RF05** - O sistema deve manter dados do cartão.  
-- **RF06** - O sistema deve manter produtos.  
-- **RF07** - O sistema deve manter pedidos.  
-- **RF08** - O sistema deve mostrar catálogos de produtos.  
-- **RF09** - O sistema deve permitir filtrar produtos.  
-- **RF10** - O sistema deve permitir que o vendedor visualize pedidos em tempo real.  
-- **RF11** - O sistema deve permitir que o vendedor cadastre pedidos.  
-- **RF12** - O sistema deve permitir que o vendedor atualize o status do pedido.  
-- **RF13** - O sistema deve gerar relatórios de produtos.  
-- **RF14** - O sistema deve gerar relatórios de finanças.  
+- **R.F. 01** - O sistema deve manter usuários.  
+- **R.F. 02** - O sistema deve manter endereço do usuário.  
+- **R.F. 03** - O sistema deve permitir acesso às informações do estabelecimento.  
+- **R.F. 04** - O sistema deve permitir que o usuário visualize o histórico de pedidos.  
+- **R.F. 05** - O sistema deve manter dados do cartão.  
+- **R.F. 06** - O sistema deve manter produtos.  
+- **R.F. 07** - O sistema deve manter pedidos.  
+- **R.F. 08** - O sistema deve mostrar catálogos de produtos.  
+- **R.F. 09** - O sistema deve permitir filtrar produtos.  
+- **R.F. 10** - O sistema deve permitir que o vendedor visualize pedidos em tempo real.  
+- **R.F. 11** - O sistema deve permitir que o vendedor cadastre pedidos.  
+- **R.F. 12** - O sistema deve permitir que o vendedor atualize o status do pedido.  
+- **R.F. 13** - O sistema deve gerar relatórios de produtos.  
+- **R.F. 14** - O sistema deve gerar relatórios de finanças.  
 
 ---
 
-## 7. Requisitos Não Funcionais
+# 7. Requisitos Não Funcionais
 
-- **RNF01** – O sistema deve ser desenvolvido utilizando Vue.js para o frontend e Django para o backend.  
-- **RNF02** - O sistema deve possuir uma interface simples, com navegação simples e responsiva tanto para usuários quanto para vendedores.  
+- **R.N.F. 01** – O sistema deve ser desenvolvido utilizando Vue.js para o frontend e Django para o backend.  
+- **R.N.F. 02** - O sistema deve possuir uma interface simples, com navegação simples e responsiva tanto para usuários quanto para vendedores.  
 
 # 8. Diagrama de Caso de Uso
 
