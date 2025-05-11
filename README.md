@@ -38,46 +38,47 @@ Defina as entidades e relacionamentos que farão parte do sistema. Desenhe o dia
 
 
 
-# 5. Regras de negócio
+## 5. Regras de Negócio
 
-RN01 - O sistema deve manter os dados do usuário, sendo eles: nome completo, email e telefone.
-RN02 - O telefone informado deve ser verificado por meio de um código de confirmação via WhatsApp, como parte do processo de cadastro e validação de usuários.
-RN03 - O sistema deve manter os dados de endereço do usuário, incluindo bairro, rua, número, CEP e complemento, alinhado ao controle de informações residenciais.
-RN04 - O usuário poderá acessar informações como nome, localização e horário de funcionamento do restaurante, história e galeria, por meio da funcionalidade de exibição de dados institucionais.
-RN05 - O histórico de pedidos deve apresentar data, produtos comprados, valor total e status (pendente, pronto, retirado), utilizando as informações da funcionalidade de consulta de pedidos realizados.
-RN06 - O sistema deve manter os dados do cartão de crédito, incluindo nome do titular, número do cartão, data de validade e CVV, garantindo a persistência segura das informações de pagamento.
-RN07 - Os dados dos produtos devem ser mantidos, sendo eles nome, preço, imagem e descrição, como parte da estrutura de gerenciamento do catálogo.
-RN08 - O sistema deve manter as informações do pedido, abrangendo produtos, quantidade, preço total e data de retirada, com base no fluxo de criação e controle de pedidos.
-RN09 - Cada pedido deve exibir nome do cliente, itens solicitados, quantidade, valor total e horário do pedido, compondo a visualização detalhada no painel do vendedor.
-RN10 - O cadastro de novos pedidos deve conter produtos, quantidade, preço total e data de retirada, integrando o processo de registro manual feito pelo vendedor.
-RN11 - O status do pedido deve poder ser alterado para “Confirmado”, “Pronto para retirada” ou “Retirado”, conforme a etapa de atualização de andamento dos pedidos.
-RN12 - O sistema deve apresentar, em relatórios de controle de estoque, os produtos feitos, vendidos e restantes, com base nos registros operacionais.
-RN13 - Devem ser geradas informações de lucros, gastos e prejuízos a partir dos dados financeiros do sistema, permitindo a análise de desempenho do negócio.
+- **RN01** - O sistema deve manter os dados do usuário, sendo eles: nome completo, email e telefone.  
+- **RN02** - O telefone informado deve ser verificado por meio de um código de confirmação via WhatsApp, como parte do processo de cadastro e validação de usuários.  
+- **RN03** - O sistema deve manter os dados de endereço do usuário, incluindo bairro, rua, número, CEP e complemento, alinhado ao controle de informações residenciais.  
+- **RN04** - O usuário poderá acessar informações como nome, localização e horário de funcionamento do restaurante, história e galeria, por meio da funcionalidade de exibição de dados institucionais.  
+- **RN05** - O histórico de pedidos deve apresentar data, produtos comprados, valor total e status (pendente, pronto, retirado), utilizando as informações da funcionalidade de consulta de pedidos realizados.  
+- **RN06** - O sistema deve manter os dados do cartão de crédito, incluindo nome do titular, número do cartão, data de validade e CVV, garantindo a persistência segura das informações de pagamento.  
+- **RN07** - Os dados dos produtos devem ser mantidos, sendo eles nome, preço, imagem e descrição, como parte da estrutura de gerenciamento do catálogo.  
+- **RN08** - O sistema deve manter as informações do pedido, abrangendo produtos, quantidade, preço total e data de retirada, com base no fluxo de criação e controle de pedidos.  
+- **RN09** - Cada pedido deve exibir nome do cliente, itens solicitados, quantidade, valor total e horário do pedido, compondo a visualização detalhada no painel do vendedor.  
+- **RN10** - O cadastro de novos pedidos deve conter produtos, quantidade, preço total e data de retirada, integrando o processo de registro manual feito pelo vendedor.  
+- **RN11** - O status do pedido deve poder ser alterado para “Confirmado”, “Pronto para retirada” ou “Retirado”, conforme a etapa de atualização de andamento dos pedidos.  
+- **RN12** - O sistema deve apresentar, em relatórios de controle de estoque, os produtos feitos, vendidos e restantes, com base nos registros operacionais.  
+- **RN13** - Devem ser geradas informações de lucros, gastos e prejuízos a partir dos dados financeiros do sistema, permitindo a análise de desempenho do negócio.  
 
+---
 
-# 6. Requisitos funcionais
+## 6. Requisitos Funcionais
 
-R.F. 01 - O sistema deve manter usuários.
-R.F. 02 - O sistema deve manter endereço do usuário.
-R.F. 03 - O sistema deve permitir acesso às informações do estabelecimento.
-R.F. 04 - O sistema deve permitir que o usuário visualize o histórico de pedidos.
-R.F. 05 - O sistema deve manter dados do cartão.
-R.F. 06 - O sistema deve manter produtos.
-R.F. 07 - O sistema deve manter pedidos.
-R.F. 08 - O sistema deve mostrar catálogos de produtos
-R.F. 09 - O sistema deve permitir filtrar produtos
-R.F. 10 - O sistema deve permitir que o vendedor visualize pedidos em tempo real.
-R.F. 11 - O sistema deve permitir que o vendedor cadastre pedidos
-R.F. 12 - O sistema deve permitir que o vendedor atualize o status do pedido.
-R.F. 13 - O sistema deve gerar relatórios de produtos
-R.F. 14 - O sistema deve gerar relatórios de finanças.
+- **RF01** - O sistema deve manter usuários.  
+- **RF02** - O sistema deve manter endereço do usuário.  
+- **RF03** - O sistema deve permitir acesso às informações do estabelecimento.  
+- **RF04** - O sistema deve permitir que o usuário visualize o histórico de pedidos.  
+- **RF05** - O sistema deve manter dados do cartão.  
+- **RF06** - O sistema deve manter produtos.  
+- **RF07** - O sistema deve manter pedidos.  
+- **RF08** - O sistema deve mostrar catálogos de produtos.  
+- **RF09** - O sistema deve permitir filtrar produtos.  
+- **RF10** - O sistema deve permitir que o vendedor visualize pedidos em tempo real.  
+- **RF11** - O sistema deve permitir que o vendedor cadastre pedidos.  
+- **RF12** - O sistema deve permitir que o vendedor atualize o status do pedido.  
+- **RF13** - O sistema deve gerar relatórios de produtos.  
+- **RF14** - O sistema deve gerar relatórios de finanças.  
 
+---
 
-# 7. Requisitos não funcionais
+## 7. Requisitos Não Funcionais
 
-R.N.F. 01 – O sistema deve ser desenvolvido utilizando Vue.js para o frontend e Django para o backend.
-R.N.F. 02 - O sistema deve possuir uma interface simples, com navegação simples e responsiva para usuários quanto para vendedores.
-
+- **RNF01** – O sistema deve ser desenvolvido utilizando Vue.js para o frontend e Django para o backend.  
+- **RNF02** - O sistema deve possuir uma interface simples, com navegação simples e responsiva tanto para usuários quanto para vendedores.  
 
 # 8. Diagrama de Caso de Uso
 
