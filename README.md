@@ -33,7 +33,7 @@ Para o vendedor: O vendedor receberá as informações do pedido em tempo real, 
 # 4. Modelagem de Dados
 
 
-![Diagrama do Banco de Dados](readme-img/BD-LaCasaDiFrango.png)
+![Diagrama do Banco de Dados](public/readme-img/BD-LaCasaDiFrango.png)
 
 
 # 5. Regras de Negócio
