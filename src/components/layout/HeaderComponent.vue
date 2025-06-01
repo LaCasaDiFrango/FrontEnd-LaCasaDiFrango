@@ -3,11 +3,11 @@
 
 <template>
   <header class="header">
-    <route-link to="/" >
+    <router-link to="/" >
     <button class="logo-button">
       <img src="@/assets/img/logo.png" alt="Logo Galinha" class="logo-img" />
     </button>
-    </route-link>
+    </router-link>
 
     <div class="address-selector">
       <span class="address-text">{{ Rua }}Rua Ascurra, 125</span>
