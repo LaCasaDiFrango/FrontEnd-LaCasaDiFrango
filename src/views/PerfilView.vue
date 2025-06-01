@@ -8,12 +8,13 @@
       <img src="/src/assets/img/user.png" alt="Ícone de usuário" class="user-icon" />
     </div>
     <AuthButton :filled="false" class="perfil-auth-button" @click="() => router.push('/user')"> Login / Cadastro </AuthButton>
-
+    <router-link to="/pagamento">
     <ProfileActionCard
       text="Formas De Pagamento"
       icon="/src/assets/img/wallet.png"
       :onClick="() => router.push('/pagamento')"
     />
+    </router-link>
     <ProfileActionCard
       text="Histórico De Pedidos"
       icon="/src/assets/img/add-to-cart.png"

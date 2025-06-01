@@ -5,6 +5,7 @@ import ProdutosView from '@/views/ProdutosView.vue'
 import UserView from '@/views/UserView.vue'
 import SignUpPageView from '@/views/SignUpPageView.vue'
 import PerfilView from '@/views/PerfilView.vue'
+import PagamentoView from '@/views/PagamentoView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -51,6 +52,11 @@ const router = createRouter({
       path: '/perfil',
       name: 'perfil',
       component: PerfilView,
+    },
+     {
+      path: '/pagamento',
+      name: 'pagamento',
+      component: PagamentoView,
     },
 
     
