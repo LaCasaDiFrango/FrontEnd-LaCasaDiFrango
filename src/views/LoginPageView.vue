@@ -22,9 +22,9 @@
 
 <script setup>
 import { ref } from 'vue'
-import BackButton from '@/components/BackButton.vue'
-import InputForm from '@/components/InputForm.vue'
-import ContinueButton from '@/components/ContinueButton.vue'
+import BackButton from '@/components/buttons/BackButton.vue'
+import InputForm from '@/components/forms/InputForm.vue'
+import ContinueButton from '@/components/buttons/ContinueButton.vue'
 
 const fullName = ref('')
 const phone = ref('')

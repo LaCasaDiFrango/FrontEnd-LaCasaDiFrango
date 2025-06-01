@@ -9,8 +9,8 @@
 
 <script setup>
 import { useRoute } from 'vue-router'
-import HeaderComponent from '@/components/HeaderComponent.vue'
-import NavBar from '@/components/NavBar.vue'
+import HeaderComponent from '@/components/layout/HeaderComponent.vue'
+import NavBar from '@/components/layout/NavBar.vue'
 
 const route = useRoute()
 </script>

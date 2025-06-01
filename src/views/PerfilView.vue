@@ -1,6 +1,6 @@
 <script setup>
-import AuthButton from '../components/AuthButton.vue'
-import BackButton from '../components/BackButton.vue'
+import AuthButton from '@/components/buttons/AuthButton.vue'
+import BackButton from '@/components/buttons/BackButton.vue'
 </script>
 <template>
   <div class="login-page">
