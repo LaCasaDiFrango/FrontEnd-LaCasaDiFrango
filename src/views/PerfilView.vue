@@ -1,49 +1,66 @@
-<script setup>
-import AuthButton from '@/components/buttons/AuthButton.vue'
-import BackButton from '@/components/buttons/BackButton.vue'
-</script>
 <template>
-  <div class="login-page">
+  <div class="perfil-container">
     <BackButton />
 
-    <div class="login-card">
-      <router-link to="/login">
-      <AuthButton filled>Fazer Login</AuthButton>
-      </router-link>
-      <div class="spacer" />
-      <AuthButton>Criar Conta</AuthButton>
+    <div class="user-info">
+      <div class="user-name">Nome Do Usuário Da Silva</div>
 
-      <img src="../assets/img/logo.png" alt="Logo" class="logo" />
-
+      <img src="/src/assets/img/user.png" alt="Ícone de usuário" class="user-icon" />
     </div>
+    <AuthButton :filled="false" class="perfil-auth-button" @click="() => router.push('/user')"> Login / Cadastro </AuthButton>
+
+    <ProfileActionCard
+      text="Formas De Pagamento"
+      icon="/src/assets/img/wallet.png"
+      :onClick="() => router.push('/pagamento')"
+    />
+    <ProfileActionCard
+      text="Histórico De Pedidos"
+      icon="/src/assets/img/add-to-cart.png"
+      :onClick="() => router.push('/pedidos')"
+    />
+    <ProfileActionCard
+      text="Editar Endereço"
+      icon="/src/assets/img/house.png"
+      :onClick="() => router.push('/endereco')"
+    />
   </div>
-  <RouterView />
 </template>
 
+<script setup>
+import { useRouter } from 'vue-router'
+import BackButton from '@/components/buttons/BackButton.vue'
+import ProfileActionCard from '@/components/cards/ProfileActionCard.vue'
+import AuthButton from '@/components/buttons/AuthButton.vue'
+
+const router = useRouter()
+</script>
+
 <style scoped>
-.login-page {
-  min-height: 100dvh;
-  background-color: #e5e5e5; /* cinza claro */
+.perfil-container {
+  padding: 16px;
+}
+
+.user-info {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin: 36px 0 20px;
 }
 
-.login-card {
-  margin-top: auto;
-  background-color: white;
-  border-top-left-radius: 1.5rem;
-  border-top-right-radius: 1.5rem;
-  padding: 1.5rem;
+.user-name {
+  font-size: 1.8rem;
+  font-weight: 500;
 }
 
-.spacer {
-  height: 0.9rem;
+.user-icon {
+  width: 70px;
+  height: 70px;
 }
-
-.logo {
-  height: 80px; /* 48px */
-  width: 130px; /* 48px */
-  margin: 1rem auto 0;
-  display: block;
+.perfil-auth-button {
+  padding: 0.5rem 0 !important;
+  font-size: 0.75rem !important;
+  width: 70% !important;
+  margin-bottom: 70px;
 }
 </style>

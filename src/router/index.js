@@ -2,8 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import PedidosView from '../views/PedidosView.vue'
 import ProdutosView from '@/views/ProdutosView.vue'
+import UserView from '@/views/UserView.vue'
+import SignUpPageView from '@/views/SignUpPageView.vue'
 import PerfilView from '@/views/PerfilView.vue'
-import LoginPageView from '@/views/LoginPageView.vue' 
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,7 +24,7 @@ const router = createRouter({
       name: 'pedidos',
       component: PedidosView,
        meta: {
-        showNavbar: true,
+        showNavbar: false,
         showHeader: false,
       }
     },
@@ -37,14 +38,19 @@ const router = createRouter({
       }
     },
       {
+      path: '/user',
+      name: 'user',
+      component: UserView,
+    },
+       {
+      path: '/signup',
+      name: 'signup',
+      component: SignUpPageView,
+    },
+       {
       path: '/perfil',
       name: 'perfil',
       component: PerfilView,
-    },
-       {
-      path: '/login',
-      name: 'login',
-      component: LoginPageView,
     },
 
     
