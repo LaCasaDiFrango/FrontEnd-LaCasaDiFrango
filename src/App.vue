@@ -1,21 +1,16 @@
-<script setup>
-
-import { RouterView } from 'vue-router'
-import NavBar from './components/NavBar.vue'
-import HeaderComponent from './components/HeaderComponent.vue'
-
-</script>
-
-
-
 <template>
-  <HeaderComponent />
+  <div>
+    <HeaderComponent v-if="route.meta.showHeader" />
+    <router-view />
+    <NavBar v-if="route.meta.showNavbar" />
 
-  <RouterView />
-  <NavBar/>
-
+  </div>
 </template>
 
-<style>
+<script setup>
+import { useRoute } from 'vue-router'
+import HeaderComponent from '@/components/HeaderComponent.vue'
+import NavBar from '@/components/NavBar.vue'
 
-</style>
+const route = useRoute()
+</script>

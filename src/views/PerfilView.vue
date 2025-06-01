@@ -7,7 +7,9 @@ import BackButton from '../components/BackButton.vue'
     <BackButton />
 
     <div class="login-card">
+      <router-link to="/login">
       <AuthButton filled>Fazer Login</AuthButton>
+      </router-link>
       <div class="spacer" />
       <AuthButton>Criar Conta</AuthButton>
 
@@ -20,7 +22,7 @@ import BackButton from '../components/BackButton.vue'
 
 <style scoped>
 .login-page {
-  min-height: 85dvh;
+  min-height: 100dvh;
   background-color: #e5e5e5; /* cinza claro */
   display: flex;
   flex-direction: column;
