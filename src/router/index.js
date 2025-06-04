@@ -6,6 +6,7 @@ import UserView from '@/views/UserView.vue'
 import SignUpPageView from '@/views/SignUpPageView.vue'
 import PerfilView from '@/views/PerfilView.vue'
 import PagamentoView from '@/views/PagamentoView.vue'
+import DebitandCreditView from '@/views/DebitandCreditView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -57,6 +58,11 @@ const router = createRouter({
       path: '/pagamento',
       name: 'pagamento',
       component: PagamentoView,
+    },
+    {
+      path: '/debitandcredit',
+      name: 'debitandcredit',
+      component: DebitandCreditView,
     },
 
     

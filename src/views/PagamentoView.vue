@@ -13,7 +13,9 @@
 
     <button class="add-payment-button">
       <img class="icon" src="../assets/img/plus.png" alt="Adicionar" />
+      <router-link to="/debitandcredit">
       <span class="text">Adicionar formato de pagamento</span>
+      </router-link>
     </button>
   </div>
 </template>
