@@ -10,10 +10,10 @@
       />
 
       <InputForm
-        v-model="phone"
-        label="Digite seu Telefone"
-        placeholder="(00) 00000-0000"
-        type="tel"
+        v-model="email"
+        label="Digite seu Email"
+        placeholder="email@example.com"
+        type="email"
       />
     </form>
    <ContinueButton :onClick="handleSubmit" />
@@ -27,11 +27,11 @@ import InputForm from '@/components/forms/InputForm.vue'
 import ContinueButton from '@/components/buttons/ContinueButton.vue'
 
 const fullName = ref('')
-const phone = ref('')
+const email = ref('')
 
 function handleSubmit() {
   console.log('Nome:', fullName.value)
-  console.log('Telefone:', phone.value)
+  console.log('Email:', email.value)
 }
 </script>
 
