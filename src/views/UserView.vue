@@ -1,17 +1,16 @@
 <script setup>
 import AuthButton from '@/components/buttons/AuthButton.vue'
-import BackButton from '@/components/buttons/BackButton.vue'
 </script>
 <template>
   <div class="login-page">
-    <BackButton />
-
     <div class="login-card">
       <AuthButton filled>Fazer Login</AuthButton>
       <router-link to="/signup">
         <div class="spacer" />
         <AuthButton>Criar Conta</AuthButton>
       </router-link>
+
+      <router-link to="/home" class="guest-link"> Entrar como convidado </router-link>
 
       <img src="../assets/img/logo.png" alt="Logo" class="logo" />
     </div>
@@ -40,9 +39,18 @@ import BackButton from '@/components/buttons/BackButton.vue'
 }
 
 .logo {
-  height: 80px; /* 48px */
-  width: 130px; /* 48px */
+  height: 80px; 
+  width: 130px; 
   margin: 1rem auto 0;
   display: block;
+}
+.guest-link {
+ 
+  margin-top: 1rem;
+  font-size: 14px;
+  color: #214225;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.2s;
 }
 </style>
