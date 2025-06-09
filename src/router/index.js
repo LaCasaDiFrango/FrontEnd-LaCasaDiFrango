@@ -7,6 +7,7 @@ import SignUpPageView from '@/views/SignUpPageView.vue'
 import PerfilView from '@/views/PerfilView.vue'
 import PagamentoView from '@/views/PagamentoView.vue'
 import EnderecoView from '@/views/EnderecoView.vue'
+import EnderecoFormView from '@/views/EnderecoFormView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -64,7 +65,11 @@ const router = createRouter({
       name: 'endereco',
       component: EnderecoView
     },
-    
+       {
+      path: '/form-endereco',
+      name: 'form-endereco',
+      component: EnderecoFormView
+    },
     
 
   ],
