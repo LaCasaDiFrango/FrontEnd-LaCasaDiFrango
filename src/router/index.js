@@ -7,12 +7,14 @@ import SignUpPageView from '@/views/SignUpPageView.vue'
 import PerfilView from '@/views/PerfilView.vue'
 import PagamentoView from '@/views/PagamentoView.vue'
 import DebitandCreditView from '@/views/DebitandCreditView.vue'
+import EnderecoView from '@/views/EnderecoView.vue'
+import EnderecoFormView from '@/views/EnderecoFormView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
+      path: '/home',
       name: 'home',
       component: HomeView,
       meta: {
@@ -20,6 +22,11 @@ const router = createRouter({
         showHeader: true,
       }
       
+    },
+          {
+      path: '/',
+      name: 'user',
+      component: UserView,
     },
     {
       path: '/pedidos',
@@ -39,11 +46,7 @@ const router = createRouter({
         showHeader: false,
       }
     },
-      {
-      path: '/user',
-      name: 'user',
-      component: UserView,
-    },
+
        {
       path: '/signup',
       name: 'signup',
@@ -65,7 +68,16 @@ const router = createRouter({
       component: DebitandCreditView,
     },
 
-    
+       {
+      path: '/endereco',
+      name: 'endereco',
+      component: EnderecoView
+    },
+       {
+      path: '/form-endereco',
+      name: 'form-endereco',
+      component: EnderecoFormView
+    },
     
 
   ],

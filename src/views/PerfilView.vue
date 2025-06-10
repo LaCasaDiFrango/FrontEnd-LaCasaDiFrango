@@ -3,7 +3,7 @@
     <BackButton />
 
     <div class="user-info">
-      <div class="user-name">Nome Do Usuário Da Silva</div>
+      <div class="user-name">Nome Do Usuário </div>
 
       <img src="/src/assets/img/user.png" alt="Ícone de usuário" class="user-icon" />
     </div>

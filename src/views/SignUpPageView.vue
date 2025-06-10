@@ -2,15 +2,15 @@
   <div class="register-page">
     <BackButton />
 
-    <form class="form-content" @submit.prevent="handleSubmit">
+    <form class="form-content">
       <InputForm
-        v-model="fullName"
+       
         label="Digite seu Nome Completo"
         placeholder="Nome completo"
       />
 
       <InputForm
-        v-model="phone"
+       
         label="Digite seu Telefone"
         placeholder="(00) 00000-0000"
         type="tel"
@@ -21,18 +21,14 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+
 import BackButton from '@/components/buttons/BackButton.vue'
 import InputForm from '@/components/forms/InputForm.vue'
 import ContinueButton from '@/components/buttons/ContinueButton.vue'
 
-const fullName = ref('')
-const phone = ref('')
 
-function handleSubmit() {
-  console.log('Nome:', fullName.value)
-  console.log('Telefone:', phone.value)
-}
+
+
 </script>
 
 <style scoped>
@@ -46,6 +42,7 @@ function handleSubmit() {
 .form-content {
   padding: 1.5rem;
   flex-grow: 1;
+  font-weight: 550;
 }
 
 .button-footer {
