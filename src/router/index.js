@@ -6,6 +6,7 @@ import UserView from '@/views/UserView.vue'
 import SignUpPageView from '@/views/SignUpPageView.vue'
 import PerfilView from '@/views/PerfilView.vue'
 import PagamentoView from '@/views/PagamentoView.vue'
+import DebitandCreditView from '@/views/DebitandCreditView.vue'
 import EnderecoView from '@/views/EnderecoView.vue'
 import EnderecoFormView from '@/views/EnderecoFormView.vue'
 
@@ -61,6 +62,12 @@ const router = createRouter({
       name: 'pagamento',
       component: PagamentoView,
     },
+    {
+      path: '/debitandcredit',
+      name: 'debitandcredit',
+      component: DebitandCreditView,
+    },
+
        {
       path: '/endereco',
       name: 'endereco',
