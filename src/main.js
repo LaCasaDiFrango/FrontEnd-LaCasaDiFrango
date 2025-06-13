@@ -4,8 +4,16 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import App from './App.vue';
 import router from './router';
-import axios from 'axios'; 
-const app = createApp(App);
+import axios from 'axios';
+import Toast from 'vue-toastification'; // ✅ IMPORTAÇÃO CORRETA
+import 'vue-toastification/dist/index.css';
+const app = createApp(App)
+
+app.use(Toast, {
+  transition: "Vue-Toastification__bounce",
+  maxToasts: 20,
+  newestOnTop: true
+})
 
 
 

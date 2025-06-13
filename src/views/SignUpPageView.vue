@@ -31,11 +31,48 @@ import { ref } from 'vue'
 import BackButton from '@/components/buttons/BackButton.vue'
 import InputForm from '@/components/forms/InputForm.vue'
 import ContinueButton from '@/components/buttons/ContinueButton.vue'
-import api from '@/api/api' // usando seu arquivo certo
+import api from '@/api/api'
+import { useToast } from 'vue-toastification';
+
+const toast = useToast();
 
 const nome = ref('')
 const email = ref('')
 const password = ref('')
+
+const mostrarSucesso = () => {
+  toast.success("Cadastro realizado!", {
+    position: "top-center",
+    timeout: 2032,
+    closeOnClick: false,
+    pauseOnFocusLoss: false,
+    pauseOnHover: false,
+    draggable: false,
+    draggablePercent: 0.6,
+    showCloseButtonOnHover: false,
+    hideProgressBar: true,
+    closeButton: false,
+    icon: true,
+    rtl: false
+  });
+};
+
+const mostrarErro = () => {
+  toast.error("Erro ao cadastrar usuário.", {
+    position: "top-center",
+    timeout: 2032,
+    closeOnClick: false,
+    pauseOnFocusLoss: false,
+    pauseOnHover: false,
+    draggable: false,
+    draggablePercent: 0.6,
+    showCloseButtonOnHover: false,
+    hideProgressBar: true,
+    closeButton: false,
+    icon: true,
+    rtl: false
+  })
+}
 
 const handleSubmit = async () => {
   try {
@@ -47,10 +84,10 @@ const handleSubmit = async () => {
 
     const response = await api.post('/usuarios/', payload)
     console.log('Usuário cadastrado com sucesso:', response.data)
-    alert('Cadastro realizado!')
+    mostrarSucesso()
   } catch (error) {
     console.error('Erro ao cadastrar usuário:', error.response?.data || error.message)
-    alert('Erro ao cadastrar usuário.')
+    mostrarErro()
   }
 }
 </script>
