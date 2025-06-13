@@ -1,8 +1,6 @@
-<script setup>
-</script>
-
 <template>
-  <main>
-    
-  </main>
+  a
 </template>
+<style>
+
+</style>
