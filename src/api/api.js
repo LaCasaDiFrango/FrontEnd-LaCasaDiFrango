@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: 'https://backend-lacasadifrango.onrender.com/api', // URL do seu back-end no Render
+  baseURL: 'http://0.0.0.0:19003/api', // URL do seu back-end no Render
   headers: {
     'Content-Type': 'application/json'
   }
