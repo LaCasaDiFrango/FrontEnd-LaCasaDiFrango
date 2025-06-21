@@ -7,6 +7,7 @@ import router from './router';
 import axios from 'axios'; 
 
 const app = createApp(App)
+import '@passageidentity/passage-elements'
 
 app.config.globalProperties.$axios = axios; // Agora todos os componentes usam this.$axios
 
