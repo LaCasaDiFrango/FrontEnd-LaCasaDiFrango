@@ -1,14 +1,24 @@
-// src/plugins/axios.js
 import axios from 'axios';
 
-// Cria uma instância personalizada do Axios
-const api = axios.create({
-  baseURL: 'https://sua-api-aqui.com', // Substitua pela URL base da sua API
-  timeout: 5000, // Tempo máximo de espera (opcional)
-  headers: {
-    'Content-Type': 'application/json',
-    // Adicione outros headers globais (ex: token)
-  },
-});
+// Configura a baseURL usando a variável de ambiente
+// axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL;
+// console.log('API Base URL:', process.env.VUE_APP_API_BASE_URL);
 
-export default api;
+axios.defaults.baseURL = 'http://localhost:19003/api/';
+// axios.defaults.baseURL = 'https://backend-lacasadifrango.onrender.com/api/';
+
+// Adiciona um interceptor para incluir o token de autenticação
+axios.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('psg_auth_token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+export default axios;
