@@ -16,9 +16,17 @@ function goToForm() {
 
 <style scoped>
 .manual-btn {
-  position: absolute;
-  top: 16px;
-  right: 16px;
+ 
+
+  position: fixed;
+  top: 0.3rem;
+  right: 1rem;
+  z-index: 1000;
+
+
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 12px;
 
   padding: 6px 12px;
   font-size: 13px;

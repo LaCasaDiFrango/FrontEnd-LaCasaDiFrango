@@ -40,7 +40,7 @@ function toggleForm(tipo) {
 <style scoped>
 .payment-container {
   max-width: 540px;
-  margin: 48px auto;
+  margin: 3rem auto;
   padding: 32px;
   background: #fff;
 }

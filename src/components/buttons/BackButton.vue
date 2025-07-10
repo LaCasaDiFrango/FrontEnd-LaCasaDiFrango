@@ -1,12 +1,17 @@
 <template>
   <div class="back-wrapper">
-    <button @click="$router.back()"><img src="/src/assets/img/left-chevron.png" alt=""></button>
+    <button @click="$router.back()">
+      <img src="/src/assets/img/left-chevron.png" alt="">
+    </button>
   </div>
 </template>
 
 <style scoped>
 .back-wrapper {
-  padding: 0.5rem;
+  position: fixed;
+  top: 1rem; 
+  left: 1rem; 
+  z-index: 1000; 
 }
 
 button {
@@ -15,8 +20,10 @@ button {
   border: none;
   cursor: pointer;
 }
+
 button img {
   width: 24px;
   height: 24px;
 }
+
 </style>
