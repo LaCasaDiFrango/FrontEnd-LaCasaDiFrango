@@ -3,6 +3,7 @@ import CategoryNav from '@/components/layout/CategoryNav.vue';
 import BannerCarousel from '@/components/layout/BannerCarousel.vue';
 import FrangoCard from '@/components/cards/FrangoCard.vue';
 import AlertaHorario from '@/components/cards/AlertaHorario.vue';
+import HistoriaCard from '@/components/cards/HistoriaCard.vue';
 
 
 const frangos = [
@@ -31,6 +32,7 @@ const frangos = [
     />
   </div>
     <AlertaHorario />
+    <HistoriaCard/>
     
 
    
