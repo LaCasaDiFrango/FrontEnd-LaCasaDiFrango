@@ -5,6 +5,7 @@ import FrangoCard from '@/components/cards/FrangoCard.vue';
 import AlertaHorario from '@/components/cards/AlertaHorario.vue';
 import HistoriaCard from '@/components/cards/HistoriaCard.vue';
 import LocalizacaoMapa from '@/components/cards/LocalizacaoMapa.vue';
+import ContatoRedes from '@/components/cards/ContatoRedes.vue';
 
 
 const frangos = [
@@ -35,6 +36,7 @@ const frangos = [
     <AlertaHorario />
     <HistoriaCard/>
     <LocalizacaoMapa />
+    <ContatoRedes />
     
 
    
@@ -46,5 +48,8 @@ const frangos = [
   justify-content: center;
   gap: 30px;
   margin: 24px 0;
+}
+.home-page {
+  padding-bottom: 80px; 
 }
 </style>
