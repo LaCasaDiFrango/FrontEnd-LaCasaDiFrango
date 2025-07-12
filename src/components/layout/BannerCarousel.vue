@@ -20,7 +20,7 @@ const banners = [
 const options = {
   type: 'loop',
   autoplay: true,
-  interval: 4000,
+  interval: 6000,
   pauseOnHover: true,
   arrows: false,
   pagination: true,
@@ -35,5 +35,11 @@ const options = {
   height: 100%;
   object-fit: cover;
   border-radius: 12px;
+}
+.splide{
+  max-width: 90%;
+  margin: 52px auto 0 auto; 
+  border-radius: 12px;
+  overflow: hidden;
 }
 </style>
