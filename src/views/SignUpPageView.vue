@@ -1,28 +1,29 @@
 <template>
   <div class="register-page">
     <BackButton />
+  <passage-auth app-id="WEG5lzsWo0bbZlaYwtVYYb6Q"></passage-auth>
+<!--
+<form class="form-content">
+  <InputForm
+    v-model="name"
+    label="Digite seu Nome Completo"
+    placeholder="Nome completo"
+  />
 
-    <form class="form-content">
-      <InputForm
-        v-model="nome"
-        label="Digite seu Nome Completo"
-        placeholder="Nome completo"
-      />
-
-      <InputForm
-        v-model="email"
-        label="Digite seu Email"
-        placeholder="exemplo@gmail.com"
-        type="email"
-      />
-      <InputForm
-        v-model="password"
-        label="Digite sua Senha"
-        placeholder="Senha"
-        type="password"
-      />
-    </form>
-   <ContinueButton :onClick="handleSubmit" />
+  <InputForm
+    v-model="email"
+    label="Digite seu Email"
+    placeholder="exemplo@gmail.com"
+    type="email"
+  />
+  <InputForm
+    v-model="password"
+    label="Digite sua Senha"
+    placeholder="Senha"
+    type="password"
+  />
+</form>
+-->
   </div>
 </template>
 
@@ -30,29 +31,28 @@
 import { ref } from 'vue'
 import BackButton from '@/components/buttons/BackButton.vue'
 import InputForm from '@/components/forms/InputForm.vue'
-import ContinueButton from '@/components/buttons/ContinueButton.vue'
-import api from '@/api/api' // usando seu arquivo certo
+import '@passageidentity/passage-elements/passage-auth'
 
-const nome = ref('')
-const email = ref('')
-const password = ref('')
+// const name = ref('')
+// const email = ref('')
+// const password = ref('')
 
-const handleSubmit = async () => {
-  try {
-    const payload = {
-      nome: nome.value,
-      email: email.value,
-      password: password.value
-    }
+// const handleSubmit = async () => {
+//   try {
+//     const payload = {
+//       name: name.value,
+//       email: email.value,
+//       password: password.value
+//     }
 
-    const response = await api.post('/usuarios/', payload)
-    console.log('Usuário cadastrado com sucesso:', response.data)
-    alert('Cadastro realizado!')
-  } catch (error) {
-    console.error('Erro ao cadastrar usuário:', error.response?.data || error.message)
-    alert('Erro ao cadastrar usuário.')
-  }
-}
+//     const response = await api.post('/usuarios/', payload)
+//     console.log('Usuário cadastrado com sucesso:', response.data)
+//     alert('Cadastro realizado!')
+//   } catch (error) {
+//     console.error('Erro ao cadastrar usuário:', error.response?.data || error.message)
+//     alert('Erro ao cadastrar usuário.')
+//   }
+// }
 </script>
 
 

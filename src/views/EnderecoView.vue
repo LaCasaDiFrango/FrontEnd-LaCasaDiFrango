@@ -41,7 +41,7 @@ import ManualAddressButton from '@/components/buttons/ManualAddressButton.vue'
   flex-direction: column;
   justify-content: space-between;
   min-height: 100vh;
-  padding: 24px 16px;
+  padding: 44px 16px;
   box-sizing: border-box;
   text-align: center;
 }
@@ -51,10 +51,7 @@ import ManualAddressButton from '@/components/buttons/ManualAddressButton.vue'
 }
 
 
-.back-button-wrapper {
-  display: flex;
-  justify-content: flex-start;
-}
+
 
 .image-placeholder {
   display: flex;

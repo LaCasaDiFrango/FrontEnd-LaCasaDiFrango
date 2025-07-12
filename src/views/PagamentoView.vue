@@ -29,6 +29,7 @@ import BackButton from '@/components/buttons/BackButton.vue'
   padding: 16px;
   display: flex;
   flex-direction: column;
+  padding-top: 50px;
   align-items: flex-start;
 }
 

@@ -3,7 +3,10 @@
     <button class="toggle-button" @click="$emit('toggle')">
       <img :src="icon" alt="" class="icon" />
       <span>{{ title }}</span>
-      <span class="arrow">{{ isExpanded ? '▲' : '▼' }}</span>
+      <span class="arrow">
+        <img v-if="isExpanded" :src="uploadIcon" alt="Seta para cima" class="arrow-up" />
+        <img v-else :src="DownArrowIcon" alt="Seta para baixo" class="arrow-icon" />
+      </span>
     </button>
 
     <div v-if="isExpanded" class="form">
@@ -34,20 +37,21 @@
 </template>
 
 <script setup>
-import { ref, defineProps } from 'vue'
+import { ref, defineProps } from "vue";
+import DownArrowIcon from "@/assets/img/down-arrow.png";
+import uploadIcon from "@/assets/img/upload.png";
 
 const props = defineProps({
   title: String,
   icon: String,
-  isExpanded: Boolean
-})
+  isExpanded: Boolean,
+});
 
-const cardNumber = ref('')
-const expiry = ref('')
-const cvv = ref('')
-const cardHolder = ref('')
+const cardNumber = ref("");
+const expiry = ref("");
+const cvv = ref("");
+const cardHolder = ref("");
 </script>
-
 
 <style scoped>
 .payment-option {
@@ -59,11 +63,9 @@ const cardHolder = ref('')
 }
 
 .toggle-button {
-    
   background: white;
   border: none;
   width: 100%;
-  text-align: left;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -79,7 +81,20 @@ const cardHolder = ref('')
 
 .arrow {
   margin-left: auto;
-  font-size: 18px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.arrow-icon {
+  width: 26px;
+  height: 26px;
+}
+
+.arrow-up {
+  width: 20px;
+  height: 20px;
+
 }
 
 .form {
@@ -87,7 +102,7 @@ const cardHolder = ref('')
 }
 
 label {
-    padding: 2px;
+  padding: 2px;
   display: block;
   margin-bottom: 10px;
   font-size: 16px;
