@@ -1,6 +1,11 @@
-<template>
-  a
-</template>
-<style>
+<script setup>
+import CategoryNav from '@/components/layout/CategoryNav.vue'
+</script>
 
-</style>
+<template>
+  <div class="home-page">
+
+    <CategoryNav />
+   
+  </div>
+</template>
