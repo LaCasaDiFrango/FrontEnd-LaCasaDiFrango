@@ -1,6 +1,6 @@
 <script setup>
-import AuthButton from '@/components/buttons/AuthButton.vue'
-import { useAuthStore } from '@/stores/auth'
+import { AuthButton } from '@/components/index'
+import { useAuthStore } from '@/stores/index'
 import { useRouter } from 'vue-router'
 
 const auth = useAuthStore()

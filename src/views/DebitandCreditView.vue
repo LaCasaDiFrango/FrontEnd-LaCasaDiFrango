@@ -21,10 +21,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import PaymentOption from '../components/cards/PaymentOption.vue'
-import iconCredito from '@/assets/img/cartao-de-credito.png'
-import iconDebito from '@/assets/img/sem-contato.png'
-import BackButton from '@/components/buttons/BackButton.vue'
+import {PaymentOption, BackButton} from '@/components/index'
 
 const formAberto = ref(null)
 

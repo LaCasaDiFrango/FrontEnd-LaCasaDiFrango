@@ -20,9 +20,7 @@
 </template>
 
 <script setup>
-import BackButton from '@/components/buttons/BackButton.vue'
-import InputForm from '@/components/forms/InputForm.vue'
-import ContinueButton from '@/components/buttons/ContinueButton.vue'
+import {BackButton, ContinueButton, InputForm} from '@/components/index'
 
 </script>
 

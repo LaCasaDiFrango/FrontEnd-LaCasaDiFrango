@@ -30,9 +30,7 @@
 </template>
 
 <script setup>
-import BackButton from '@/components/buttons/BackButton.vue'
-import AddressInput from '@/components/forms/AddressInput.vue'
-import ManualAddressButton from '@/components/buttons/ManualAddressButton.vue'
+import {BackButton, AddressInput, ManualAddressButton} from '@/components/index'
 </script>
 
 <style scoped>

@@ -30,9 +30,7 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
-import BackButton from '@/components/buttons/BackButton.vue'
-import ProfileActionCard from '@/components/cards/ProfileActionCard.vue'
-import AuthButton from '@/components/buttons/AuthButton.vue'
+import {BackButton, ProfileActionCard, AuthButton} from '@/components/index'
 
 const router = useRouter()
 </script>
