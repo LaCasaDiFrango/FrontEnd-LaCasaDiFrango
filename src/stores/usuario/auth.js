@@ -2,7 +2,7 @@
 
 import { ref, watch, computed } from 'vue';
 import { defineStore } from 'pinia';
-import AuthService from '@/api/auth';
+import AuthService from '@/api/usuario/auth';
 
 const authService = new AuthService();
 

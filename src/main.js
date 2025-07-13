@@ -17,7 +17,7 @@ app.use(router);
 app.mount('#app');
 
 // 🔑 Importa a store e carrega usuário salvo no localStorage
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/stores/usuario/auth';
 
 const authStore = useAuthStore();
 
