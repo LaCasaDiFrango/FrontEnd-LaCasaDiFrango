@@ -30,6 +30,5 @@ defineProps({
 .nav .categorias img {
   width: 50px;
   height: 50px;
-  background-color: #f0f0f0;
 }
 </style>
