@@ -12,6 +12,9 @@
   top: 1rem; 
   left: 1rem; 
   z-index: 1000; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 button {
