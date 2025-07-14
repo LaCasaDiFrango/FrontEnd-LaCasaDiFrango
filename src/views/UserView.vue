@@ -61,7 +61,7 @@ function entrarComoConvidado() {
   display: block;
 }
 .guest-link {
- 
+ text-align: center;
   margin-top: 1rem;
   font-size: 14px;
   color: #214225;
