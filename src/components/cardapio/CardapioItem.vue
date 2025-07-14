@@ -1,18 +1,17 @@
 <script setup>
 defineProps({
-  title: String,
-  price: String,
-  imgSrc: String,
-  imgAlt: String
+  nome: String,
+  preco: String,
+  image: String,
 })
 </script>
 
 <template>
   <div class="cardapioItem">
-    <img :src="imgSrc" :alt="imgAlt" />
+    <img :src="image" :alt="nome" />
     <div class="itemInfo">
-      <h4>{{ title }}</h4>
-      <span>{{ price }}</span>
+      <h4>{{ nome }}</h4>
+      <span>{{ preco }}</span>
     </div>
   </div>
 </template>

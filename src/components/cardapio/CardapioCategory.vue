@@ -13,10 +13,9 @@ defineProps({
     <CardapioItem
       v-for="(item, index) in items"
       :key="index"
-      :title="item.title"
-      :price="item.price"
-      :imgSrc="item.imgSrc"
-      :imgAlt="item.imgAlt"
+      :nome="item.nome"
+      :preco="item.preco"
+      :image="item.image"
     />
   </div>
 </template>

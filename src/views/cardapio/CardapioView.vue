@@ -1,50 +1,49 @@
 <script setup>
-import { onMounted, ref } from 'vue';
-import { BackButton, NavBar, CardapioCategory, CardapioNavbar } from '@/components/index';
-import imgFrango from '@/assets/img/chicken-leg.png';
-import { produto } from '@/api/index';
+import { onMounted, ref } from 'vue'
+import { BackButton, NavBar, CardapioCategory, CardapioNavbar } from '@/components/index'
+import imgFrango from '@/assets/img/chicken-leg.png'
+import { produto } from '@/api/index'
 
-const produtoService = new produto.default();
-const categories = ref([]);
+const produtoService = new produto.default()
+const categories = ref([])
 
 const categoriaMap = {
   1: 'Bebidas',
   2: 'Maionese',
   3: 'Frango',
-};
+}
 
 onMounted(async () => {
   try {
-    const response = await produtoService.getAll();
-    const produtos = response.results; // <- aqui está o array correto
+    const response = await produtoService.getAll()
+    const produtos = response.results // <- aqui está o array correto
 
-    const agrupados = {};
+    const agrupados = {}
 
     for (const item of produtos) {
-      const categoriaNome = categoriaMap[item.categoria];
-      if (!categoriaNome) continue;
+      const categoriaNome = categoriaMap[item.categoria]
+      if (!categoriaNome) continue
 
       if (!agrupados[categoriaNome]) {
-        agrupados[categoriaNome] = [];
+        agrupados[categoriaNome] = []
       }
 
       agrupados[categoriaNome].push({
-        title: item.nome,
-        price: `R$ ${parseFloat(item.preco).toFixed(2)}`,
-        imgSrc: imgFrango,
-        imgAlt: item.nome,
-      });
+        nome: item.nome,
+        preco: parseFloat(item.preco).toFixed(2),
+        categoria: item.categoria,
+        image: imgFrango,
+      })
     }
 
     categories.value = Object.entries(agrupados).map(([categoryName, items]) => ({
       categoryName,
       items,
-    }));
+    }))
   } catch (error) {
-    console.error('Erro ao buscar produtos:', error);
+    console.error('Erro ao buscar produtos:', error)
   }
-});
-
+})
 </script>
 
 
