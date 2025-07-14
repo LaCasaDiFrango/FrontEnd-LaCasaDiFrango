@@ -1,5 +1,60 @@
 <script setup>
-import { BackButton, NavBar } from '@/components/index'
+import { BackButton, NavBar, CardapioCategory, CardapioNavbar } from '@/components/index'
+import imgFrango from '@/assets/img/chicken-leg.png'
+
+const categories = [
+  {
+    categoryName: 'Frango',
+    items: [
+      {
+        title: 'Frango Assado',
+        price: 'R$ 29,90',
+        imgSrc: imgFrango,
+        imgAlt: 'Frango Assado',
+      },
+      {
+        title: 'Frango Assado',
+        price: 'R$ 29,90',
+        imgSrc: imgFrango,
+        imgAlt: 'Frango Assado',
+      },
+    ],
+  },
+  {
+    categoryName: 'Bebidas',
+    items: [
+      {
+        title: 'Refrigerante',
+        price: 'R$ 7,00',
+        imgSrc: imgFrango,
+        imgAlt: 'Refrigerante',
+      },
+      {
+        title: 'Suco Natural',
+        price: 'R$ 9,00',
+        imgSrc: imgFrango,
+        imgAlt: 'Suco Natural',
+      },
+    ],
+  },
+  {
+    categoryName: 'Maionese',
+    items: [
+      {
+        title: 'Maionese Caseira',
+        price: 'R$ 10,00',
+        imgSrc: imgFrango,
+        imgAlt: 'Maionese Caseira',
+      },
+      {
+        title: 'Maionese Verde',
+        price: 'R$ 12,00',
+        imgSrc: imgFrango,
+        imgAlt: 'Maionese Verde',
+      },
+    ],
+  },
+]
 </script>
 <template>
   <div class="cardapio-container">
@@ -23,74 +78,16 @@ import { BackButton, NavBar } from '@/components/index'
       </svg>
       <span>Procure em nosso cardápio</span>
     </div>
-    <div class="nav">
-      <div class="categorias">
-        <img src="@/assets/img/chicken-leg.png" alt="Categorias" />
-        <span>Frango</span>
-      </div>
-      <div class="categorias">
-        <img src="@/assets/img/chicken-leg.png" alt="Categorias" />
-        <span>Maionese</span>
-      </div>
-      <div class="categorias">
-        <img src="@/assets/img/chicken-leg.png" alt="Categorias" />
-        <span>Bebidas</span>
-      </div>
-    </div>
+    <CardapioNavbar :categories="categories" />
     <section class="cardapioMain">
-      <div class="categoriaCardapio">
-        <h3>Frango</h3>
-        <div class="cardapioItem">
-          <img src="@/assets/img/chicken-leg.png" alt="Frango Assado" />
-          <div class="itemInfo">
-            <h4>Frango Assado</h4>
-            <span>R$ 29,90</span>
-          </div>
-        </div>
-        <div class="cardapioItem">
-          <img src="@/assets/img/chicken-leg.png" alt="Frango Assado" />
-          <div class="itemInfo">
-            <h4>Frango Assado</h4>
-            <span>R$ 29,90</span>
-          </div>
-        </div>
-      </div>
-      <div class="categoriaCardapio">
-        <h3>Bebidas</h3>
-        <div class="cardapioItem">
-          <img src="@/assets/img/chicken-leg.png" alt="Frango Assado" />
-          <div class="itemInfo">
-            <h4>Frango Assado</h4>
-            <span>R$ 29,90</span>
-          </div>
-        </div>
-        <div class="cardapioItem">
-          <img src="@/assets/img/chicken-leg.png" alt="Frango Assado" />
-          <div class="itemInfo">
-            <h4>Frango Assado</h4>
-            <span>R$ 29,90</span>
-          </div>
-        </div>
-      </div>
-       <div class="categoriaCardapio">
-        <h3>Maionese</h3>
-        <div class="cardapioItem">
-          <img src="@/assets/img/chicken-leg.png" alt="Frango Assado" />
-          <div class="itemInfo">
-            <h4>Frango Assado</h4>
-            <span>R$ 29,90</span>
-          </div>
-        </div>
-        <div class="cardapioItem">
-          <img src="@/assets/img/chicken-leg.png" alt="Frango Assado" />
-          <div class="itemInfo">
-            <h4>Frango Assado</h4>
-            <span>R$ 29,90</span>
-          </div>
-        </div>
-      </div>
+      <CardapioCategory
+        v-for="cat in categories"
+        :key="cat.categoryName"
+        :categoryName="cat.categoryName"
+        :items="cat.items"
+      />
     </section>
-<NavBar/>
+    <NavBar />
   </div>
 </template>
 <style scoped>
@@ -118,73 +115,10 @@ import { BackButton, NavBar } from '@/components/index'
   color: #888;
 }
 
-.nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-
-.nav .categorias {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-  cursor: pointer;
-}
-
-.nav .categorias img {
-  width: 50px;
-  height: 50px;
-  background-color: #f0f0f0;
-}
-
 .cardapioMain {
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 40px;
-}
-
-.cardapioMain .categoriaCardapio {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.cardapioMain .categoriaCardapio h3 {
-  font-size: 24px;
-  color: #333;
-}
-
-.cardapioMain .categoriaCardapio .cardapioItem {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 0 0 20px 0;
-  border-bottom: 2px solid #ccc;
-}
-
-.cardapioMain .categoriaCardapio .cardapioItem img {
-  width: 100px;
-  height: 100px;
-  border-radius: 8px;
-}
-
-.cardapioMain .categoriaCardapio .cardapioItem .itemInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.cardapioMain .categoriaCardapio .cardapioItem .itemInfo h4 {
-  font-size: 20px;
-  color: #333;
-}
-
-.cardapioMain .categoriaCardapio .cardapioItem .itemInfo span {
-  font-size: 18px;
-  color: #000; /* Cor do preço */
 }
 </style>

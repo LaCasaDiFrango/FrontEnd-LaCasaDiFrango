@@ -23,6 +23,11 @@ import CategoryNav from "./layout/CategoryNav.vue";
 import HeaderComponent from "./layout/HeaderComponent.vue";
 import NavBar from "./layout/NavBar.vue";
 
+//cardapio
+import CardapioCategory from "./cardapio/CardapioCategory.vue";
+import CardapioItem from "./cardapio/CardapioItem.vue";
+import CardapioNavbar from "./cardapio/CardapioNavbar.vue";
+
 export {
   AuthButton,
   BackButton,
@@ -40,5 +45,8 @@ export {
   BannerCarousel,
   CategoryNav,
   HeaderComponent,
-  NavBar
+  NavBar,
+  CardapioCategory,
+  CardapioItem,
+  CardapioNavbar,
 };
