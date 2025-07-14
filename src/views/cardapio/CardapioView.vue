@@ -1,51 +1,14 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
+import { useCardapioStore } from '@/stores'
 import { BackButton, NavBar, CardapioCategory, CardapioNavbar } from '@/components/index'
-import imgFrango from '@/assets/img/chicken-leg.png'
-import { produto } from '@/api/index'
 
-const produtoService = new produto.default()
-const categories = ref([])
+const cardapioStore = useCardapioStore()
 
-const categoriaMap = {
-  1: 'Bebidas',
-  2: 'Maionese',
-  3: 'Frango',
-}
-
-onMounted(async () => {
-  try {
-    const response = await produtoService.getAll()
-    const produtos = response.results // <- aqui está o array correto
-
-    const agrupados = {}
-
-    for (const item of produtos) {
-      const categoriaNome = categoriaMap[item.categoria]
-      if (!categoriaNome) continue
-
-      if (!agrupados[categoriaNome]) {
-        agrupados[categoriaNome] = []
-      }
-
-      agrupados[categoriaNome].push({
-        nome: item.nome,
-        preco: parseFloat(item.preco).toFixed(2),
-        categoria: item.categoria,
-        image: imgFrango,
-      })
-    }
-
-    categories.value = Object.entries(agrupados).map(([categoryName, items]) => ({
-      categoryName,
-      items,
-    }))
-  } catch (error) {
-    console.error('Erro ao buscar produtos:', error)
-  }
+onMounted(() => {
+  cardapioStore.fetchProdutos()
 })
 </script>
-
 
 <template>
   <div class="cardapio-container">
@@ -71,11 +34,11 @@ onMounted(async () => {
       <span>Procure em nosso cardápio</span>
     </div>
 
-    <CardapioNavbar :categories="categories" />
+    <CardapioNavbar :categories="cardapioStore.categories" />
 
     <section class="cardapioMain">
       <CardapioCategory
-        v-for="cat in categories"
+        v-for="cat in cardapioStore.categories"
         :key="cat.categoryName"
         :categoryName="cat.categoryName"
         :items="cat.items"
