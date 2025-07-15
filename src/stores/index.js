@@ -5,8 +5,10 @@ import { useAuthStore } from './usuario/auth'
 
 //produto
 import { useCardapioStore } from './produto/cardapio'
+import { useProdutoStore } from './produto/produto'
 
 export {
   useAuthStore,
   useCardapioStore,
+  useProdutoStore,
 }

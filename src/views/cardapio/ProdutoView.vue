@@ -1,69 +1,23 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { produto, pedido } from '@/api/index'
+import { onMounted } from 'vue'
+import { useProdutoStore } from '@/stores/index'
 import { BackButton, AddPedidoButton } from '@/components/index'
 
-const pedidoService = new pedido.default()
-
 const props = defineProps({
-  id: [String, Number]
+  id: [String, Number],
 })
 
-const produtoSelecionado = ref(null)
-const quantidade = ref(1) // controlada pelos botões + e -
-async function criarPedido() {
-  try {
-    const response = await pedidoService.create({
-      itens: [
-        {
-          produto: produtoSelecionado.value.id,
-          quantidade: quantidade.value,
-        },
-      ],
-      status: 'CARRINHO', // deixa como carrinho, só adicionando itens
-    })
+const {
+  produtoSelecionado,
+  quantidade,
+  carregarProduto,
+  aumentar,
+  diminuir,
+  criarPedido,
+} = useProdutoStore()
 
-    console.log('Pedido atualizado:', response)
-    alert('Produto adicionado ao pedido (carrinho)!')
-
-    // NÃO chama finalizarPedido aqui!
-
-  } catch (error) {
-    console.error('Erro ao criar pedido:', error)
-    alert('Erro ao adicionar produto ao pedido.')
-  }
-}
-
-async function finalizarPedido(pedidoId) {
-  try {
-    const response = await pedidoService.finalizar(pedidoId)
-    console.log('Pedido finalizado com sucesso!', response)
-    alert('Pedido finalizado com sucesso!')
-  } catch (error) {
-    alert('Erro ao finalizar pedido.')
-    console.error('Erro inesperado:', error)
-  }
-}
-
-const produtoService = new produto.default()
-
-function aumentar() {
-  quantidade.value++
-}
-
-function diminuir() {
-  if (quantidade.value > 1) {
-    quantidade.value--
-  }
-}
-
-
-onMounted(async () => {
-  try {
-    produtoSelecionado.value = await produtoService.getById(props.id)
-  } catch (error) {
-    console.error('Erro ao carregar produto:', error)
-  }
+onMounted(() => {
+  carregarProduto(props.id)
 })
 </script>
 
@@ -76,7 +30,6 @@ onMounted(async () => {
     </div>
 
     <img :src="produtoSelecionado.image" :alt="produtoSelecionado.nome" />
-
     <p>{{ produtoSelecionado.descricao }}</p>
 
     <div class="quantidade">
