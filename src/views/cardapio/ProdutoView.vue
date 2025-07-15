@@ -11,7 +11,6 @@ const props = defineProps({
 
 const produtoSelecionado = ref(null)
 const quantidade = ref(1) // controlada pelos botões + e -
-
 async function criarPedido() {
   try {
     const response = await pedidoService.create({
@@ -21,13 +20,17 @@ async function criarPedido() {
           quantidade: quantidade.value,
         },
       ],
-      status: 'CARRINHO',
+      status: 'CARRINHO', // deixa como carrinho, só adicionando itens
     })
 
-    const pedidoCriado = response
-    await finalizarPedido(pedidoCriado.id)
+    console.log('Pedido atualizado:', response)
+    alert('Produto adicionado ao pedido (carrinho)!')
+
+    // NÃO chama finalizarPedido aqui!
+
   } catch (error) {
     console.error('Erro ao criar pedido:', error)
+    alert('Erro ao adicionar produto ao pedido.')
   }
 }
 
@@ -37,12 +40,8 @@ async function finalizarPedido(pedidoId) {
     console.log('Pedido finalizado com sucesso!', response)
     alert('Pedido finalizado com sucesso!')
   } catch (error) {
-    if (error.response?.status === 400) {
-      alert(`Erro: ${error.response.data.status}\nProduto: ${error.response.data.produto}`)
-    } else {
-      alert('Erro ao finalizar pedido.')
-      console.error('Erro inesperado:', error)
-    }
+    alert('Erro ao finalizar pedido.')
+    console.error('Erro inesperado:', error)
   }
 }
 
@@ -58,10 +57,6 @@ function diminuir() {
   }
 }
 
-function adicionarAoPedido() {
-  console.log(`Adicionando ${quantidade.value} unidade(s) do produto`, produtoSelecionado.value)
-  // Aqui você pode adicionar ao carrinho ou store
-}
 
 onMounted(async () => {
   try {
