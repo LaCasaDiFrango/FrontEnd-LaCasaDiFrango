@@ -29,6 +29,7 @@ export const useCardapioStore = defineStore('cardapio', () => {
         }
 
         agrupados[categoriaNome].push({
+          id: item.id,
           nome: item.nome,
           preco: parseFloat(item.preco).toFixed(2).replace('.', ','),
           categoria: item.categoria,

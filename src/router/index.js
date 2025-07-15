@@ -9,6 +9,7 @@ import PagamentoView from '@/views/PagamentoView.vue'
 import DebitandCreditView from '@/views/DebitandCreditView.vue'
 import EnderecoView from '@/views/EnderecoView.vue'
 import EnderecoFormView from '@/views/EnderecoFormView.vue'
+import ProdutoView from '@/views/cardapio/ProdutoView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,10 +43,15 @@ const router = createRouter({
       name: 'produtos',
       component: CardapioView,
        meta: {
-        showNavbar: false,
         showHeader: false,
       }
     },
+      {
+    path: '/produtos/:id',
+    name: 'ProdutoDetalhe',
+    component: ProdutoView,
+    props: true,
+  },
 
        {
       path: '/signup',

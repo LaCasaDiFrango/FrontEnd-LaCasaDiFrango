@@ -3,6 +3,7 @@ import AuthButton from "@/components/buttons/AuthButton.vue";
 import BackButton from "@/components/buttons/BackButton.vue";
 import ContinueButton from "./buttons/ContinueButton.vue";
 import ManualAddressButton from "./buttons/ManualAddressButton.vue";
+import AddPedidoButton from "./buttons/AddPedidoButton.vue";
 
 //cards
 import AlertaHorario from "./cards/AlertaHorario.vue";
@@ -49,4 +50,5 @@ export {
   CardapioCategory,
   CardapioItem,
   CardapioNavbar,
+  AddPedidoButton,
 };
