@@ -9,7 +9,10 @@ export const useCardapioStore = defineStore('cardapio', () => {
   const categoriaMap = {
     1: 'Bebidas',
     2: 'Maionese',
-    3: 'Frango',
+    3: 'Frangos',
+    4: 'Conservas',
+    5: 'Farofas',
+    6: 'Costela Assada',
   }
 
   async function fetchProdutos() {
