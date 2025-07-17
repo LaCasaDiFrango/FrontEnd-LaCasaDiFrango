@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, watch } from 'vue'
 import { useProdutoStore } from '@/stores/index'
 import { BackButton, AddPedidoButton } from '@/components/index'
 
@@ -7,43 +7,51 @@ const props = defineProps({
   id: [String, Number],
 })
 
-const {
-  produtoSelecionado,
-  quantidade,
-  carregarProduto,
-  aumentar,
-  diminuir,
-  criarPedido,
-} = useProdutoStore()
+const produtoStore = useProdutoStore()
 
-onMounted(() => {
-  carregarProduto(props.id)
+onMounted(async () => {
+  if (props.id) {
+    produtoStore.produtoSelecionado = null
+    await produtoStore.carregarProduto(props.id)
+  }
 })
+
+watch(
+  () => props.id,
+  async (novoId) => {
+    console.log('ID mudou para:', novoId)
+    if (novoId) {
+      produtoStore.produtoSelecionado = null
+      await produtoStore.carregarProduto(novoId)
+    }
+  }
+)
+
 </script>
 
 <template>
   <BackButton />
-  <div class="produto-container" v-if="produtoSelecionado">
-    <div class="title">
-      <h1>{{ produtoSelecionado.nome }}</h1>
-      <p>R$ {{ parseFloat(produtoSelecionado.preco).toFixed(2).replace('.', ',') }}</p>
-    </div>
-
-    <img :src="produtoSelecionado.image" :alt="produtoSelecionado.nome" />
-    <p>{{ produtoSelecionado.descricao }}</p>
-
-    <div class="quantidade">
-      <span @click="diminuir">
-        <img src="@/assets/img/minus.png" alt="Menos" />
-      </span>
-      <span>{{ quantidade }}</span>
-      <span @click="aumentar">
-        <img src="@/assets/img/plus.png" alt="Mais" />
-      </span>
-    </div>
+<div class="produto-container" v-if="produtoStore.produtoSelecionado">
+  <div class="title">
+    <h1>{{ produtoStore.produtoSelecionado.nome }}</h1>
+    <p>R$ {{ parseFloat(produtoStore.produtoSelecionado.preco).toFixed(2).replace('.', ',') }}</p>
   </div>
 
-  <AddPedidoButton @click="criarPedido" />
+  <img :src="produtoStore.produtoSelecionado.image" :alt="produtoStore.produtoSelecionado.nome" />
+  <p>{{ produtoStore.produtoSelecionado.descricao }}</p>
+
+  <div class="quantidade">
+    <span @click="produtoStore.diminuir">
+      <img src="@/assets/img/minus.png" alt="Menos" />
+    </span>
+    <span>{{ produtoStore.quantidade }}</span>
+    <span @click="produtoStore.aumentar">
+      <img src="@/assets/img/plus.png" alt="Mais" />
+    </span>
+  </div>
+</div>
+
+<AddPedidoButton @click="produtoStore.criarPedido" />
 </template>
 
 <style scoped>
