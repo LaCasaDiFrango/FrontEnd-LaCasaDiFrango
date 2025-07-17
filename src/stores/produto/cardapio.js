@@ -8,46 +8,72 @@ export const useCardapioStore = defineStore('cardapio', () => {
 
   const categoriaMap = {
     1: 'Bebidas',
-    2: 'Maionese',
+    2: 'Maioneses',
     3: 'Frangos',
     4: 'Conservas',
     5: 'Farofas',
     6: 'Costela Assada',
   }
 
-  async function fetchProdutos() {
-    try {
-      const produtoService = new produto.default()
-      const response = await produtoService.getAll()
-      const produtos = response.results
+async function fetchProdutos() {
+  try {
+    const produtoService = new produto.default()
+    const todosProdutos = []
+    let page = 1
+    let totalPages = 1
 
-      const agrupados = {}
+    do {
+      const response = await produtoService.getAll({ page })
 
-      for (const item of produtos) {
-        const categoriaNome = categoriaMap[item.categoria]
-        if (!categoriaNome) continue
+      console.log(`Página ${page} carregada`, response)
 
-        if (!agrupados[categoriaNome]) {
-          agrupados[categoriaNome] = []
-        }
-
-        agrupados[categoriaNome].push({
-          id: item.id,
-          nome: item.nome,
-          preco: parseFloat(item.preco).toFixed(2).replace('.', ','),
-          categoria: item.categoria,
-          image: imgFrango,
-        })
+      if (response.results?.length) {
+        todosProdutos.push(...response.results)
       }
 
-      categories.value = Object.entries(agrupados).map(([categoryName, items]) => ({
-        categoryName,
-        items,
-      }))
-    } catch (error) {
-      console.error('Erro ao buscar produtos:', error)
+      totalPages = response.total_pages || 1
+      page++
+    } while (page <= totalPages)
+
+    console.log('Todos os produtos carregados:', todosProdutos)
+
+    const agrupados = {}
+
+    for (const item of todosProdutos) {
+      const categoriaNome = categoriaMap[parseInt(item.categoria)]
+
+      if (!categoriaNome) {
+        console.warn('Produto ignorado (categoria inválida):', item)
+        continue
+      }
+
+      if (!agrupados[categoriaNome]) {
+        agrupados[categoriaNome] = []
+      }
+
+      agrupados[categoriaNome].push({
+        id: item.id,
+        nome: item.nome,
+        preco: parseFloat(item.preco).toFixed(2).replace('.', ','),
+        categoria: item.categoria,
+        image: imgFrango,
+      })
     }
+
+    console.log('Agrupados por categoria:', agrupados)
+
+    categories.value = Object.entries(agrupados).map(([categoryName, items]) => ({
+      categoryName,
+      items,
+    }))
+
+    console.log('Categorias finais montadas:', categories.value)
+  } catch (error) {
+    console.error('Erro ao buscar produtos:', error)
   }
+}
+
+
 
   return { categories, fetchProdutos }
 })
