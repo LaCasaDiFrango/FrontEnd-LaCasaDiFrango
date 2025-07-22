@@ -1,37 +1,51 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { usePedidoStore } from '@/stores/index'
 import { BackButton } from '@/components/index'
-import imgFrango from '@/assets/img/chicken-leg.png'
 
-const quantidade = ref(1)
-const precoUnitario = 55
-const total = computed(() => quantidade.value * precoUnitario)
+const router = useRouter()
+const { pedidoAtual, carregarPedidoAtual, finalizarPedido } = usePedidoStore()
 
-const incrementar = () => quantidade.value++
-const decrementar = () => {
-  if (quantidade.value > 1) quantidade.value--
+onMounted(async () => {
+  await carregarPedidoAtual()
+  console.log('Pedidos:', carregarPedidoAtual.pedidos)
+})
+
+const total = computed(() => {
+  if (!pedidoAtual) return 0
+  return pedidoAtual.itens?.reduce((soma, item) => soma + item.total, 0) || 0
+})
+
+async function finalizar() {
+  try {
+    await finalizarPedido(pedidoAtual.id)
+    alert('Pedido finalizado com sucesso!')
+    router.push('/produtos')
+  } catch (err) {
+    alert('Erro ao finalizar pedido.')
+  }
 }
 </script>
 
 <template>
   <div class="pedido-container">
-    <!-- Header -->
     <BackButton />
     <h2>Meu Pedido</h2>
 
-    <!-- Item selecionado -->
-    <div class="item-selecionado">
-      <div class="item-img">
-      <img :src="imgFrango" alt="Frango" class="item-img" />
-      </div>
+    <!-- Lista de itens do pedido -->
+    <div
+      v-for="item in pedidoAtual?.itens"
+      :key="item.produto.id"
+      class="item-selecionado"
+    >
+      <img :src="item.produto.image || '/src/assets/img/chicken-leg.png'" alt="Produto" class="item-img" />
       <div class="item-info">
-        <p class="item-nome">Frango assado sem recheio</p>
-        <p class="preco">R${{ precoUnitario.toFixed(2) }}</p>
+        <p class="item-nome">{{ item.produto.nome }}</p>
+        <p class="preco">R$ {{ Number(item.produto.preco).toFixed(2).replace('.', ',') }}</p>
       </div>
       <div class="quantidade-controles">
-        <button @click="decrementar">-</button>
-        <span>{{ quantidade }}</span>
-        <button @click="incrementar">+</button>
+        <span>Qtd: {{ item.quantidade }}</span>
       </div>
     </div>
 
@@ -39,12 +53,12 @@ const decrementar = () => {
     <div class="footer">
       <div class="total">
         <p>Total</p>
-        <p>R${{ total.toFixed(2) }}</p>
+        <p>R$ {{ Number(total).toFixed(2).replace('.', ',') }}</p>
       </div>
 
       <div class="botoes">
-        <button class="botao-claro">Adicionar Produtos</button>
-        <button class="botao-verde">Finalizar</button>
+        <button class="botao-claro" @click="router.push('/produtos')">Adicionar Produtos</button>
+        <button class="botao-verde" @click="finalizarPedido">Finalizar</button>
       </div>
     </div>
   </div>

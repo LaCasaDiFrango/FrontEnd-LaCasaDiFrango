@@ -2,6 +2,7 @@
 import { useAuthStore } from './usuario/auth'
 
 //pedido
+import { usePedidoStore } from './pedido/pedido'
 
 //produto
 import { useCardapioStore } from './produto/cardapio'
@@ -11,4 +12,5 @@ export {
   useAuthStore,
   useCardapioStore,
   useProdutoStore,
+  usePedidoStore,
 }

@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { produto, pedido } from '@/api/index'
+import {useRouter} from 'vue-router'
 
 export const useProdutoStore = defineStore('produto', () => {
   const produtoSelecionado = ref(null)
@@ -9,6 +10,7 @@ export const useProdutoStore = defineStore('produto', () => {
 
   const produtoService = new produto.default()
   const pedidoService = new pedido.default()
+  const router = useRouter()
 
   async function carregarProduto(id) {
     try {
@@ -40,7 +42,9 @@ export const useProdutoStore = defineStore('produto', () => {
         status: 'CARRINHO',
       })
       console.log('Pedido atualizado:', response)
+      console.log('Quantidade de itens no pedido:', response.itens.length)
       alert('Produto adicionado ao pedido (carrinho)!')
+      router.push('/pedidos')
     } catch (error) {
       console.error('Erro ao criar pedido:', error)
       alert('Erro ao adicionar produto ao pedido.')

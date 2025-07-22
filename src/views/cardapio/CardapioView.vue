@@ -34,7 +34,6 @@ onMounted(() => {
       <span>Procure em nosso cardápio</span>
     </div>
 
-    <CardapioNavbar :categories="cardapioStore.categories" />
 
     <section class="cardapioMain">
       <CardapioCategory
