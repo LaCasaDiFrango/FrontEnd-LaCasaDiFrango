@@ -11,17 +11,18 @@
       alt="Imagem pagamento"
     />
 
-    <button class="add-payment-button">
+    <button class="add-payment-button" :onClick="() => router.push('/home/perfil/pagamento/debitandcredit')">
       <img class="icon" src="../assets/img/plus.png" alt="Adicionar" />
-      <router-link to="/debitandcredit">
       <span class="text">Adicionar formato de pagamento</span>
-      </router-link>
     </button>
   </div>
 </template>
 
 <script setup>
 import {BackButton} from '@/components/index'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 </script>
 
 <style scoped>

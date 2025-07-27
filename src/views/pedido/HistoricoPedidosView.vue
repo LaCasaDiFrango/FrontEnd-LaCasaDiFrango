@@ -23,7 +23,7 @@ const pedidos = [
         <p :class="['status', pedido.status.toLowerCase()]">{{ pedido.status }}</p>
         <p class="data">{{ pedido.data }}</p>
       </div>
-      <span class="seta" :onClick="() => router.push('/detalhes-pedido')"><img src="/src/assets/img/left-chevron.png" alt="Seta"></span>
+      <span class="seta" :onClick="() => router.push('/home/perfil/historico-pedidos/detalhes-pedido')"><img src="/src/assets/img/left-chevron.png" alt="Seta"></span>
     </div>
   </div>
 </template>
