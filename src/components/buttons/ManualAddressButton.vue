@@ -10,7 +10,7 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 function goToForm() {
-  router.push('/form-endereco')
+  router.push('/home/perfil/endereco/form-endereco')
 }
 </script>
 

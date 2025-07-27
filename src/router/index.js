@@ -16,77 +16,74 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      path: '/',
+      name: 'user',
+      component: UserView,
+    },
+    {
+      path: '/signup',
+      name: 'signup',
+      component: SignUpPageView,
+    },
+    {
       path: '/home',
       name: 'home',
       component: HomeView,
       meta: {
         showNavbar: true,
         showHeader: true,
-      }
-      
-    },
-          {
-      path: '/',
-      name: 'user',
-      component: UserView,
+      },
     },
     {
-      path: '/pedidos',
+      path: '/home/pedidos',
       name: 'pedidos',
       component: PedidosView,
-       meta: {
+      meta: {
         showNavbar: false,
         showHeader: false,
-      }
+      },
     },
-        {
-      path: '/produtos',
+    {
+      path: '/home/produtos',
       name: 'produtos',
       component: CardapioView,
-       meta: {
+      meta: {
         showNavbar: false,
         showHeader: false,
-      }
+      },
     },
-
-       {
-      path: '/signup',
-      name: 'signup',
-      component: SignUpPageView,
-    },
-       {
-      path: '/perfil',
+    {
+      path: '/home/perfil',
       name: 'perfil',
       component: PerfilView,
     },
-     {
-      path: '/pagamento',
+    {
+      path: '/home/perfil/pagamento',
       name: 'pagamento',
       component: PagamentoView,
     },
     {
-      path: '/debitandcredit',
+      path: '/home/perfil/pagamento/debitandcredit',
       name: 'debitandcredit',
       component: DebitandCreditView,
     },
-
-       {
-      path: '/endereco',
+    {
+      path: '/home/perfil/endereco',
       name: 'endereco',
-      component: EnderecoView
-    },
-       {
-      path: '/form-endereco',
-      name: 'form-endereco',
-      component: EnderecoFormView
+      component: EnderecoView,
     },
     {
-      path: '/historico-pedidos',
+      path: '/home/perfil/endereco/form-endereco',
+      name: 'form-endereco',
+      component: EnderecoFormView,
+    },
+    {
+      path: '/home/perfil/historico-pedidos',
       name: 'historico-pedidos',
       component: HistoricoPedidosView,
     },
     {
-      path: '/detalhes-pedido/',
+      path: '/home/perfil/historico-pedidos/detalhes-pedido',
       name: 'detalhes-pedido',
       component: DetalhesPedidoView,
       props: true,
