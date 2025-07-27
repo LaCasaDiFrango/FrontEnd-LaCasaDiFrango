@@ -1,5 +1,8 @@
 <script setup>
-import { BackButton } from '@/components/index'
+import { useRouter } from 'vue-router'
+import {BackButton} from '@/components/index'
+
+const router = useRouter()
 const pedidos = [
   { id: 1, codigo: '3frd', status: 'Entregue', data: '13/07/2025' },
   { id: 2, codigo: 'pas6', status: 'Cancelado', data: '13/07/2025' },
@@ -14,13 +17,13 @@ const pedidos = [
     <h2>Histórico</h2>
 
     <div class="pedido" v-for="pedido in pedidos" :key="pedido.id">
-      <img src="@/assets/img/chicken-leg.png" alt="Frango" class="icone" />
+      <img src="@/assets/img/logo.png" alt="Frango" class="icone" />
       <div class="pedido-info">
         <p class="codigo">Pedido <strong>#{{ pedido.codigo }}</strong></p>
         <p :class="['status', pedido.status.toLowerCase()]">{{ pedido.status }}</p>
         <p class="data">{{ pedido.data }}</p>
       </div>
-      <span class="seta"><img src="/src/assets/img/left-chevron.png" alt="Seta"></span>
+      <span class="seta" :onClick="() => router.push('/detalhes-pedido')"><img src="/src/assets/img/left-chevron.png" alt="Seta"></span>
     </div>
   </div>
 </template>
@@ -50,11 +53,11 @@ h2 {
   width: 100%;
 }
 
-.icone {
-  width: 40px;
-  height: 40px;
-  margin-right: 12px;
+.pedido img{
+    width: 80px;
+    height: auto;
 }
+
 
 .pedido-info {
   flex: 1;

@@ -10,6 +10,7 @@ import DebitandCreditView from '@/views/DebitandCreditView.vue'
 import EnderecoView from '@/views/EnderecoView.vue'
 import EnderecoFormView from '@/views/EnderecoFormView.vue'
 import HistoricoPedidosView from '@/views/pedido/HistoricoPedidosView.vue'
+import DetalhesPedidoView from '@/views/pedido/DetalhesPedidoView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -83,6 +84,12 @@ const router = createRouter({
       path: '/historico-pedidos',
       name: 'historico-pedidos',
       component: HistoricoPedidosView,
+    },
+    {
+      path: '/detalhes-pedido/',
+      name: 'detalhes-pedido',
+      component: DetalhesPedidoView,
+      props: true,
     },
   ],
 })
