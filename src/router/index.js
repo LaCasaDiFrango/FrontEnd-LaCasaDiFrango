@@ -9,6 +9,7 @@ import PagamentoView from '@/views/PagamentoView.vue'
 import DebitandCreditView from '@/views/DebitandCreditView.vue'
 import EnderecoView from '@/views/EnderecoView.vue'
 import EnderecoFormView from '@/views/EnderecoFormView.vue'
+import HistoricoPedidosView from '@/views/pedido/HistoricoPedidosView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -78,8 +79,11 @@ const router = createRouter({
       name: 'form-endereco',
       component: EnderecoFormView
     },
-    
-
+    {
+      path: '/historico-pedidos',
+      name: 'historico-pedidos',
+      component: HistoricoPedidosView,
+    },
   ],
 })
 

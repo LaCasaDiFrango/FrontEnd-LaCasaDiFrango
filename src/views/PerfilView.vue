@@ -18,7 +18,7 @@
     <ProfileActionCard
       text="Histórico De Pedidos"
       icon="/src/assets/img/add-to-cart.png"
-      :onClick="() => router.push('/pedidos')"
+      :onClick="() => router.push('/historico-pedidos')"
     />
     <ProfileActionCard
       text="Editar Endereço"
