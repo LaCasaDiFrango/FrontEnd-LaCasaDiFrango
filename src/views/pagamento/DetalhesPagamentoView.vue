@@ -1,46 +1,51 @@
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted, nextTick } from 'vue'
 import { BackButton } from '@/components/index'
 
-
-// Lista com nome + imagem de cada método
 const paymentMethods = [
-  {
-    name: 'PIX',
-    image: new URL('@/assets/img/qrcode.svg', import.meta.url).href
-  },
-  {
-    name: 'CRÉDITO',
-    image: new URL('@/assets/img/cartao-de-credito.png', import.meta.url).href
-  },
-  {
-    name: 'DÉBITO',
-    image: new URL('@/assets/img/cartao-de-credito.png', import.meta.url).href
-  },
+  { name: 'PIX', image: new URL('@/assets/img/qrcode.svg', import.meta.url).href },
+  { name: 'CRÉDITO', image: new URL('@/assets/img/cartao-de-credito.png', import.meta.url).href },
+  { name: 'DÉBITO', image: new URL('@/assets/img/cartao-de-credito.png', import.meta.url).href },
 ]
 
+const selectedIndex = ref(0)
 const selectedMethod = ref(paymentMethods[0])
-const router = useRouter()
-const total = 55.00
 
-const selectMethod = (method) => {
+const botoesContainer = ref(null)
+const barraIndicadora = ref(null)
+
+const selectMethod = (method, index) => {
   selectedMethod.value = method
+  selectedIndex.value = index
+
+  nextTick(updateBarPosition)
 }
 
-const finalizarPedido = () => {
-  alert(`Pedido finalizado com pagamento via ${selectedMethod.value.name}`)
+const updateBarPosition = () => {
+  const botoes = botoesContainer.value?.querySelectorAll('button')
+  const botao = botoes?.[selectedIndex.value]
+
+  if (botao && barraIndicadora.value) {
+    const offsetLeft = botao.offsetLeft
+    const width = botao.offsetWidth
+
+    barraIndicadora.value.style.transform = `translateX(${offsetLeft}px)`
+    barraIndicadora.value.style.width = `${width}px`
+  }
 }
+
+onMounted(() => {
+  nextTick(updateBarPosition)
+})
+
+const total = 55.0
 </script>
-
 
 <template>
   <div class="pagamento-container">
-    <!-- Cabeçalho -->
     <BackButton />
     <h2>Detalhes do pagamento</h2>
 
-    <!-- Endereço de retirada -->
     <div class="retirada-card">
       <img src="@/assets/img/logo.png" class="retirada-icon" alt="logo" />
       <div class="retirada-texto">
@@ -49,50 +54,40 @@ const finalizarPedido = () => {
       </div>
     </div>
 
-    <!-- Título -->
     <h2 class="pagamento-titulo">Formas de pagamento</h2>
 
-    <!-- Métodos de pagamento -->
-<div class="botoes-pagamento">
-  <button
-    v-for="method in paymentMethods"
-    :key="method.name"
-    :class="{ active: selectedMethod.name === method.name }"
-    @click="selectMethod(method)"
-  >
-    <img :src="method.image" :alt="method.name">
-    {{ method.name }}
-  </button>
-</div>
+    <div class="botoes-pagamento" ref="botoesContainer">
+      <button
+        v-for="(method, index) in paymentMethods"
+        :key="method.name"
+        @click="selectMethod(method, index)"
+        :class="{ active: selectedIndex === index }"
+      >
+        <img :src="method.image" :alt="method.name" />
+        {{ method.name }}
+      </button>
+      <div class="barra-indicadora" ref="barraIndicadora"></div>
+    </div>
 
-
-    <!-- Botão pagar na retirada -->
-    <button class="botao-retirada" @click="selectMethod('retirada')">
+    <button class="botao-retirada" @click="selectMethod({ name: 'RETIRADA' }, -1)">
       <img src="@/assets/img/wallet.png" class="icone-retirada" alt="ícone" />
       Pagar na retirada
     </button>
 
-    <!-- Cartões -->
     <div class="cartoes">
-      <div class="cartao-linha">
-        <img src="@/assets/img/cartao-de-credito.png" class="cartao-icon" />
-        <span>VISA****9032</span>
-      </div>
-      <div class="cartao-linha">
+      <div class="cartao-linha" v-for="n in 2" :key="n">
         <img src="@/assets/img/cartao-de-credito.png" class="cartao-icon" />
         <span>VISA****9032</span>
       </div>
     </div>
 
-    <!-- Total e botão -->
     <div class="footer">
       <div class="total">
         <p>Total</p>
         <p>R$ {{ Number(total).toFixed(2).replace('.', ',') }}</p>
       </div>
-
       <div class="botoes">
-        <button class="botao-verde" @click="finalizarPedido">Finalizar</button>
+        <button class="botao-verde">Finalizar</button>
       </div>
     </div>
   </div>
@@ -116,7 +111,7 @@ const finalizarPedido = () => {
   gap: 5px;
   border-radius: 10px;
   padding: 12px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .retirada-icon {
@@ -145,52 +140,41 @@ const finalizarPedido = () => {
   margin-bottom: 12px;
 }
 
-.pagamento-metodos {
+.botoes-pagamento {
   display: flex;
-  overflow-x: auto;
-  margin-bottom: 20px;
-  gap: 12px;
+  position: relative;
+  justify-content: flex-start;
+  gap: 30px;
+  width: 100%;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 8px;
 }
 
-.botoes-pagamento{
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 100%;
-}
-
-.botoes-pagamento button{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 2px;
-    padding: .5rem 1rem;
-    border-radius: 12px;
-    font-size: .7rem;
-}
-
-.metodo-botao {
+.botoes-pagamento button {
+  border: 1.5px solid transparent;
+  padding: 8px 16px;
+  font-weight: bold;
+  cursor: pointer;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 70px;
-  padding: 10px 8px;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 12px;
-  cursor: pointer;
+  min-width: 80px;
+  border-radius: 12px;
+  transition: 0.5s all ease-in-out;
 }
 
-.metodo-botao.ativo {
-  border: 2px solid #1d4523;
+.botoes-pagamento button.active {
+  border-color: #1d4523;
 }
 
-.metodo-icone {
-  width: 28px;
-  height: 28px;
-  margin-bottom: 4px;
+.barra-indicadora {
+  position: absolute;
+  bottom: -2px;
+  height: 3px;
+  background-color: #1d4523;
+  transition: transform 0.3s ease, width 0.3s ease;
+  border-radius: 2px;
 }
 
 .botao-retirada {
@@ -265,7 +249,6 @@ const finalizarPedido = () => {
   width: 100%;
 }
 
-.botao-claro,
 .botao-verde {
   flex: 1;
   padding: 2rem 0;
@@ -273,14 +256,6 @@ const finalizarPedido = () => {
   font-size: 1.1rem;
   cursor: pointer;
   border: none;
-}
-
-.botao-claro {
-  background-color: #f9f9f9;
-  border-top: 2px solid #000;
-}
-
-.botao-verde {
   background-color: #1d4523;
   border-top: 2px solid #1d4523;
   color: white;
