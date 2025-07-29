@@ -5,12 +5,13 @@ import CardapioView from '@/views/cardapio/CardapioView.vue'
 import UserView from '@/views/UserView.vue'
 import SignUpPageView from '@/views/SignUpPageView.vue'
 import PerfilView from '@/views/PerfilView.vue'
-import PagamentoView from '@/views/PagamentoView.vue'
-import DebitandCreditView from '@/views/DebitandCreditView.vue'
+import PagamentoView from '@/views/pagamento/PagamentoView.vue'
+import DebitandCreditView from '@/views/pagamento/DebitandCreditView.vue'
 import EnderecoView from '@/views/EnderecoView.vue'
 import EnderecoFormView from '@/views/EnderecoFormView.vue'
 import HistoricoPedidosView from '@/views/pedido/HistoricoPedidosView.vue'
 import DetalhesPedidoView from '@/views/pedido/DetalhesPedidoView.vue'
+import DetalhesPagamentoView from '@/views/pagamento/DetalhesPagamentoView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -88,6 +89,11 @@ const router = createRouter({
       component: DetalhesPedidoView,
       props: true,
     },
+    {
+      path: '/home/detalhes-pagamento',
+      name: 'detalhes-pagamento',
+      component: DetalhesPagamentoView,
+    }
   ],
 })
 
