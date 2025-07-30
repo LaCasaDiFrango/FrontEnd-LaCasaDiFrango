@@ -22,11 +22,15 @@ import BannerCarousel from "./layout/BannerCarousel.vue";
 import CategoryNav from "./layout/CategoryNav.vue";
 import HeaderComponent from "./layout/HeaderComponent.vue";
 import NavBar from "./layout/NavBar.vue";
+import TitlePages from "./layout/TitlePages.vue";
 
 //cardapio
 import CardapioCategory from "./cardapio/CardapioCategory.vue";
 import CardapioItem from "./cardapio/CardapioItem.vue";
 import CardapioNavbar from "./cardapio/CardapioNavbar.vue";
+
+//search
+import SearchBar from "./search/SearchBar.vue";
 
 export {
   AuthButton,
@@ -49,4 +53,6 @@ export {
   CardapioCategory,
   CardapioItem,
   CardapioNavbar,
+  TitlePages,
+  SearchBar,
 };
