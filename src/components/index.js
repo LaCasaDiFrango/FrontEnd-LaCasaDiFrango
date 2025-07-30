@@ -12,6 +12,7 @@ import HistoriaCard from "./cards/HistoriaCard.vue";
 import LocalizacaoMapa from "./cards/LocalizacaoMapa.vue";
 import PaymentOption from "./cards/PaymentOption.vue";
 import ProfileActionCard from "./cards/ProfileActionCard.vue";
+import RetiradaCard from "./cards/RetiradaCard.vue";
 
 //forms
 import AddressInput from "./forms/AddressInput.vue";
@@ -23,6 +24,7 @@ import CategoryNav from "./layout/CategoryNav.vue";
 import HeaderComponent from "./layout/HeaderComponent.vue";
 import NavBar from "./layout/NavBar.vue";
 import TitlePages from "./layout/TitlePages.vue";
+import FooterFixed from "./layout/FooterFixed.vue";
 
 //cardapio
 import CardapioCategory from "./cardapio/CardapioCategory.vue";
@@ -31,6 +33,9 @@ import CardapioNavbar from "./cardapio/CardapioNavbar.vue";
 
 //search
 import SearchBar from "./search/SearchBar.vue";
+
+//selector
+import FormaPagamentoSelector from "./selector/FormaPagamentoSelector.vue";
 
 export {
   AuthButton,
@@ -55,4 +60,7 @@ export {
   CardapioNavbar,
   TitlePages,
   SearchBar,
+  FormaPagamentoSelector,
+  RetiradaCard,
+  FooterFixed,
 };

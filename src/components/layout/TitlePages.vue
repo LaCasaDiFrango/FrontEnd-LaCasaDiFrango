@@ -1,18 +1,27 @@
 <script setup>
-import { defineProps } from 'vue'
+import { useAttrs } from 'vue'
 import { BackButton } from '@/components/index'
 
-const props = defineProps({
+const attrs = useAttrs()
+defineProps({
   title: {
     type: String,
-    required: true,
+    required: true
   }
 })
 </script>
 
 <template>
-  <BackButton />
-  <h2>{{ title }}</h2>
+  <div class="page-header" v-bind="attrs">
+    <BackButton />
+    <h2>{{ title }}</h2>
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+</style>
