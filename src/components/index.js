@@ -13,6 +13,12 @@ import LocalizacaoMapa from "./cards/LocalizacaoMapa.vue";
 import PaymentOption from "./cards/PaymentOption.vue";
 import ProfileActionCard from "./cards/ProfileActionCard.vue";
 import RetiradaCard from "./cards/RetiradaCard.vue";
+import HelpCard from "./cards/HelpCard.vue";
+import CommentCard from "./cards/CommentCard.vue";
+import StatusPedidoCard from "./cards/StatusPedidoCard.vue";
+import DetalhePedidoItensCard from "./cards/DetalhePedidoItensCard.vue";
+import DetalhePedidoTotalCard from "./cards/DetalhePedidoTotalCard.vue";
+import HistoricoPedidoCard from "./cards/HistoricoPedidoCard.vue";
 
 //forms
 import AddressInput from "./forms/AddressInput.vue";
@@ -63,4 +69,10 @@ export {
   FormaPagamentoSelector,
   RetiradaCard,
   FooterFixed,
+  HelpCard,
+  CommentCard,
+  StatusPedidoCard,
+  DetalhePedidoItensCard,
+  DetalhePedidoTotalCard,
+  HistoricoPedidoCard,
 };
