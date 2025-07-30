@@ -1,8 +1,6 @@
 <template>
   <div class="pagamento-container">
-    <BackButton />
-
-    <h1 class="title">Formas de pagamento</h1>
+    <TitlePages title="Formas de pagamento"/>
     <p class="subtitle">Você ainda não tem um formato de pagamento salvo.</p>
 
     <img
@@ -19,7 +17,7 @@
 </template>
 
 <script setup>
-import {BackButton} from '@/components/index'
+import {TitlePages} from '@/components/index'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -27,24 +25,19 @@ const router = useRouter()
 
 <style scoped>
 .pagamento-container {
-  padding: 16px;
+  padding: 14px 50px 50px 50px;
   display: flex;
   flex-direction: column;
-  padding-top: 50px;
-  align-items: flex-start;
-}
-
-.title {
-  font-size: 1.4rem;
-  font-weight: 600;
-  margin-top: 12px;
+  align-items: start;
+  gap: 15px;
+  justify-content: center;
 }
 
 .subtitle {
   font-size: 1rem;
   color: #4b4b4b;
-  margin: 30px 0;
   max-width: 90%;
+  letter-spacing: 1.5px;
 }
 
 .payment-image {
