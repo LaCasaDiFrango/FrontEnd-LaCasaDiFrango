@@ -15,7 +15,9 @@ function entrarComoConvidado() {
 <template>
   <div class="login-page">
     <div class="login-card">
-      <AuthButton filled>Fazer Login</AuthButton>
+      <router-link to="/signup">
+        <AuthButton filled>Fazer Login</AuthButton>
+      </router-link>
 
       <router-link to="/signup">
         <div class="spacer" />
@@ -23,9 +25,7 @@ function entrarComoConvidado() {
       </router-link>
 
       <!-- Entrar como convidado -->
-      <div class="guest-link" @click="entrarComoConvidado">
-        Entrar como convidado
-      </div>
+      <div class="guest-link" @click="entrarComoConvidado">Entrar como convidado</div>
 
       <img src="../assets/img/logo.png" alt="Logo" class="logo" />
     </div>
@@ -55,13 +55,13 @@ function entrarComoConvidado() {
 }
 
 .logo {
-  height: 80px; 
-  width: 130px; 
+  height: 80px;
+  width: 130px;
   margin: 1rem auto 0;
   display: block;
 }
 .guest-link {
- text-align: center;
+  text-align: center;
   margin-top: 1rem;
   font-size: 14px;
   color: #214225;
