@@ -5,6 +5,7 @@ import CardapioView from '@/views/cardapio/CardapioView.vue'
 import UserView from '@/views/UserView.vue'
 import SignUpPageView from '@/views/SignUpPageView.vue'
 import PerfilView from '@/views/PerfilView.vue'
+import ProdutoView from '@/views/cardapio/ProdutoView.vue'
 import PagamentoView from '@/views/pagamento/PagamentoView.vue'
 import DebitandCreditView from '@/views/pagamento/DebitandCreditView.vue'
 import EnderecoView from '@/views/endereco/EnderecoView.vue'
@@ -48,10 +49,18 @@ const router = createRouter({
       path: '/home/produtos',
       name: 'produtos',
       component: CardapioView,
-      meta: {
-        showNavbar: false,
-        showHeader: false,
-      },
+    },
+      {
+    path: '/produtos/:id',
+    name: 'ProdutoDetalhe',
+    component: ProdutoView,
+    props: true,
+  },
+
+       {
+      path: '/signup',
+      name: 'signup',
+      component: SignUpPageView,
     },
     {
       path: '/home/perfil',

@@ -22,7 +22,6 @@ onMounted(() => {
       placeholder="Procure em nosso cardápio"
     />
 
-    <CardapioNavbar :categories="cardapioStore.categories" />
 
     <section class="cardapioMain">
       <CardapioCategory

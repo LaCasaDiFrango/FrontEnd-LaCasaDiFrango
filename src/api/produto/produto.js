@@ -2,8 +2,8 @@
 import axios from '@/plugins/axios';
 
 export default class ProdutoService {
-  async getAll() {
-    const response = await axios.get('/produtos/');
+  async getAll(params = {}) {
+    const response = await axios.get('/produtos/', { params });
     return response.data;
   }
 

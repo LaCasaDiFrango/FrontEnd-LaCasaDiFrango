@@ -4,8 +4,10 @@ import axios from '@/plugins/axios';
 export default class PedidoService {
   async getAll() {
     const response = await axios.get('/pedidos/');
-    return response.data;
+    // Retorne o array que está dentro de 'results'
+    return response.data.results;
   }
+
 
   async getById(id) {
     const response = await axios.get(`/pedidos/${id}/`);
@@ -13,8 +15,13 @@ export default class PedidoService {
   }
 
   async create(data) {
-    const response = await axios.post('/pedidos/', data);
-    return response.data;
+    const response = await axios.post('/pedidos/', data)
+    return response.data
+  }
+
+  async finalizar(id) {
+    const response = await axios.post(`/pedidos/${id}/finalizar/`)
+    return response.data
   }
 
   async update(id, data) {

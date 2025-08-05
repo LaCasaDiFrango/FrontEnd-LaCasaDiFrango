@@ -1,13 +1,23 @@
 <script setup>
-defineProps({
+import { useRouter } from 'vue-router'
+
+const props = defineProps({
+  id: [Number, String],
   nome: String,
   preco: String,
   image: String,
+  imgAlt: String,
 })
+
+const router = useRouter()
+
+function irParaDetalhe() {
+  router.push(`/produtos/${props.id}`)
+}
 </script>
 
 <template>
-  <div class="cardapioItem">
+  <div class="cardapioItem" @click="irParaDetalhe">
     <img :src="image" :alt="nome" />
     <div class="itemInfo">
       <h4>{{ nome }}</h4>
@@ -23,6 +33,7 @@ defineProps({
   gap: 20px;
   padding-bottom: 20px;
   border-bottom: 2px solid #ccc;
+  cursor: pointer;
 }
 
 .cardapioItem img {

@@ -13,6 +13,7 @@ defineProps({
     <CardapioItem
       v-for="(item, index) in items"
       :key="index"
+      :id="item.id"
       :nome="item.nome"
       :preco="item.preco"
       :image="item.image"
