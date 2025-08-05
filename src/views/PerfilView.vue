@@ -8,22 +8,20 @@
       <img src="/src/assets/img/user.png" alt="Ícone de usuário" class="user-icon" />
     </div>
     <AuthButton :filled="false" class="perfil-auth-button" @click="() => router.push('/user')"> Login / Cadastro </AuthButton>
-    <router-link to="/pagamento">
     <ProfileActionCard
       text="Formas De Pagamento"
       icon="/src/assets/img/wallet.png"
-      :onClick="() => router.push('/pagamento')"
+      :onClick="() => router.push('/home/perfil/pagamento')"
     />
-    </router-link>
     <ProfileActionCard
       text="Histórico De Pedidos"
       icon="/src/assets/img/add-to-cart.png"
-      :onClick="() => router.push('/pedidos')"
+      :onClick="() => router.push('/home/perfil/historico-pedidos')"
     />
     <ProfileActionCard
       text="Editar Endereço"
       icon="/src/assets/img/house.png"
-      :onClick="() => router.push('/endereco')"
+      :onClick="() => router.push('/home/perfil/endereco')"
     />
   </div>
 </template>

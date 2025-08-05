@@ -2,10 +2,7 @@
   <div class="page">
     <!-- Topo -->
     <div class="top-section">
-      <!-- Botão voltar alinhado à esquerda -->
-      <div class="back-button-wrapper">
         <BackButton />
-      </div>
        <ManualAddressButton />
       <!-- Imagem de localização -->
       <div class="image-placeholder">

@@ -8,19 +8,19 @@
         </router-link>
       </li>
       <li>
-        <router-link to="/produtos">
-          <img src="/src/assets/img/roasted-chicken.png" alt="Cardapio" />
-          <span>Cardápio</span>
+        <router-link to="/home/produtos">
+          <img src="/src/assets/img/roasted-chicken.png" alt="Produtos" />
+          <span>Produtos</span>
         </router-link>
       </li>
       <li>
-        <router-link to="/pedidos">
+        <router-link to="/home/pedidos">
           <img src="/src/assets/img/bill.png" alt="Pedido" />
           <span>Pedido</span>
         </router-link>
       </li>
       <li>
-        <router-link to="/perfil">
+        <router-link to="/home/perfil">
           <img src="/src/assets/img/people.png" alt="Perfil" />
           <span>Perfil</span>
         </router-link>
