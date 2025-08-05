@@ -10,7 +10,7 @@ export const usePedidoStore = defineStore('pedido', () => {
 
   async function carregarPedidos() {
     try {
-      pedidos.value = await pedidoService.list()
+      pedidos.value = await pedidoService.getAll()
     } catch (error) {
       console.error('Erro ao carregar pedidos:', error)
     }

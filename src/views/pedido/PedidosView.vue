@@ -34,6 +34,7 @@ async function finalizar() {
     <h2>Meu Pedido</h2>
 
     <!-- Lista de itens do pedido -->
+     <div class="pedidos">
     <div
       v-for="item in pedidoAtual?.itens"
       :key="item.produto.id"
@@ -48,7 +49,7 @@ async function finalizar() {
         <span>Qtd: {{ item.quantidade }}</span>
       </div>
     </div>
-
+</div>
     <!-- Total e botões -->
     <div class="footer">
       <div class="total">
@@ -72,6 +73,15 @@ async function finalizar() {
   align-items: start;
   gap: 15px;
   justify-content: center;
+}
+
+.pedidos {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-height: 80dvh;
+  overflow-y: auto;
 }
 
 .item-selecionado {
