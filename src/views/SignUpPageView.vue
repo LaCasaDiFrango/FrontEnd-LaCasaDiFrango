@@ -1,15 +1,18 @@
 <template>
   <div class="register-page">
     <BackButton />
-  <passage-auth app-id="WEG5lzsWo0bbZlaYwtVYYb6Q"></passage-auth>
+    <passage-auth
+      app-id="WEG5lzsWo0bbZlaYwtVYYb6Q"
+    ></passage-auth>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import {BackButton, InputForm} from '@/components/index'
 import '@passageidentity/passage-elements/passage-auth'
+import { BackButton } from '@/components/index'
+
 </script>
+
 
 
 <style scoped>

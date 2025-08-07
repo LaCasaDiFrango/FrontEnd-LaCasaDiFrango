@@ -12,7 +12,7 @@ const props = defineProps({
 const router = useRouter()
 
 function irParaDetalhe() {
-  router.push(`/produtos/${props.id}`)
+  router.push(`/home/produtos/${props.id}`)
 }
 </script>
 

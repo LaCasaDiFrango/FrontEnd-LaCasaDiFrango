@@ -51,7 +51,7 @@ const router = createRouter({
       component: CardapioView,
     },
       {
-    path: '/produtos/:id',
+    path: '/home/produtos/:id',
     name: 'ProdutoDetalhe',
     component: ProdutoView,
     props: true,
@@ -99,7 +99,7 @@ const router = createRouter({
       props: true,
     },
     {
-      path: '/home/detalhes-pagamento',
+      path: '/home/pedidos/detalhes-pagamento',
       name: 'detalhes-pagamento',
       component: DetalhesPagamentoView,
     }

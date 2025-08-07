@@ -40,10 +40,12 @@ async function finalizar() {
       :key="item.produto.id"
       class="item-selecionado"
     >
-      <img :src="item.produto.image || '/src/assets/img/chicken-leg.png'" alt="Produto" class="item-img" />
       <div class="item-info">
+      <img :src="item.produto.image || '/src/assets/img/chicken-leg.png'" alt="Produto" class="item-img" />
+      <div class="sub-info">
         <p class="item-nome">{{ item.produto.nome }}</p>
         <p class="preco">R$ {{ Number(item.produto.preco).toFixed(2).replace('.', ',') }}</p>
+        </div>
       </div>
       <div class="quantidade-controles">
         <span>Qtd: {{ item.quantidade }}</span>
@@ -58,8 +60,8 @@ async function finalizar() {
       </div>
 
       <div class="botoes">
-        <button class="botao-claro" @click="router.push('/produtos')">Adicionar Produtos</button>
-        <button class="botao-verde" @click="finalizarPedido">Finalizar</button>
+        <button class="botao-claro" @click="router.push('/home/produtos')">Adicionar Produtos</button>
+        <button class="botao-verde" @click="router.push('/home/pedidos/detalhes-pagamento')">Proxima Etapa</button>
       </div>
     </div>
   </div>
@@ -97,14 +99,22 @@ async function finalizar() {
 
 .item-info {
   display: flex;
-  align-items: start;
-  justify-content: space-around;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 }
 
 .item-img {
   width: 48px;
   height: 48px;
+}
+
+.sub-info {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  gap: 0.25rem;
 }
 
 .item-nome {

@@ -1,24 +1,59 @@
-import axios from 'axios';
+import axios from 'axios'
+import { Passage } from '@passageidentity/passage-js'
+import { useAuthStore } from '@/stores/index'
 
-// Configura a baseURL usando a variável de ambiente
-// axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL;
-// console.log('API Base URL:', process.env.VUE_APP_API_BASE_URL);
+const passage = new Passage(import.meta.env.VITE_PASSAGE_APP_ID)
 
-axios.defaults.baseURL = 'http://localhost:19003/api/';
-// axios.defaults.baseURL = 'https://backend-lacasadifrango.onrender.com/api/';
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:19003/api/',
+})
 
-// Adiciona um interceptor para incluir o token de autenticação
-axios.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('psg_auth_token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+api.interceptors.request.use(
+  async (config) => {
+    const authStore = useAuthStore()
+    console.log('[DEBUG] authStore.isGuest:', authStore.isGuest)
+
+    // Tenta pegar o token do localStorage diretamente
+    const localToken = localStorage.getItem('psg_auth_token')
+    if (localToken) {
+      config.headers.Authorization = `Bearer ${localToken}`
+      console.log('[DEBUG] Authorization header setado via localStorage')
+      return config
     }
-    return config;
+
+    // Se não há token salvo, trata o caso guest
+    if (authStore.isGuest) {
+      console.log('[DEBUG] Usuário é guest e sem token, removendo Authorization')
+      delete config.headers.Authorization
+      return config
+    }
+
+    // Caso não seja guest, tenta pegar o token via Passage
+    try {
+      const user = passage.getCurrentUser()
+      console.log('[DEBUG] Passage.getCurrentUser():', user)
+
+      const token = await user?.getAuthToken()
+      console.log('[DEBUG] Token obtido:', token)
+
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+        console.log('[DEBUG] Authorization header setado via Passage')
+      } else {
+        console.log('[DEBUG] Nenhum token encontrado via Passage, removendo Authorization')
+        delete config.headers.Authorization
+      }
+    } catch (error) {
+      console.error('[DEBUG] Erro ao obter token via Passage:', error)
+      delete config.headers.Authorization
+    }
+
+    return config
   },
   (error) => {
-    return Promise.reject(error);
+    console.error('[DEBUG] Erro no interceptor axios:', error)
+    return Promise.reject(error)
   }
-);
+)
 
-export default axios;
+export default api

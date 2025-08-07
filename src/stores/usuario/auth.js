@@ -2,32 +2,45 @@
 
 import { ref, watch, computed } from 'vue';
 import { defineStore } from 'pinia';
-import { auth } from '@/api'
+import { auth } from '@/api/index'
 
-const authService = auth;
+import AuthService from '@/api/usuario/auth';
 
+const authService = new AuthService(); 
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref({});
   const loggedIn = ref(false);
 
   // Login usando token (Passage ID)
-  async function setToken(token) {
-    const data = await authService.postUserToken(token);
+async function setToken(token) {
+  localStorage.setItem('psg_auth_token', token);
+
+  try {
+    const data = await authService.postUserToken();
     user.value = { ...data, perfil: data.perfil };
     loggedIn.value = true;
+    console.log('[DEBUG] setToken - usuário logado:', user.value);
+  } catch (error) {
+    console.error('[ERROR] setToken failed:', error);
+    unsetToken();
+    throw error;  // opcional, para tratamento acima
   }
+}
 
   // Acesso como convidado
-  function setGuest() {
-    user.value = {
-      nome: 'Convidado',
-      email: '',
-      perfil: 'convidado',
-    };
-    loggedIn.value = true;
-    localStorage.setItem('user', JSON.stringify(user.value)); // salva no localStorage
-  }
+function setGuest() {
+  user.value = {
+    nome: 'Convidado',
+    email: '',
+    perfil: 'convidado',
+  };
+  loggedIn.value = true;
+  localStorage.removeItem('psg_auth_token');
+  localStorage.removeItem('user');  // Limpa user no localStorage para evitar confusão
+}
+
+
 
   // Logout
   function unsetToken() {
@@ -37,13 +50,24 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   // Carrega o usuário salvo (usado no main.js)
-  function loadFromStorage() {
-    const data = localStorage.getItem('user');
-    if (data) {
-      user.value = JSON.parse(data);
-      loggedIn.value = true;
+async function loadFromStorage() {
+  const data = localStorage.getItem('user');
+  if (data) {
+    user.value = JSON.parse(data);
+    loggedIn.value = true;
+  }
+
+  const token = localStorage.getItem('psg_auth_token');
+  if (token && user.value.perfil === 'convidado') {
+    try {
+      await setToken(token);
+    } catch (e) {
+      console.log('[DEBUG] Falha ao atualizar usuário com token, mantendo convidado');
     }
   }
+}
+
+
 
   // Getters reativos para facilitar verificação de permissões
   const isGuest = computed(() => user.value.perfil === 'convidado');
@@ -51,11 +75,12 @@ export const useAuthStore = defineStore('auth', () => {
   const isUser = computed(() => user.value.perfil === 'usuario');
 
   // Salva automaticamente o usuário no localStorage (exceto convidado)
-  watch(user, (val) => {
-    if (val && Object.keys(val).length && val.perfil !== 'convidado') {
-      localStorage.setItem('user', JSON.stringify(val));
-    }
-  });
+watch(user, (val) => {
+  if (val && Object.keys(val).length && val.perfil !== 'convidado') {
+    localStorage.setItem('user', JSON.stringify(val));
+  }
+});
+
 
   return {
     user,
