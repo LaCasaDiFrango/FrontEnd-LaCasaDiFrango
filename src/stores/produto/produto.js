@@ -44,7 +44,7 @@ export const useProdutoStore = defineStore('produto', () => {
       console.log('Pedido atualizado:', response)
       console.log('Quantidade de itens no pedido:', response.itens.length)
       alert('Produto adicionado ao pedido (carrinho)!')
-      router.push('/pedidos')
+      router.push('/home/pedidos')
     } catch (error) {
       console.error('Erro ao criar pedido:', error)
       alert('Erro ao adicionar produto ao pedido.')
