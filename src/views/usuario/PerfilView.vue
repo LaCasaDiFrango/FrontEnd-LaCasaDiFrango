@@ -4,40 +4,26 @@
 
     <div class="user-info">
       <div class="user-name">
-        <template v-if="auth.isGuest">
-          Você é um convidado
-        </template>
+        <template v-if="auth.isGuest"> Você é um convidado </template>
         <template v-else>
-          {{ auth.user.nome || 'Usuário sem nome' }}
+          {{ auth.user.name || 'Usuário sem nome' }}
           <div class="user-email">
             {{ auth.user.email || 'Sem email' }}
           </div>
         </template>
       </div>
 
-      <img
-        src="/src/assets/img/user.png"
-        alt="Ícone de usuário"
-        class="user-icon"
-      />
+      <img src="/src/assets/img/user.png" alt="Ícone de usuário" class="user-icon" />
     </div>
 
     <template v-if="auth.isGuest">
-      <AuthButton
-        :filled="false"
-        class="perfil-auth-button"
-        @click="() => router.push('/signup')"
-      >
+      <AuthButton :filled="false" class="perfil-auth-button" @click="() => router.push('/signup')">
         Login / Cadastro
       </AuthButton>
     </template>
 
     <template v-else>
-      <AuthButton
-        :filled="false"
-        class="perfil-auth-button"
-        @click="atualizarUsuario"
-      >
+      <AuthButton :filled="false" class="perfil-auth-button" @click="() => router.push('/home/perfil/editar')">
         Atualizar Usuário
       </AuthButton>
     </template>
@@ -68,11 +54,6 @@ import { useAuthStore } from '@/stores/index'
 
 const router = useRouter()
 const auth = useAuthStore()
-
-function atualizarUsuario() {
-  console.log('Atualizar dados do usuário (objeto puro):', { ...auth.user })
-  console.log('JSON.stringify do usuário:', JSON.stringify(auth.user))
-}
 
 onMounted(() => {
   console.log('[DEBUG] Usuário carregado na tela de perfil:', { ...auth.user })
