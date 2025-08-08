@@ -18,6 +18,7 @@ async function setToken(token) {
 
   try {
     const data = await authService.postUserToken();
+    console.log('[DEBUG setToken retorno API]:', data) // <-- Adicionar isso
     user.value = { ...data, perfil: data.perfil };
     loggedIn.value = true;
     console.log('[DEBUG] setToken - usuário logado:', user.value);
@@ -58,15 +59,16 @@ async function loadFromStorage() {
   }
 
   const token = localStorage.getItem('psg_auth_token');
-  if (token && user.value.perfil === 'convidado') {
+  if (token) {
     try {
-      await setToken(token);
+      await setToken(token); // sempre tenta atualizar
     } catch (e) {
-      console.log('[DEBUG] Falha ao atualizar usuário com token, mantendo convidado');
+      console.log('[DEBUG] Falha ao atualizar usuário com token, limpando token');
+      unsetToken();
+      localStorage.removeItem('psg_auth_token');
     }
   }
 }
-
 
 
   // Getters reativos para facilitar verificação de permissões
