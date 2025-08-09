@@ -27,7 +27,7 @@ const { pedidoAtual } = storeToRefs(pedidoStore)
   <FooterFixed 
     :itens="pedidoAtual?.itens" 
     botaoTexto="Próxima Etapa" 
-    botaoRota="/home/perfil/historico-pedidos/detalhes-pedido/19" 
+    botaoRota="/home/perfil/historico-pedidos/detalhes-pedido/${pedidoAtual?.id || ''}" 
   />
 
   </div>
