@@ -1,5 +1,6 @@
 <script setup>
 import { useRouter } from 'vue-router'
+import { computed } from 'vue'
 
 const props = defineProps({
   pedidos: {
@@ -9,20 +10,38 @@ const props = defineProps({
 })
 
 const router = useRouter()
+
+const statusMap = {
+  1: 'Carrinho',
+  2: 'Realizado',
+  3: 'Pago',
+  4: 'Entregue',
+}
+
+const pedidosFormatados = computed(() =>
+  props.pedidos.map(pedido => ({
+    ...pedido,
+    statusNome: statusMap[pedido.status] || pedido.status
+  }))
+)
 </script>
 
+
 <template>
-  <div class="pedido" v-for="pedido in pedidos" :key="pedido.id">
+  <div class="pedido" v-for="pedido in pedidosFormatados" :key="pedido.id" @click="() => router.push('/home/perfil/historico-pedidos/detalhes-pedido/' + pedido.id)">
     <img src="@/assets/img/logo.png" alt="Frango" class="icone" />
     <div class="pedido-info">
-      <p class="codigo">Pedido <strong>#{{ pedido.codigo }}</strong></p>
-      <p :class="['status', pedido.status.toLowerCase()]">{{ pedido.status }}</p>
-      <p class="data">{{ pedido.data }}</p>
+      <p class="codigo">Pedido <strong>#{{ pedido.id }}</strong></p>
+      <p class="status"         :class="{
+          entregue: pedido.statusNome === 'Entregue',
+          realizado: pedido.statusNome === 'Realizado',
+          pago: pedido.statusNome === 'Pago',
+          carrinho: pedido.statusNome === 'Carrinho',
+        }">{{ pedido.statusNome }}</p>
+      <p class="data">{{ pedido.data || 'Data não disponível' }}</p>
     </div>
     <span
-      class="seta"
-      @click="() => router.push('/home/perfil/historico-pedidos/detalhes-pedido')"
-    >
+      class="seta">
       <img src="/src/assets/img/left-chevron.png" alt="Seta" />
     </span>
   </div>
@@ -59,11 +78,19 @@ const router = useRouter()
 }
 
 .status.entregue {
-  color: green;
+  color: #0a7d00; /* verde escuro */
 }
 
-.status.cancelado {
-  color: #b30000;
+.status.realizado {
+  color: #ff9800; /* laranja */
+}
+
+.status.pago {
+  color: #1565c0; /* azul escuro */
+}
+
+.status.carrinho {
+  color: #616161; /* cinza */
 }
 
 .data {

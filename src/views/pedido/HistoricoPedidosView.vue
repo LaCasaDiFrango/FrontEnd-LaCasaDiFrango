@@ -1,21 +1,21 @@
 <script setup>
-import {TitlePages, HistoricoPedidoCard} from '@/components/index'
+import { onMounted } from 'vue'
+import { usePedidoStore } from '@/stores/index'
+import { TitlePages, HistoricoPedidoCard } from '@/components/index'
 
-const pedidos = [
-  { id: 1, codigo: '3frd', status: 'Entregue', data: '13/07/2025' },
-  { id: 2, codigo: 'pas6', status: 'Cancelado', data: '13/07/2025' },
-  { id: 3, codigo: '54gh', status: 'Entregue', data: '13/07/2025' },
-  { id: 4, codigo: '666f', status: 'Cancelado', data: '13/07/2025' },
-];
+const pedidoStore = usePedidoStore()
+
+onMounted(async () => {
+  await pedidoStore.carregarPedidos()  // busca os pedidos do usuário no backend
+})
 </script>
 
 <template>
   <div class="historico-container">
     <TitlePages title="Histórico de pedidos" class="first-child" />
-
-    <HistoricoPedidoCard :pedidos="pedidos" />
+    <HistoricoPedidoCard :pedidos="pedidoStore.pedidos" />
   </div>
-</template>
+</template>te>
 
 <style scoped>
 .historico-container {
