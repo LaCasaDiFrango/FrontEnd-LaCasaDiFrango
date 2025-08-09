@@ -1,31 +1,46 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { usePedidoStore } from '@/stores/index'
+import { storeToRefs } from 'pinia'
 import { BackButton } from '@/components/index'
 
 const router = useRouter()
-const { pedidoAtual, carregarPedidoAtual, finalizarPedido } = usePedidoStore()
+const pedidoStore = usePedidoStore()
+const { pedidoAtual } = storeToRefs(pedidoStore) // aqui pedidoAtual é um ref reactive oficial
+const carregarPedidoAtual = pedidoStore.carregarPedidoAtual
 
 onMounted(async () => {
+  console.log('🔄 Carregando pedido atual...')
   await carregarPedidoAtual()
-  console.log('Pedidos:', carregarPedidoAtual.pedidos)
+  console.log('📦 pedidoAtual após carregar:', JSON.parse(JSON.stringify(pedidoAtual.value)))
+  
+  if (pedidoAtual.value?.itens) {
+    pedidoAtual.value.itens.forEach((item, idx) => {
+      console.log(`🛒 Item ${idx + 1}:`, {
+        id: item?.produto?.id,
+        nome: item?.produto?.nome,
+        preco: item?.produto?.preco,
+        quantidade: item?.quantidade,
+        total: item?.total
+      })
+    })
+  } else {
+    console.log('⚠️ Nenhum item no pedido.')
+  }
 })
 
 const total = computed(() => {
-  if (!pedidoAtual) return 0
-  return pedidoAtual.itens?.reduce((soma, item) => soma + item.total, 0) || 0
+  if (!pedidoAtual.value) return 0
+  return pedidoAtual.value.itens?.reduce((soma, item) => {
+    const valor = Number(item.total) || Number(item?.produto?.preco) * Number(item?.quantidade) || 0
+    return soma + valor
+  }, 0) || 0
 })
 
-async function finalizar() {
-  try {
-    await finalizarPedido(pedidoAtual.id)
-    alert('Pedido finalizado com sucesso!')
-    router.push('/produtos')
-  } catch (err) {
-    alert('Erro ao finalizar pedido.')
-  }
-}
+// Computed para itens, evita erros no template caso pedidoAtual seja null
+const itensPedidoAtual = computed(() => pedidoAtual.value?.itens || [])
+
 </script>
 
 <template>
@@ -33,26 +48,25 @@ async function finalizar() {
     <BackButton />
     <h2>Meu Pedido</h2>
 
-    <!-- Lista de itens do pedido -->
-     <div class="pedidos">
-    <div
-      v-for="item in pedidoAtual?.itens"
-      :key="item.produto.id"
-      class="item-selecionado"
-    >
-      <div class="item-info">
-      <img :src="item.produto.image || '/src/assets/img/chicken-leg.png'" alt="Produto" class="item-img" />
-      <div class="sub-info">
-        <p class="item-nome">{{ item.produto.nome }}</p>
-        <p class="preco">R$ {{ Number(item.produto.preco).toFixed(2).replace('.', ',') }}</p>
+    <div class="pedidos">
+      <div
+        v-for="item in itensPedidoAtual"
+        :key="item.produto.id"
+        class="item-selecionado"
+      >
+        <div class="item-info">
+          <img :src="item.produto.image || '/src/assets/img/chicken-leg.png'" alt="Produto" class="item-img" />
+          <div class="sub-info">
+            <p class="item-nome">{{ item.produto.nome }}</p>
+            <p class="preco">R$ {{ Number(item.produto.preco).toFixed(2).replace('.', ',') }}</p>
+          </div>
+        </div>
+        <div class="quantidade-controles">
+          <span>Qtd: {{ item.quantidade }}</span>
         </div>
       </div>
-      <div class="quantidade-controles">
-        <span>Qtd: {{ item.quantidade }}</span>
-      </div>
     </div>
-</div>
-    <!-- Total e botões -->
+
     <div class="footer">
       <div class="total">
         <p>Total</p>
@@ -61,7 +75,7 @@ async function finalizar() {
 
       <div class="botoes">
         <button class="botao-claro" @click="router.push('/home/produtos')">Adicionar Produtos</button>
-        <button class="botao-verde" @click="router.push('/home/pedidos/detalhes-pagamento')">Proxima Etapa</button>
+        <button class="botao-verde" @click="router.push('/home/pedidos/detalhes-pagamento')">Próxima Etapa</button>
       </div>
     </div>
   </div>
@@ -138,7 +152,7 @@ async function finalizar() {
 
 .preco {
   font-weight: 600;
-  color: green;
+  color: #1d4523;
   text-align: right;
 }
 
@@ -186,8 +200,8 @@ async function finalizar() {
 }
 
 .botao-verde {
-  background-color: #1e7e34;
-  border-top: 2px solid #1e7e34;
+  background-color: #1d4523;
+  border-top: 2px solid #1d4523;
   color: white;
 }
 </style>
