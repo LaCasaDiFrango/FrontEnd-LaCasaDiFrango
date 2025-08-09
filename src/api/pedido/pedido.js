@@ -25,7 +25,7 @@ export default class PedidoService {
   }
 
   async update(id, data) {
-    const response = await axios.put(`/pedidos/${id}/`, data);
+    const response = await axios.put(`/pedidos/${id}/`, data); 
     return response.data;
   }
 

@@ -24,10 +24,9 @@ export const usePedidoStore = defineStore('pedido', () => {
     }
   }
 
-  // Novo: carregar pedido por id ou codigo
   async function carregarPedidoPorCodigo(codigo) {
     try {
-      const pedidoBuscado = await pedidoService.getById(codigo) // ou getById se tiver
+      const pedidoBuscado = await pedidoService.getById(codigo)
       pedidoAtual.value = pedidoBuscado
       return pedidoBuscado
     } catch (error) {
@@ -37,19 +36,30 @@ export const usePedidoStore = defineStore('pedido', () => {
     }
   }
 
-  // Novo: atualizar status do pedido
-  async function atualizarStatusPedido(id, novoStatus) {
-    try {
-      const atualizado = await pedidoService.atualizarStatus(id, novoStatus)
-      if (pedidoAtual.value && pedidoAtual.value.id === id) {
-        pedidoAtual.value.status = novoStatus
-      }
-      return atualizado
-    } catch (error) {
-      console.error('Erro ao atualizar status do pedido:', error)
-      throw error
+async function atualizarStatusPedido(id, novoStatus) {
+  try {
+    const statusMap = {
+      'Carrinho': 1,
+      'Realizado': 2,
+      'Pago': 3,
+      'Entregue': 4
     }
+    const statusNum = typeof novoStatus === 'string' ? statusMap[novoStatus] : novoStatus
+    const dadosAtualizados = { status: statusNum }
+    console.log('Enviando dados para update:', dadosAtualizados)
+
+    const pedidoAtualizado = await pedidoService.update(id, dadosAtualizados)
+    pedidoAtual.value = pedidoAtualizado
+  } catch (error) {
+    console.error('Erro ao atualizar status do pedido:', error)
+    if (error.response) {
+      console.error('Detalhes do erro:', error.response.data)
+    }
+    throw error
   }
+}
+
+
 
   async function finalizarPedido(id) {
     try {

@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, computed } from 'vue'
 import { usePedidoStore } from '@/stores/index'
+import { useRouter } from 'vue-router'
 import {
   TitlePages,
   HelpCard,
@@ -10,8 +11,7 @@ import {
   DetalhePedidoTotalCard,
 } from '@/components/index'
 
-// Código do pedido - pode vir da rota em uso real
-
+const router = useRouter()
 
 // Pega a store
 const pedidoStore = usePedidoStore()
@@ -25,6 +25,14 @@ async function carregarPedido() {
   }
 }
 
+async function realizarPedido() {
+  try {
+    await pedidoStore.atualizarStatusPedido(pedidoStore.pedidoAtual.id, 'Realizado')
+    router.push('/home/perfil/historico-pedidos')
+  } catch (error) {
+    alert('Erro ao realizar pedido. Tente novamente.')
+  }
+}
 
 onMounted(() => {
   carregarPedido()
@@ -52,6 +60,9 @@ const pedido = computed(() => pedidoStore.pedidoAtual)
 
       <CommentCard />
       <HelpCard />
+      <div class="botoes">
+        <button class="botao-verde" @click="realizarPedido()" >Realizar Pedido</button>
+      </div>
     </template>
   </div>
 </template>
@@ -68,5 +79,29 @@ const pedido = computed(() => pedidoStore.pedidoAtual)
 
 .first-child {
   margin-bottom: 16px;
+}
+
+.botoes {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.botao-verde {
+  flex: 1;
+  padding: 1.5rem;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+}
+.botao-verde {
+  background-color: #1d4523;
+  border-top: 2px solid #1d4523;
+  color: white;
 }
 </style>
