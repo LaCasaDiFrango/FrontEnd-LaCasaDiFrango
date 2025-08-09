@@ -3,11 +3,31 @@
     <BackButton />
 
     <div class="user-info">
-      <div class="user-name">Nome Do Usuário </div>
+      <div class="user-name">
+        <template v-if="auth.isGuest"> Você é um convidado </template>
+        <template v-else>
+          {{ auth.user.name || 'Usuário sem nome' }}
+          <div class="user-email">
+            {{ auth.user.email || 'Sem email' }}
+          </div>
+        </template>
+      </div>
 
       <img src="/src/assets/img/user.png" alt="Ícone de usuário" class="user-icon" />
     </div>
-    <AuthButton :filled="false" class="perfil-auth-button" @click="() => router.push('/user')"> Login / Cadastro </AuthButton>
+
+    <template v-if="auth.isGuest">
+      <AuthButton :filled="false" class="perfil-auth-button" @click="() => router.push('/signup')">
+        Login / Cadastro
+      </AuthButton>
+    </template>
+
+    <template v-else>
+      <AuthButton :filled="false" class="perfil-auth-button" @click="() => router.push('/home/perfil/editar')">
+        Atualizar Usuário
+      </AuthButton>
+    </template>
+
     <ProfileActionCard
       text="Formas De Pagamento"
       icon="/src/assets/img/wallet.png"
@@ -27,10 +47,17 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import {BackButton, ProfileActionCard, AuthButton} from '@/components/index'
+import { BackButton, ProfileActionCard, AuthButton } from '@/components/index'
+import { useAuthStore } from '@/stores/index'
 
 const router = useRouter()
+const auth = useAuthStore()
+
+onMounted(() => {
+  console.log('[DEBUG] Usuário carregado na tela de perfil:', { ...auth.user })
+})
 </script>
 
 <style scoped>
@@ -50,10 +77,17 @@ const router = useRouter()
   font-weight: 500;
 }
 
+.user-email {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: gray;
+}
+
 .user-icon {
   width: 70px;
   height: 70px;
 }
+
 .perfil-auth-button {
   padding: 0.5rem 0 !important;
   font-size: 0.75rem !important;

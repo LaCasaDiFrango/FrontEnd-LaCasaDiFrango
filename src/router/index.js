@@ -2,9 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import PedidosView from '../views/pedido/PedidosView.vue'
 import CardapioView from '@/views/cardapio/CardapioView.vue'
-import UserView from '@/views/UserView.vue'
+import UserView from '@/views/usuario/UserView.vue'
 import SignUpPageView from '@/views/SignUpPageView.vue'
-import PerfilView from '@/views/PerfilView.vue'
+import PerfilView from '@/views/usuario/PerfilView.vue'
 import ProdutoView from '@/views/cardapio/ProdutoView.vue'
 import PagamentoView from '@/views/pagamento/PagamentoView.vue'
 import DebitandCreditView from '@/views/pagamento/DebitandCreditView.vue'
@@ -13,6 +13,7 @@ import EnderecoFormView from '@/views/endereco/EnderecoFormView.vue'
 import HistoricoPedidosView from '@/views/pedido/HistoricoPedidosView.vue'
 import DetalhesPedidoView from '@/views/pedido/DetalhesPedidoView.vue'
 import DetalhesPagamentoView from '@/views/pagamento/DetalhesPagamentoView.vue'
+import AtualizarUsuario from '@/views/usuario/AtualizarUsuario.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -91,6 +92,11 @@ const router = createRouter({
       path: '/home/perfil/historico-pedidos',
       name: 'historico-pedidos',
       component: HistoricoPedidosView,
+    },
+    {
+      path: '/home/perfil/editar',
+      name: 'editar-perfil',
+      component: AtualizarUsuario,
     },
     {
       path: '/home/perfil/historico-pedidos/detalhes-pedido',

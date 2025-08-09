@@ -17,7 +17,7 @@ export default class UserService {
   }
 
   async update(id, data) {
-    const response = await axios.put(`/usuarios/${id}/`, data);
+    const response = await axios.patch(`/usuarios/${id}/`, data);
     return response.data;
   }
 
