@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { produto, pedido } from '@/api/index'
+import { usePedidoStore } from '@/stores/index'
 import {useRouter} from 'vue-router'
 
 export const useProdutoStore = defineStore('produto', () => {
@@ -30,26 +31,29 @@ export const useProdutoStore = defineStore('produto', () => {
     }
   }
 
-  async function criarPedido() {
-    try {
-      const response = await pedidoService.create({
-        itens: [
-          {
-            produto: produtoSelecionado.value.id,
-            quantidade: quantidade.value,
-          },
-        ],
-        status: 'CARRINHO',
-      })
-      console.log('Pedido atualizado:', response)
-      console.log('Quantidade de itens no pedido:', response.itens.length)
-      alert('Produto adicionado ao pedido (carrinho)!')
-      router.push('/home/pedidos')
-    } catch (error) {
-      console.error('Erro ao criar pedido:', error)
-      alert('Erro ao adicionar produto ao pedido.')
-    }
+async function criarPedido() {
+  try {
+    const response = await pedidoService.create({
+      itens: [
+        {
+          produto: produtoSelecionado.value.id,
+          quantidade: quantidade.value,
+        },
+      ],
+      status: 'CARRINHO',
+    })
+
+    // Atualiza o estado global antes de ir para a página de pedidos
+    const pedidoStore = usePedidoStore()
+    pedidoStore.pedidoAtual = response
+
+    alert('Produto adicionado ao pedido (carrinho)!')
+    router.push('/home/pedidos')
+  } catch (error) {
+    console.error('Erro ao criar pedido:', error)
+    alert('Erro ao adicionar produto ao pedido.')
   }
+}
 
   async function finalizarPedido(pedidoId) {
     try {
