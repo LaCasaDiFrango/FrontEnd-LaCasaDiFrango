@@ -2,7 +2,7 @@
 defineProps({
   status: String,
   data: String,
-  codigo: String
+  id: [Number, String]
 })
 </script>
 
@@ -10,10 +10,10 @@ defineProps({
   <div class="status-container">
     <img src="@/assets/img/chicken-leg.png" alt="Frango" class="icone" />
     <div class="status-info">
-      <p :class="['status', status.toLowerCase()]">{{ status }}</p>
+      <p class="status">{{ status }}</p>
       <p class="data">{{ data }}</p>
     </div>
-    <p class="codigo"><strong>Pedido #{{ codigo }}</strong></p>
+    <p class="codigo"><strong>Pedido #{{ id }}</strong></p>
   </div>
 </template>
 

@@ -1,17 +1,50 @@
 <script setup>
-const total = 55.00;
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { toRef } from 'vue'
+
+// Props
+const props = defineProps({
+  itens: {
+    type: Array,
+    default: () => []
+  },
+  botaoTexto: {
+    type: String,
+    default: 'Próxima Etapa'
+  },
+  botaoRota: {
+    type: String,
+    required: true
+  }
+})
+
+const router = useRouter()
+
+const total = computed(() => {
+  return props.itens?.reduce((soma, item) => {
+    const valor = Number(item.total) || Number(item?.produto?.preco) * Number(item?.quantidade) || 0
+    return soma + valor
+  }, 0) || 0
+})
+
+function irParaRota() {
+  router.push(props.botaoRota)
+}
 </script>
+
 <template>
-        <div class="footer">
-      <div class="total">
-        <p>Total</p>
-        <p>R$ {{ Number(total).toFixed(2).replace('.', ',') }}</p>
-      </div>
-      <div class="botoes">
-        <button class="botao-verde">Finalizar</button>
-      </div>
+  <div class="footer">
+    <div class="total">
+      <p>Total</p>
+      <p>R$ {{ total.toFixed(2).replace('.', ',') }}</p>
     </div>
+    <div class="botoes">
+      <button class="botao-verde" @click="irParaRota">{{ botaoTexto }}</button>
+    </div>
+  </div>
 </template>
+
 <style scoped>
 .footer {
   position: fixed;

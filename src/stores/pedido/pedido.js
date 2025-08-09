@@ -1,4 +1,3 @@
-// src/stores/pedido.js
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { pedido } from '@/api/index'
@@ -25,6 +24,33 @@ export const usePedidoStore = defineStore('pedido', () => {
     }
   }
 
+  // Novo: carregar pedido por id ou codigo
+  async function carregarPedidoPorCodigo(codigo) {
+    try {
+      const pedidoBuscado = await pedidoService.getById(codigo) // ou getById se tiver
+      pedidoAtual.value = pedidoBuscado
+      return pedidoBuscado
+    } catch (error) {
+      console.error('Erro ao carregar pedido:', error)
+      pedidoAtual.value = null
+      throw error
+    }
+  }
+
+  // Novo: atualizar status do pedido
+  async function atualizarStatusPedido(id, novoStatus) {
+    try {
+      const atualizado = await pedidoService.atualizarStatus(id, novoStatus)
+      if (pedidoAtual.value && pedidoAtual.value.id === id) {
+        pedidoAtual.value.status = novoStatus
+      }
+      return atualizado
+    } catch (error) {
+      console.error('Erro ao atualizar status do pedido:', error)
+      throw error
+    }
+  }
+
   async function finalizarPedido(id) {
     try {
       await pedidoService.finalizar(id)
@@ -40,6 +66,8 @@ export const usePedidoStore = defineStore('pedido', () => {
     pedidoAtual,
     carregarPedidos,
     carregarPedidoAtual,
+    carregarPedidoPorCodigo,
+    atualizarStatusPedido,
     finalizarPedido,
   }
 })
