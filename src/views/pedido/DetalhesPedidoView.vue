@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, computed } from 'vue'
 import { usePedidoStore } from '@/stores/index'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import {
   TitlePages,
   HelpCard,
@@ -12,22 +12,26 @@ import {
 } from '@/components/index'
 
 const router = useRouter()
-
-// Pega a store
+const route = useRoute()
 const pedidoStore = usePedidoStore()
 
-// Função para carregar o pedido na montagem
+// Pegando o ID do pedido via parâmetro da rota
+const pedidoId = route.params.id
+
 async function carregarPedido() {
   try {
-    await pedidoStore.carregarPedidoPorCodigo(pedidoStore.pedidoAtual.id)
+    // Carrega o pedido usando o ID da URL, não do pedidoAtual
+    await pedidoStore.carregarPedidoPorCodigo(pedidoId)
   } catch (e) {
     console.error('Erro ao carregar pedido:', e)
+    alert('Não foi possível carregar o pedido. Retornando ao histórico.')
+    router.push('/home/perfil/historico-pedidos')
   }
 }
 
 async function realizarPedido() {
   try {
-    await pedidoStore.atualizarStatusPedido(pedidoStore.pedidoAtual.id, 'Realizado')
+    await pedidoStore.atualizarStatusPedido(pedidoId, 'Realizado')
     router.push('/home/perfil/historico-pedidos')
   } catch (error) {
     alert('Erro ao realizar pedido. Tente novamente.')
@@ -38,7 +42,6 @@ onMounted(() => {
   carregarPedido()
 })
 
-// Computed para facilitar acesso
 const pedido = computed(() => pedidoStore.pedidoAtual)
 </script>
 
@@ -51,21 +54,21 @@ const pedido = computed(() => pedidoStore.pedidoAtual)
     </template>
 
     <template v-else>
-      <StatusPedidoCard :status="pedido.status" :data="29122025" :id="pedido.id" />
+      <StatusPedidoCard :status="pedido.statusNome" :data="29122025" :id="pedido.id" />
 
       <DetalhePedidoItensCard :itens="pedido.itens" />
 
       <DetalhePedidoTotalCard :total="pedido.total" />
 
-
       <CommentCard />
       <HelpCard />
       <div class="botoes">
-        <button class="botao-verde" @click="realizarPedido()" >Realizar Pedido</button>
+        <button class="botao-verde" @click="realizarPedido()">Realizar Pedido</button>
       </div>
     </template>
   </div>
 </template>
+
 
 <style scoped>
 .pedido-detalhes {

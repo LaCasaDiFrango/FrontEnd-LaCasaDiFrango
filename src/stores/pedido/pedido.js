@@ -14,14 +14,23 @@ export const usePedidoStore = defineStore('pedido', () => {
     'Entregue': 4
   }
 
-  function normalizarPedido(p) {
-    if (!p) return null
-    return {
-      ...p,
-      status: typeof p.status === 'string' ? statusMap[p.status] || p.status : p.status,
-      finalizado: p.finalizado ?? false
-    }
+  const statusMapInverse = {
+  1: 'Carrinho',
+  2: 'Realizado',
+  3: 'Pago',
+  4: 'Entregue'
+}
+
+function normalizarPedido(p) {
+  if (!p) return null
+  const statusNum = typeof p.status === 'string' ? statusMap[p.status] || p.status : p.status
+  return {
+    ...p,
+    status: statusNum,
+    statusNome: statusMapInverse[statusNum] || statusNum,
+    finalizado: p.finalizado ?? false
   }
+}
 
   async function carregarPedidos() {
     try {

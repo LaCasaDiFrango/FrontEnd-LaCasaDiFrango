@@ -24,28 +24,41 @@ const pedidosFormatados = computed(() =>
     statusNome: statusMap[pedido.status] || pedido.status
   }))
 )
+
+function irParaDetalhes(id) {
+  router.push(`/home/perfil/historico-pedidos/detalhes-pedido/${id}`)
+}
 </script>
 
-
 <template>
-  <div class="pedido" v-for="pedido in pedidosFormatados" :key="pedido.id" @click="() => router.push('/home/perfil/historico-pedidos/detalhes-pedido/' + pedido.id)">
+  <div
+    class="pedido"
+    v-for="pedido in pedidosFormatados"
+    :key="pedido.id"
+    @click="irParaDetalhes(pedido.id)"
+  >
     <img src="@/assets/img/logo.png" alt="Frango" class="icone" />
     <div class="pedido-info">
       <p class="codigo">Pedido <strong>#{{ pedido.id }}</strong></p>
-      <p class="status"         :class="{
+      <p
+        class="status"
+        :class="{
           entregue: pedido.statusNome === 'Entregue',
           realizado: pedido.statusNome === 'Realizado',
           pago: pedido.statusNome === 'Pago',
           carrinho: pedido.statusNome === 'Carrinho',
-        }">{{ pedido.statusNome }}</p>
+        }"
+      >
+        {{ pedido.statusNome }}
+      </p>
       <p class="data">{{ pedido.data || 'Data não disponível' }}</p>
     </div>
-    <span
-      class="seta">
+    <span class="seta">
       <img src="/src/assets/img/left-chevron.png" alt="Seta" />
     </span>
   </div>
 </template>
+
 
 <style scoped>
 .pedido {

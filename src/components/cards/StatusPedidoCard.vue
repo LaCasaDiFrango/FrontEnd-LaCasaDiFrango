@@ -2,7 +2,7 @@
 defineProps({
   status: String,
   data: String,
-  id: [Number, String]
+  id: [Number, String],
 })
 </script>
 
@@ -10,10 +10,22 @@ defineProps({
   <div class="status-container">
     <img src="@/assets/img/chicken-leg.png" alt="Frango" class="icone" />
     <div class="status-info">
-      <p class="status">{{ status }}</p>
+      <p
+        class="status"
+        :class="{
+          entregue: status === 'Entregue',
+          realizado: status === 'Realizado',
+          pago: status === 'Pago',
+          carrinho: status === 'Carrinho',
+        }"
+      >
+        {{ status }}
+      </p>
       <p class="data">{{ data }}</p>
     </div>
-    <p class="codigo"><strong>Pedido #{{ id }}</strong></p>
+    <p class="codigo">
+      <strong>Pedido #{{ id }}</strong>
+    </p>
   </div>
 </template>
 
@@ -41,11 +53,19 @@ defineProps({
 }
 
 .status.entregue {
-  color: green;
+  color: #0a7d00; /* verde escuro */
 }
 
-.status.cancelado {
-  color: #b30000;
+.status.realizado {
+  color: #ff9800; /* laranja */
+}
+
+.status.pago {
+  color: #1565c0; /* azul escuro */
+}
+
+.status.carrinho {
+  color: #616161; /* cinza */
 }
 
 .data {
