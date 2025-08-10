@@ -24,11 +24,12 @@ const { pedidoAtual } = storeToRefs(pedidoStore)
         <span>VISA****9032</span>
       </div>
     </div>
-  <FooterFixed 
-    :itens="pedidoAtual?.itens" 
-    botaoTexto="Próxima Etapa" 
-    botaoRota="/home/perfil/historico-pedidos/detalhes-pedido/${pedidoAtual?.id || ''}" 
-  />
+<FooterFixed 
+  :itens="pedidoAtual?.itens" 
+  botaoTexto="Próxima Etapa" 
+  :botaoRota="`/home/perfil/historico-pedidos/detalhes-pedido/${pedidoAtual?.id || ''}`" 
+/>
+
 
   </div>
 </template>

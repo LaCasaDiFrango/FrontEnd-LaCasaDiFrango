@@ -25,15 +25,15 @@ const pedido = computed(() => pedidoStore.pedidoAtual)
 
 async function carregarPedido() {
   try {
-    const pedidoId = props.id || pedidoStore.pedidoAtual?.id
-    if (!pedidoId) {
-      throw new Error('ID do pedido não fornecido')
+    if (!props.id) {
+      throw new Error('ID do pedido não fornecido via props')
     }
-    await pedidoStore.carregarPedidoPorCodigo(pedidoId)
+    await pedidoStore.carregarPedidoPorCodigo(props.id)
   } catch (e) {
     console.error('Erro ao carregar pedido:', e)
   }
 }
+
 
 async function realizarPedido() {
   if (!pedido.value?.id) {
