@@ -10,7 +10,7 @@ defineProps({
 <template>
   <div class="total">
     <p class="label">Total</p>
-    <p class="valor">R${{ total.toFixed(2).replace('.', ',') }}</p>
+    <p class="valor">R${{ Number(total).toFixed(2).replace('.', ',') }}</p>
   </div>
 </template>
 

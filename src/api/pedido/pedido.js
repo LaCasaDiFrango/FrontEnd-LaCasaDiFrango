@@ -15,9 +15,11 @@ export default class PedidoService {
   }
 
   async create(data) {
+    console.debug('[DEBUG PedidoService.create] Payload enviado para API:', data)
     const response = await axios.post('/pedidos/', data)
     return response.data
   }
+
 
   async finalizar(id) {
     const response = await axios.post(`/pedidos/${id}/finalizar/`)

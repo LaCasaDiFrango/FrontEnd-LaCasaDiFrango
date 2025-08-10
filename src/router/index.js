@@ -99,7 +99,7 @@ const router = createRouter({
       component: AtualizarUsuario,
     },
     {
-      path: '/home/perfil/historico-pedidos/detalhes-pedido',
+      path: '/home/perfil/historico-pedidos/detalhes-pedido/:id',
       name: 'detalhes-pedido',
       component: DetalhesPedidoView,
       props: true,

@@ -1,7 +1,11 @@
 <script setup>
 import { TitlePages, RetiradaCard, FormaPagamentoSelector, FooterFixed } from '@/components/index'
 
-const total = 55.0
+import { usePedidoStore } from '@/stores/index'
+import { storeToRefs } from 'pinia'
+
+const pedidoStore = usePedidoStore()
+const { pedidoAtual } = storeToRefs(pedidoStore)
 </script>
 
 <template>
@@ -20,8 +24,13 @@ const total = 55.0
         <span>VISA****9032</span>
       </div>
     </div>
+<FooterFixed 
+  :itens="pedidoAtual?.itens" 
+  botaoTexto="Próxima Etapa" 
+  :botaoRota="`/home/perfil/historico-pedidos/detalhes-pedido/${pedidoAtual?.id || ''}`" 
+/>
 
-    <FooterFixed />
+
   </div>
 </template>
 

@@ -10,11 +10,17 @@ defineProps({
 <template>
   <div class="pedido-itens">
     <h3>Seu Pedido</h3>
-    <div v-for="item in itens" :key="item.nome" class="item">
+    <div v-for="item in itens" :key="item.id || item.produto?.id || item.nome" class="item">
       <p>
-        <strong>{{ item.quantidade }}</strong> {{ item.nome }}
+        <strong>{{ item.quantidade }}</strong> {{ item.nome || item.produto?.nome || 'Sem nome' }}
       </p>
-      <p class="preco">R${{ item.preco.toFixed(2).replace('.', ',') }}</p>
+      <p class="preco">
+        R$ {{
+          (Number(item.preco ?? item.produto?.preco ?? 0))
+            .toFixed(2)
+            .replace('.', ',')
+        }}
+      </p>
     </div>
   </div>
 </template>
