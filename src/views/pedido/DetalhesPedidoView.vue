@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, computed } from 'vue'
 import { usePedidoStore } from '@/stores/index'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import {
   TitlePages,
   HelpCard,
@@ -12,26 +12,36 @@ import {
 } from '@/components/index'
 
 const router = useRouter()
-const route = useRoute()
 const pedidoStore = usePedidoStore()
 
-// Pegando o ID do pedido via parâmetro da rota
-const pedidoId = route.params.id
+const props = defineProps({
+  id: {
+    type: [String, Number],
+    required: false,
+  }
+})
+
+const pedido = computed(() => pedidoStore.pedidoAtual)
 
 async function carregarPedido() {
   try {
-    // Carrega o pedido usando o ID da URL, não do pedidoAtual
+    const pedidoId = props.id || pedidoStore.pedidoAtual?.id
+    if (!pedidoId) {
+      throw new Error('ID do pedido não fornecido')
+    }
     await pedidoStore.carregarPedidoPorCodigo(pedidoId)
   } catch (e) {
     console.error('Erro ao carregar pedido:', e)
-    alert('Não foi possível carregar o pedido. Retornando ao histórico.')
-    router.push('/home/perfil/historico-pedidos')
   }
 }
 
 async function realizarPedido() {
+  if (!pedido.value?.id) {
+    alert('Pedido não carregado para realizar.')
+    return
+  }
   try {
-    await pedidoStore.atualizarStatusPedido(pedidoId, 'Realizado')
+    await pedidoStore.atualizarStatusPedido(pedido.value.id, 'Realizado')
     router.push('/home/perfil/historico-pedidos')
   } catch (error) {
     alert('Erro ao realizar pedido. Tente novamente.')
@@ -41,9 +51,9 @@ async function realizarPedido() {
 onMounted(() => {
   carregarPedido()
 })
-
-const pedido = computed(() => pedidoStore.pedidoAtual)
 </script>
+
+
 
 <template>
   <div class="pedido-detalhes">
