@@ -33,15 +33,21 @@ export const useProdutoStore = defineStore('produto', () => {
 
 async function criarPedido() {
   try {
-    const response = await pedidoService.create({
+    const dadosParaEnviar = {
       itens: [
         {
-          produto: produtoSelecionado.value.id,
+          produto: produtoSelecionado.value.id, // somente o id como inteiro
           quantidade: quantidade.value,
         },
       ],
-      status: 'CARRINHO',
-    })
+      status: 1,  // status numérico para "Carrinho"
+    }
+
+    console.log('[DEBUG criarPedido] Dados enviados para criação:', JSON.stringify(dadosParaEnviar, null, 2))
+
+    const response = await pedidoService.create(dadosParaEnviar)
+
+    console.log('[DEBUG criarPedido] Resposta da API:', response)
 
     // Atualiza o estado global antes de ir para a página de pedidos
     const pedidoStore = usePedidoStore()
@@ -50,10 +56,16 @@ async function criarPedido() {
     alert('Produto adicionado ao pedido (carrinho)!')
     router.push('/home/pedidos')
   } catch (error) {
-    console.error('Erro ao criar pedido:', error)
+    if (error.response) {
+      console.error('[DEBUG criarPedido] Erro da API:', error.response.data)
+    } else {
+      console.error('[DEBUG criarPedido] Erro inesperado:', error)
+    }
     alert('Erro ao adicionar produto ao pedido.')
   }
 }
+
+
 
   async function finalizarPedido(pedidoId) {
     try {
