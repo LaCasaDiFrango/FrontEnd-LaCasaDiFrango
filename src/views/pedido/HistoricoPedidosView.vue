@@ -1,21 +1,54 @@
 <script setup>
 import { onMounted } from 'vue'
-import { usePedidoStore } from '@/stores/index'
-import { TitlePages, HistoricoPedidoCard } from '@/components/index'
+import { storeToRefs } from 'pinia'
+import { usePedidoStore, useAuthStore } from '@/stores/index'
+import { TitlePages, HistoricoPedidoCard, SemPermission, PedidoSemItens } from '@/components/index'
 
 const pedidoStore = usePedidoStore()
+const authStore = useAuthStore()
+
+const { pedidos } = storeToRefs(pedidoStore)
+const { isGuest, isUser } = storeToRefs(authStore)
 
 onMounted(async () => {
-  await pedidoStore.carregarPedidos()  // busca os pedidos do usuário no backend
+  if (isUser.value) {
+    await pedidoStore.carregarPedidos()
+  }
 })
 </script>
 
 <template>
   <div class="historico-container">
     <TitlePages title="Histórico de pedidos" class="first-child" />
-    <HistoricoPedidoCard :pedidos="pedidoStore.pedidos" />
+
+    <!-- Convidado -->
+    <SemPermission
+      v-if="isGuest"
+      text="Para visualizar seu histórico de pedidos, faça login ou se cadastre!"
+    />
+
+    <!-- Usuário autenticado -->
+    <template v-else-if="isUser">
+      <!-- Se tiver pedidos -->
+      <HistoricoPedidoCard
+        v-if="pedidos.length > 0"
+        :pedidos="pedidos"
+      />
+
+      <!-- Sem pedidos -->
+      <PedidoSemItens
+        v-else
+        text="Você ainda não realizou nenhum pedido."
+      />
+    </template>
+
+    <!-- Outros perfis -->
+    <SemPermission
+      v-else
+      text="Você não tem permissão para acessar esta página."
+    />
   </div>
-</template>te>
+</template>
 
 <style scoped>
 .historico-container {
