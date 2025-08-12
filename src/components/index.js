@@ -44,6 +44,10 @@ import SearchBar from "./search/SearchBar.vue";
 //selector
 import FormaPagamentoSelector from "./selector/FormaPagamentoSelector.vue";
 
+//convidado
+import SemPermission from "./convidado/SemPermission.vue";
+import PedidoSemItens from "./convidado/PedidoSemItens.vue";
+
 export {
   AuthButton,
   BackButton,
@@ -77,4 +81,6 @@ export {
   DetalhePedidoItensCard,
   DetalhePedidoTotalCard,
   HistoricoPedidoCard,
+  SemPermission,
+  PedidoSemItens,
 };
