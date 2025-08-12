@@ -10,7 +10,7 @@
     />
 
     <button class="add-payment-button" :onClick="() => router.push('/home/perfil/pagamento/debitandcredit')">
-      <img class="icon" src="../assets/img/plus.png" alt="Adicionar" />
+      <img class="icon" src="@/assets/img/plus.png" alt="Adicionar" />
       <span class="text">Adicionar formato de pagamento</span>
     </button>
   </div>
