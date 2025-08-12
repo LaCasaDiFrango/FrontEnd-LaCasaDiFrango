@@ -45,7 +45,6 @@ import SearchBar from "./search/SearchBar.vue";
 import FormaPagamentoSelector from "./selector/FormaPagamentoSelector.vue";
 
 //convidado
-import PedidosConvidado from "./convidado/PedidosConvidado.vue";
 import SemPermission from "./convidado/SemPermission.vue";
 import PedidoSemItens from "./convidado/PedidoSemItens.vue";
 
@@ -82,7 +81,6 @@ export {
   DetalhePedidoItensCard,
   DetalhePedidoTotalCard,
   HistoricoPedidoCard,
-  PedidosConvidado,
   SemPermission,
   PedidoSemItens,
 };
