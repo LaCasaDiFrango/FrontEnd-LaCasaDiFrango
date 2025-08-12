@@ -2,7 +2,7 @@
 import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import { BackButton } from '@/components/index'
+import { BackButton, PedidosConvidado, SemPermission, TitlePages , PedidoSemItens} from '@/components/index'
 import { usePedidoStore, useAuthStore } from '@/stores/index'
 
 // Router
@@ -59,13 +59,10 @@ const itensPedidoAtual = computed(() => pedidoAtual.value?.itens || [])
 
 <template>
   <div class="pedido-container">
-    <BackButton />
-    <h2>Meu Pedido</h2>
+  <TitlePages title="Meu Pedido" />
 
     <!-- Convidado -->
-    <div v-if="isGuest">
-      <p>Você está como convidado. Faça login para salvar e prosseguir com seu pedido.</p>
-    </div>
+<PedidosConvidado v-if="isGuest" />
 
     <!-- Usuário autenticado -->
     <template v-else-if="isUser">
@@ -90,9 +87,7 @@ const itensPedidoAtual = computed(() => pedidoAtual.value?.itens || [])
       </div>
 
       <!-- Pedido vazio -->
-      <div v-else>
-        <p>Seu pedido está vazio. Adicione produtos para continuar.</p>
-      </div>
+<PedidoSemItens v-else />
 
       <!-- Footer -->
       <div class="footer">
@@ -109,9 +104,7 @@ const itensPedidoAtual = computed(() => pedidoAtual.value?.itens || [])
     </template>
 
     <!-- Outros perfis (ex.: admin) -->
-    <div v-else>
-      <p>Você não tem permissão para acessar esta página.</p>
-    </div>
+<SemPermission v-else />
   </div>
 </template>
 
