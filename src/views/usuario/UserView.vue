@@ -27,7 +27,7 @@ function entrarComoConvidado() {
       <!-- Entrar como convidado -->
       <div class="guest-link" @click="entrarComoConvidado">Entrar como convidado</div>
 
-      <img src="../assets/img/logo.png" alt="Logo" class="logo" />
+      <img src="@/assets/img/logo.png" alt="Logo" class="logo" />
     </div>
   </div>
   <RouterView />
