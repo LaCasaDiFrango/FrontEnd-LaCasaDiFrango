@@ -1,7 +1,6 @@
 <template>
-  <BackButton />
   <div class="payment-container">
-    <h1 class="title">Adicionar formas de Pagamento</h1>
+    <TitlePages title="Adicionar formas de Pagamento" class="first-child"/>
 
     <PaymentOption
       title="Cartão de crédito"
@@ -21,10 +20,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import PaymentOption from '../components/cards/PaymentOption.vue'
-import iconCredito from '@/assets/img/cartao-de-credito.png'
-import iconDebito from '@/assets/img/sem-contato.png'
-import BackButton from '@/components/buttons/BackButton.vue'
+import {PaymentOption, TitlePages} from '@/components/index'
 
 const formAberto = ref(null)
 
@@ -39,17 +35,14 @@ function toggleForm(tipo) {
 
 <style scoped>
 .payment-container {
-  max-width: 540px;
-  margin: 3rem auto;
-  padding: 32px;
-  background: #fff;
+  padding: 14px 50px 50px 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
-.title {
-  font-size: 30px;
-  font-weight: 700;
-  color: #000000;
-  margin-bottom: 28px;
-  text-align: center;
+.payment-container .first-child {
+  margin-bottom: 50px;
 }
+
 </style>

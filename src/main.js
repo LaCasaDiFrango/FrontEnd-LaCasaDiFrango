@@ -4,26 +4,41 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import App from './App.vue';
 import router from './router';
-import axios from 'axios'; 
-import '@passageidentity/passage-elements'
+import axios from 'axios';
+import '@passageidentity/passage-elements';
 
-const app = createApp(App);
+async function bootstrap() {
+  const app = createApp(App);
+  app.config.globalProperties.$axios = axios;
 
-app.config.globalProperties.$axios = axios; // Agora todos os componentes usam this.$axios
+  const pinia = createPinia();
+  app.use(pinia);
+  app.use(router);
 
-const pinia = createPinia();
-app.use(pinia);
-app.use(router);
-app.mount('#app');
+  // 🔑 Importa a store e carrega usuário salvo no localStorage (await para garantir)
+  const { useAuthStore } = await import('@/stores/index');
+  const authStore = useAuthStore();
 
-// Depois que o app estiver montado, tenta carregar usuário do token salvo
-import { useAuthStore } from '@/stores/auth';
+  // Carrega usuário e token do localStorage e tenta atualizar usuário real
+  await authStore.loadFromStorage();
 
-const authStore = useAuthStore();
-const token = localStorage.getItem('psg_auth_token');
-if (token) {
-  authStore.setToken(token).catch(() => {
-    authStore.unsetToken();
-    localStorage.removeItem('psg_auth_token');
+  console.log('[DEBUG main.js] Usuário carregado:', authStore.user);
+  console.log('[DEBUG main.js] isGuest:', authStore.isGuest.value);
+
+  app.mount('#app');
+
+  // ✅ Escuta login do Passage e pega token
+  const passage = document.querySelector('passage-auth');
+
+  passage?.addEventListener('passage-auth-success', async () => {
+    const token = await passage.getAuthToken();
+    if (token) {
+      authStore.setToken(token).catch(() => {
+        authStore.unsetToken();
+        localStorage.removeItem('psg_auth_token');
+      });
+    }
   });
 }
+
+bootstrap();

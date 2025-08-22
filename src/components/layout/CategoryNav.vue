@@ -34,7 +34,7 @@ const categories = [
   {
     label: 'Outros',
     icon: 'src/assets/img/more.png',
-    route: '/produtos', 
+    route: '/home/produtos', 
   },
 ]
 

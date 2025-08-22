@@ -2,10 +2,7 @@
   <div class="page">
     <!-- Topo -->
     <div class="top-section">
-      <!-- Botão voltar alinhado à esquerda -->
-      <div class="back-button-wrapper">
         <BackButton />
-      </div>
        <ManualAddressButton />
       <!-- Imagem de localização -->
       <div class="image-placeholder">
@@ -30,9 +27,7 @@
 </template>
 
 <script setup>
-import BackButton from '@/components/buttons/BackButton.vue'
-import AddressInput from '@/components/forms/AddressInput.vue'
-import ManualAddressButton from '@/components/buttons/ManualAddressButton.vue'
+import {BackButton, AddressInput, ManualAddressButton} from '@/components/index'
 </script>
 
 <style scoped>

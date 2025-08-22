@@ -1,22 +1,38 @@
 <script setup>
-import AuthButton from '@/components/buttons/AuthButton.vue'
+import { AuthButton } from '@/components/index'
+import { useAuthStore } from '@/stores/index'
+import { useRouter } from 'vue-router'
+
+const auth = useAuthStore()
+const router = useRouter()
+
+function entrarComoConvidado() {
+  auth.setGuest()
+  router.push('/home') // ou outra rota pública
+}
 </script>
+
 <template>
   <div class="login-page">
     <div class="login-card">
-      <AuthButton filled>Fazer Login</AuthButton>
+      <router-link to="/signup">
+        <AuthButton filled>Fazer Login</AuthButton>
+      </router-link>
+
       <router-link to="/signup">
         <div class="spacer" />
         <AuthButton>Criar Conta</AuthButton>
       </router-link>
 
-      <router-link to="/home" class="guest-link"> Entrar como convidado </router-link>
+      <!-- Entrar como convidado -->
+      <div class="guest-link" @click="entrarComoConvidado">Entrar como convidado</div>
 
       <img src="../assets/img/logo.png" alt="Logo" class="logo" />
     </div>
   </div>
   <RouterView />
 </template>
+
 
 <style scoped>
 .login-page {
@@ -39,13 +55,13 @@ import AuthButton from '@/components/buttons/AuthButton.vue'
 }
 
 .logo {
-  height: 80px; 
-  width: 130px; 
+  height: 80px;
+  width: 130px;
   margin: 1rem auto 0;
   display: block;
 }
 .guest-link {
- 
+  text-align: center;
   margin-top: 1rem;
   font-size: 14px;
   color: #214225;

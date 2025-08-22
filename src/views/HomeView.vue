@@ -1,12 +1,5 @@
 <script setup>
-import CategoryNav from '@/components/layout/CategoryNav.vue';
-import BannerCarousel from '@/components/layout/BannerCarousel.vue';
-import FrangoCard from '@/components/cards/FrangoCard.vue';
-import AlertaHorario from '@/components/cards/AlertaHorario.vue';
-import HistoriaCard from '@/components/cards/HistoriaCard.vue';
-import LocalizacaoMapa from '@/components/cards/LocalizacaoMapa.vue';
-import ContatoRedes from '@/components/cards/ContatoRedes.vue';
-
+import {CategoryNav, BannerCarousel, FrangoCard, AlertaHorario, HistoriaCard, LocalizacaoMapa, ContatoRedes} from '@/components/index';
 
 const frangos = [
   {

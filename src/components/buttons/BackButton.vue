@@ -1,29 +1,7 @@
 <template>
-  <div class="back-wrapper">
-    <button @click="$router.back()">
-      <img src="/src/assets/img/left-chevron.png" alt="">
+<div class="fixed top-[1rem] left-[1rem] z-[1000] flex items-center justify-center">
+    <button @click="$router.back()" class="p-0 m-0 bg-transparent border-none cursor-pointer">
+      <img src="/src/assets/img/left-chevron.png" alt="" class="w-[28px] h-auto" />
     </button>
   </div>
 </template>
-
-<style scoped>
-.back-wrapper {
-  position: fixed;
-  top: 1rem; 
-  left: 1rem; 
-  z-index: 1000; 
-}
-
-button {
-  font-size: 1.25rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-button img {
-  width: 24px;
-  height: 24px;
-}
-
-</style>
