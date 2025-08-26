@@ -1,4 +1,9 @@
 <script setup>
+defineProps({
+  endereco: {
+    type: String,
+  }
+})
 </script>
 
 <template>
@@ -10,7 +15,7 @@
     </router-link>
 
     <div class="address-selector">
-      <span class="address-text">Rua Ascurra, 125</span>
+      <span class="address-text">{{ endereco }}</span>
       <svg xmlns="http://www.w3.org/2000/svg" class="arrow-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
       </svg>

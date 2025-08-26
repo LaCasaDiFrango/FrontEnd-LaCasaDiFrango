@@ -12,7 +12,10 @@ const { pedidoAtual } = storeToRefs(pedidoStore)
   <div class="pagamento-container">
     <TitlePages title="Detalhes do pagamento" />
 
-    <RetiradaCard />
+    <RetiradaCard 
+    title="Ponto de Retirada"
+    endereco="Av. Brasil, 1200 - Centro, Joinville - SC"
+  />
 
     <h2 class="pagamento-titulo">Formas de pagamento</h2>
 

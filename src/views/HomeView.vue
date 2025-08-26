@@ -34,9 +34,15 @@ const frangos = [
       Retirada de Encomendas: <strong>9:00 a 12:30</strong>
     </p>
   </AlertaHorario>
-    <HistoriaCard/>
+    <HistoriaCard
+    title="Nossa História"
+    text="Há mais de 31 anos no comércio, contamos com uma equipe dedicada e muitas lembranças construídas com nossos clientes."
+  />
     <LocalizacaoMapa />
-    <ContatoRedes />
+    <ContatoRedes 
+        :whatsapp="{ href: 'https://wa.me/5547999112233', text: '(47) 99991-12233' }"
+    :instagram="{ href: 'https://instagram.com/minhaempresa', text: '@lacasadifrango' }"
+  />
     
 
    
