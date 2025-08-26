@@ -26,7 +26,14 @@ const frangos = [
       :icon="frango.icon"
     />
   </div>
-    <AlertaHorario />
+   <AlertaHorario title="ATENÇÃO" icon="/src/assets/img/warning-sign.png">
+    <p class="alert-text">
+      Horário de Funcionamento: <strong>Quarta a Domingo</strong>
+    </p>
+    <p class="alert-text">
+      Retirada de Encomendas: <strong>9:00 a 12:30</strong>
+    </p>
+  </AlertaHorario>
     <HistoriaCard/>
     <LocalizacaoMapa />
     <ContatoRedes />
@@ -44,5 +51,10 @@ const frangos = [
 }
 .home-page {
   padding-bottom: 80px; 
+}
+.alert-text {
+  font-size: 14px;
+  color: #333;
+  margin: 0;
 }
 </style>

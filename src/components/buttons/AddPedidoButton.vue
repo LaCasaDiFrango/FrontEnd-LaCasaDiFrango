@@ -1,17 +1,18 @@
 <script setup>
-import { defineEmits } from 'vue'
-
-const emit = defineEmits(['click'])
-
-const onClick = () => {
-  emit('click')
-}
+defineProps({
+  label: {
+    type: String,
+    default: 'Adicionar Pedido'
+  }
+})
 </script>
+
 <template>
-    <div class="add-pedido-button" @click="onClick">
-        <slot>Adicionar Pedido</slot>
-    </div>
+  <div class="add-pedido-button">
+    <slot>{{ label }}</slot>
+  </div>
 </template>
+
 <style scoped>
 .add-pedido-button {
   position: fixed;

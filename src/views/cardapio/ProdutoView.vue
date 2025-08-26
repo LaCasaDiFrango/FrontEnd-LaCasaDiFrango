@@ -51,7 +51,7 @@ watch(
   </div>
 </div>
 
-<AddPedidoButton @click="produtoStore.criarPedido" />
+<AddPedidoButton label="Adicionar Pedido" @click="produtoStore.criarPedido" />
 </template>
 
 <style scoped>

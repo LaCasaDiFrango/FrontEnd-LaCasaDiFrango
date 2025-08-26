@@ -70,7 +70,11 @@ onMounted(() => {
 
       <DetalhePedidoTotalCard :total="pedido.total" />
 
-      <CommentCard />
+      <CommentCard 
+          v-model="comentario"
+    label="Comentário sobre o pedido"
+    placeholder="Digite sua observação..."
+  />
       <HelpCard />
       <div class="botoes">
         <button class="botao-verde" @click="realizarPedido()">Realizar Pedido</button>
