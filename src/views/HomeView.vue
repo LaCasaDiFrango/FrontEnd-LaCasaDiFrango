@@ -34,10 +34,14 @@ const frangos = [
       Retirada de Encomendas: <strong>9:00 a 12:30</strong>
     </p>
   </AlertaHorario>
-    <HistoriaCard
-    title="Nossa História"
-    text="Há mais de 31 anos no comércio, contamos com uma equipe dedicada e muitas lembranças construídas com nossos clientes."
-  />
+   <AlertaHorario title="Nossa História" icon="/src/assets/img/file.png">
+    <p class="alert-text">
+      Conheça nossa história de <strong>31 anos</strong> de
+    </p>
+    <p class="alert-text">
+      comércio, nossa equipe e algumas lembranças.
+    </p>
+  </AlertaHorario>
     <LocalizacaoMapa />
     <ContatoRedes 
         :whatsapp="{ href: 'https://wa.me/5547999112233', text: '(47) 99991-12233' }"

@@ -80,6 +80,11 @@ onMounted(() => {
   transition: 0.5s all ease-in-out;
 }
 
+.botoes-pagamento button img{
+  width: 40px;
+  height: auto;
+}
+
 .botoes-pagamento button.active {
   border-color: #1d4523;
 }

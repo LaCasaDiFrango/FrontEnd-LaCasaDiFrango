@@ -2,7 +2,7 @@
 import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import { BackButton, SemPermission, TitlePages , PedidoSemItens} from '@/components/index'
+import { BackButton, SemPermission, TitlePages, PedidoSemItens } from '@/components/index'
 import { usePedidoStore, useAuthStore } from '@/stores/index'
 
 // Router
@@ -25,7 +25,7 @@ onMounted(async () => {
     console.log('🔄 Carregando pedido atual...')
     await carregarPedidoAtual()
     console.log('📦 pedidoAtual após carregar:', JSON.parse(JSON.stringify(pedidoAtual.value)))
-    
+
     if (pedidoAtual.value?.itens?.length) {
       pedidoAtual.value.itens.forEach((item, idx) => {
         console.log(`🛒 Item ${idx + 1}:`, {
@@ -33,7 +33,7 @@ onMounted(async () => {
           nome: item?.produto?.nome,
           preco: item?.produto?.preco,
           quantidade: item?.quantidade,
-          total: item?.total
+          total: item?.total,
         })
       })
     } else {
@@ -48,7 +48,8 @@ const total = computed(() => {
   if (!pedidoAtual.value) return 0
   return (
     pedidoAtual.value.itens?.reduce((soma, item) => {
-      const valor = Number(item.total) || Number(item?.produto?.preco) * Number(item?.quantidade) || 0
+      const valor =
+        Number(item.total) || Number(item?.produto?.preco) * Number(item?.quantidade) || 0
       return soma + valor
     }, 0) || 0
   )
@@ -59,22 +60,25 @@ const itensPedidoAtual = computed(() => pedidoAtual.value?.itens || [])
 
 <template>
   <div class="pedido-container">
-  <TitlePages title="Meu Pedido" />
+    <TitlePages title="Meu Pedido" />
 
     <!-- Convidado -->
-<SemPermission v-if="isGuest" text="Para adicionar itens no Pedido faça login ou se cadastre!"/>
+    <SemPermission
+      v-if="isGuest"
+      text="Para adicionar itens no Pedido faça login ou se cadastre!"
+    />
 
     <!-- Usuário autenticado -->
     <template v-else-if="isUser">
       <!-- Se tiver itens -->
       <div class="pedidos" v-if="itensPedidoAtual.length > 0">
-        <div
-          v-for="item in itensPedidoAtual"
-          :key="item.produto.id"
-          class="item-selecionado"
-        >
+        <div v-for="item in itensPedidoAtual" :key="item.produto.id" class="item-selecionado">
           <div class="item-info">
-            <img :src="item.produto.image || '/src/assets/img/chicken-leg.png'" alt="Produto" class="item-img" />
+            <img
+              :src="item.produto.image || '/src/assets/img/chicken-leg.png'"
+              alt="Produto"
+              class="item-img"
+            />
             <div class="sub-info">
               <p class="item-nome">{{ item.produto.nome }}</p>
               <p class="preco">R$ {{ Number(item.produto.preco).toFixed(2).replace('.', ',') }}</p>
@@ -87,7 +91,7 @@ const itensPedidoAtual = computed(() => pedidoAtual.value?.itens || [])
       </div>
 
       <!-- Pedido vazio -->
-<PedidoSemItens v-else text="Nenhum produto foi adicionado ao seu pedido."/>
+      <PedidoSemItens v-else text="Nenhum produto foi adicionado ao seu pedido." />
 
       <!-- Footer -->
       <div class="footer">
@@ -95,16 +99,19 @@ const itensPedidoAtual = computed(() => pedidoAtual.value?.itens || [])
           <p>Total</p>
           <p>R$ {{ Number(total).toFixed(2).replace('.', ',') }}</p>
         </div>
-
         <div class="botoes">
-          <button class="botao-claro" @click="router.push('/home/produtos')">Adicionar Produtos</button>
-          <button class="botao-verde" @click="router.push('/home/pedidos/detalhes-pagamento')">Próxima Etapa</button>
+          <button class="botao-claro" @click="router.push('/home/produtos')">
+            Adicionar Produtos
+          </button>
+          <button class="botao-verde" @click="router.push('/home/pedidos/detalhes-pagamento')">
+            Próxima Etapa
+          </button>
         </div>
       </div>
     </template>
 
     <!-- Outros perfis (ex.: admin) -->
-<SemPermission v-else text="'Você não tem permissão para acessar esta página.'"/>
+    <SemPermission v-else text="'Você não tem permissão para acessar esta página.'" />
   </div>
 </template>
 
@@ -183,6 +190,7 @@ const itensPedidoAtual = computed(() => pedidoAtual.value?.itens || [])
   color: #1d4523;
   text-align: right;
 }
+
 
 .footer {
   position: fixed;

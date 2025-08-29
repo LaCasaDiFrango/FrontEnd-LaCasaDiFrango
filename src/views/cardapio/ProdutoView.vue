@@ -104,10 +104,10 @@ watch(
   padding: 10px 20px;
 }
 
-.produto-container .quantidade span {
+.produto-container .quantidade img {
   cursor: pointer;
   width: 30px;
-  height: 30px;
+  height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
