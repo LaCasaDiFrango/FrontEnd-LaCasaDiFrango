@@ -40,6 +40,9 @@ function entrarComoConvidado() {
   background-color: #e5e5e5; /* cinza claro */
   display: flex;
   flex-direction: column;
+  background-image: url('/src/assets/img/bannerimg.png');
+   background-size: cover;
+    background-position: center;
 }
 
 .login-card {

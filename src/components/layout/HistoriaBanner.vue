@@ -8,7 +8,7 @@
 
       <router-link to="/historia" class="historia-link">
         <button class="historia-button">
-          <span>Ver História</span>
+          <span>Conheça-nos</span>
       
         </button>
       </router-link>

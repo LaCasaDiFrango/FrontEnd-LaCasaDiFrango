@@ -33,7 +33,7 @@ defineProps({
 .galeria-carousel {
   width: 100%;
   max-width: 400px;
-  height: 300px;
+  height: 400px;
   margin: 20px auto 0;
   overflow: hidden;
 }
@@ -60,7 +60,7 @@ defineProps({
 
 @media (max-width: 480px) {
   .galeria-carousel {
-    height: 200px;
+    height: 300px;
   }
 }
 </style>

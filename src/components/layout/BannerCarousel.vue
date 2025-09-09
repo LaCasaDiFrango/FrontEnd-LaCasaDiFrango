@@ -12,9 +12,10 @@ import '@splidejs/splide/dist/css/splide.min.css'
 import { Splide, SplideSlide } from '@splidejs/vue-splide'
 
 const banners = [
+  new URL('@/assets/img/bannercostela.png', import.meta.url).href,
   new URL('@/assets/img/bannermaionese.png', import.meta.url).href,
   new URL('@/assets/img/bannerFrango.png', import.meta.url).href,
-  new URL('@/assets/img/bannercostela.png', import.meta.url).href,
+
  
 ]
 

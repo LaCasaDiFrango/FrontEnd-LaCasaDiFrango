@@ -35,6 +35,7 @@ import FooterFixed from "./layout/FooterFixed.vue";
 import HistoriaBanner from "./layout/HistoriaBanner.vue";
 import GaleriaCarousel from "./layout/GaleriaCarousel.vue";
 
+
 //cardapio
 import CardapioCategory from "./cardapio/CardapioCategory.vue";
 import CardapioItem from "./cardapio/CardapioItem.vue";
@@ -87,4 +88,5 @@ export {
   SemPermission,
   PedidoSemItens,
   GaleriaCarousel,
+
 };
