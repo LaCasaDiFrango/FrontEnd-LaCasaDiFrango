@@ -1,7 +1,7 @@
 <template>
   <section class="historia-banner">
     <div class="overlay"></div>
-    <img src="/src/assets/img/GaleriaFrango/frente mais velha.jpg" alt="Nossa História" class="historia-bg" />
+    <img src="@/assets/img/GaleriaFrango/frente mais velha.jpg" alt="Nossa História" class="historia-bg" />
     
     <div class="content">
       <h1 class="titulo"> Nossa História </h1>
