@@ -79,7 +79,7 @@ const temposRecentesImages = [
 
 .section-title h1 {
   font-size: 24px;
-  font-weight: 600;
+  font-weight: 700;
   text-align: center;
   color: #154413; /* cor do site */
   margin: 0;

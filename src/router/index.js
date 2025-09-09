@@ -52,17 +52,11 @@ const router = createRouter({
       name: 'produtos',
       component: CardapioView,
     },
-      {
-    path: '/home/produtos/:id',
-    name: 'ProdutoDetalhe',
-    component: ProdutoView,
-    props: true,
-  },
-
-       {
-      path: '/signup',
-      name: 'signup',
-      component: SignUpPageView,
+    {
+      path: '/home/produtos/:id',
+      name: 'ProdutoDetalhe',
+      component: ProdutoView,
+      props: true,
     },
     {
       path: '/home/perfil',
@@ -110,12 +104,19 @@ const router = createRouter({
       name: 'detalhes-pagamento',
       component: DetalhesPagamentoView,
     },
-       {
+    {
       path: '/historia',
       name: 'historia',
       component: HistoriaView,
     }
   ],
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition 
+    } else {
+      return { top: 0 } 
+    }
+  }
 })
 
 export default router
