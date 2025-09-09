@@ -4,11 +4,11 @@ import {CategoryNav, BannerCarousel, FrangoCard, AlertaHorario, HistoriaCard, Lo
 const frangos = [
   {
     label: 'Recheado R$65,00.',
-    icon: 'src/assets/img/chicken-leg.png',
+    icon: '/src/assets/img/chicken-leg.png',
   },
   {
     label: 'Sem Recheio R$55,00.',
-    icon: 'src/assets/img/chicken-leg.png',
+    icon: '/src/assets/img/chicken-leg.png',
   },
 ]
 </script>
