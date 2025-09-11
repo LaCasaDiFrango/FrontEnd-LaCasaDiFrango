@@ -3,13 +3,17 @@ defineProps({
   total: {
     type: Number,
     required: true
-  }
+  },
+  title: {
+    type: String,
+    default: 'Total do Pedido'
+  },
 })
 </script>
 
 <template>
   <div class="total">
-    <p class="label">Total</p>
+    <p class="label">{{ title }}</p>
     <p class="valor">R${{ Number(total).toFixed(2).replace('.', ',') }}</p>
   </div>
 </template>

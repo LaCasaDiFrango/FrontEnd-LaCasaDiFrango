@@ -26,10 +26,27 @@ const frangos = [
       :icon="frango.icon"
     />
   </div>
-    <AlertaHorario />
-    <HistoriaCard/>
+   <AlertaHorario title="ATENÇÃO" icon="/src/assets/img/warning-sign.png">
+    <p class="alert-text">
+      Horário de Funcionamento: <strong>Quarta a Domingo</strong>
+    </p>
+    <p class="alert-text">
+      Retirada de Encomendas: <strong>9:00 a 12:30</strong>
+    </p>
+  </AlertaHorario>
+   <AlertaHorario title="Nossa História" icon="/src/assets/img/file.png">
+    <p class="alert-text">
+      Conheça nossa história de <strong>31 anos</strong> de
+    </p>
+    <p class="alert-text">
+      comércio, nossa equipe e algumas lembranças.
+    </p>
+  </AlertaHorario>
     <LocalizacaoMapa />
-    <ContatoRedes />
+    <ContatoRedes 
+        :whatsapp="{ href: 'https://wa.me/5547999112233', text: '(47) 99991-12233' }"
+    :instagram="{ href: 'https://instagram.com/minhaempresa', text: '@lacasadifrango' }"
+  />
     
 
    
@@ -44,5 +61,10 @@ const frangos = [
 }
 .home-page {
   padding-bottom: 80px; 
+}
+.alert-text {
+  font-size: 14px;
+  color: #333;
+  margin: 0;
 }
 </style>

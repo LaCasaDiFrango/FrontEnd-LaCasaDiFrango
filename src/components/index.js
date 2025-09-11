@@ -1,7 +1,6 @@
 // buttons
 import AuthButton from "@/components/buttons/AuthButton.vue";
 import BackButton from "@/components/buttons/BackButton.vue";
-import ContinueButton from "./buttons/ContinueButton.vue";
 import ManualAddressButton from "./buttons/ManualAddressButton.vue";
 import AddPedidoButton from "./buttons/AddPedidoButton.vue";
 
@@ -54,7 +53,6 @@ import PedidoSemItens from "./convidado/PedidoSemItens.vue";
 export {
   AuthButton,
   BackButton,
-  ContinueButton,
   ManualAddressButton,
   AlertaHorario,
   ContatoRedes,

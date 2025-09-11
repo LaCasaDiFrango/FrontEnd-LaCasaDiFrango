@@ -1,25 +1,48 @@
+<script setup>
+defineProps({
+  title: {
+    type: String,
+    default: 'CONTATOS'
+  },
+  whatsapp: {
+    type: Object,
+    default: () => ({
+      href: 'https://wa.me/5547999942292',
+      text: '(47) 99994-2292'
+    })
+  },
+  instagram: {
+    type: Object,
+    default: () => ({
+      href: 'https://www.instagram.com/lacasadifrangojoinville',
+      text: '@lacasadifrangojoinville'
+    })
+  }
+})
+</script>
+
 <template>
   <div class="contato-container">
-    <h3 class="contato-titulo">CONTATOS</h3>
+    <h3 class="contato-titulo">{{ title }}</h3>
     <div class="contato-grid">
       <a
-        href="https://wa.me/5547999942292"
+        :href="whatsapp.href"
         target="_blank"
         rel="noopener noreferrer"
         class="contato-item"
       >
         <img src="/src/assets/img/whatsapp.png" alt="WhatsApp" class="contato-icon" />
-        <span>(47) 99994-2292</span>
+        <span>{{ whatsapp.text }}</span>
       </a>
 
       <a
-        href="https://www.instagram.com/lacasadifrangojoinville"
+        :href="instagram.href"
         target="_blank"
         rel="noopener noreferrer"
         class="contato-item"
       >
         <img src="/src/assets/img/instagram.png" alt="Instagram" class="contato-icon" />
-        <span>@lacasadifrangojoinville</span>
+        <span>{{ instagram.text }}</span>
       </a>
     </div>
   </div>

@@ -3,7 +3,7 @@
     <!-- Topo -->
     <div class="top-section">
         <BackButton />
-       <ManualAddressButton />
+       <ManualAddressButton label="+ Adicionar Manualmente" @click="goToForm" />
       <!-- Imagem de localização -->
       <div class="image-placeholder">
         <img src="@/assets/img/delivery.png" alt="Entrega" /> 
@@ -28,6 +28,12 @@
 
 <script setup>
 import {BackButton, AddressInput, ManualAddressButton} from '@/components/index'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+function goToForm() {
+  router.push('/home/perfil/endereco/form-endereco')
+}
 </script>
 
 <style scoped>

@@ -1,8 +1,10 @@
 <script setup>
 import { TitlePages, RetiradaCard, FormaPagamentoSelector, FooterFixed } from '@/components/index'
-
+import { useRouter } from 'vue-router'
 import { usePedidoStore } from '@/stores/index'
 import { storeToRefs } from 'pinia'
+
+const router = useRouter()
 
 const pedidoStore = usePedidoStore()
 const { pedidoAtual } = storeToRefs(pedidoStore)
@@ -12,7 +14,10 @@ const { pedidoAtual } = storeToRefs(pedidoStore)
   <div class="pagamento-container">
     <TitlePages title="Detalhes do pagamento" />
 
-    <RetiradaCard />
+    <RetiradaCard 
+    title="Ponto de Retirada"
+    endereco="Av. Brasil, 1200 - Centro, Joinville - SC"
+  />
 
     <h2 class="pagamento-titulo">Formas de pagamento</h2>
 
@@ -24,11 +29,9 @@ const { pedidoAtual } = storeToRefs(pedidoStore)
         <span>VISA****9032</span>
       </div>
     </div>
-<FooterFixed 
-  :itens="pedidoAtual?.itens" 
-  botaoTexto="Próxima Etapa" 
-  :botaoRota="`/home/perfil/historico-pedidos/detalhes-pedido/${pedidoAtual?.id || ''}`" 
-/>
+<FooterFixed :itens="pedidoAtual?.itens">
+  <button class="botao-verde" @click="router.push(`/home/perfil/historico-pedidos/detalhes-pedido/${pedidoAtual?.id || ''}`)">Próxima Etapa</button>
+</FooterFixed> 
 
 
   </div>
@@ -71,5 +74,16 @@ const { pedidoAtual } = storeToRefs(pedidoStore)
 .cartao-icon {
   width: 24px;
   height: auto;
+}
+.botao-verde {
+  flex: 1;
+  padding: 2rem 0;
+  font-weight: 500;
+  font-size: 1.1rem;
+  cursor: pointer;
+  border: none;
+  background-color: #1d4523;
+  border-top: 2px solid #1d4523;
+  color: white;
 }
 </style>

@@ -1,35 +1,31 @@
+<script setup>
+defineProps({
+  links: {
+    type: Array,
+    default: () => [
+      { to: '/', img: '/src/assets/img/home.png', alt: 'Início', text: 'Início' },
+      { to: '/home/produtos', img: '/src/assets/img/roasted-chicken.png', alt: 'Produtos', text: 'Produtos' },
+      { to: '/home/pedidos', img: '/src/assets/img/bill.png', alt: 'Pedido', text: 'Pedido' },
+      { to: '/home/perfil', img: '/src/assets/img/people.png', alt: 'Perfil', text: 'Perfil' }
+    ]
+  }
+})
+</script>
+
 <template>
   <nav>
     <ul>
-      <li>
-        <router-link to="/">
-          <img src="/src/assets/img/home.png" alt="Início" />
-          <span>Início</span>
-        </router-link>
-      </li>
-      <li>
-        <router-link to="/home/produtos">
-          <img src="/src/assets/img/roasted-chicken.png" alt="Produtos" />
-          <span>Produtos</span>
-        </router-link>
-      </li>
-      <li>
-        <router-link to="/home/pedidos">
-          <img src="/src/assets/img/bill.png" alt="Pedido" />
-          <span>Pedido</span>
-        </router-link>
-      </li>
-      <li>
-        <router-link to="/home/perfil">
-          <img src="/src/assets/img/people.png" alt="Perfil" />
-          <span>Perfil</span>
+      <li v-for="(link, index) in links" :key="index">
+        <router-link :to="link.to">
+          <img :src="link.img" :alt="link.alt" />
+          <span>{{ link.text }}</span>
         </router-link>
       </li>
     </ul>
   </nav>
 </template>
 
-<style>
+<style scoped>
 nav {
   position: fixed;
   bottom: 0;

@@ -66,12 +66,20 @@ onMounted(() => {
     <template v-else>
       <StatusPedidoCard :status="pedido.statusNome" :data="29122025" :id="pedido.id" />
 
-      <DetalhePedidoItensCard :itens="pedido.itens" />
+      <DetalhePedidoItensCard :itens="pedido.itens" title="Itens do Pedido" />
 
-      <DetalhePedidoTotalCard :total="pedido.total" />
+      <DetalhePedidoTotalCard :total="pedido.total" title="Total" />
 
-      <CommentCard />
-      <HelpCard />
+      <CommentCard 
+          v-model="comentario"
+    label="Comentário sobre o pedido"
+    placeholder="Digite sua observação..."
+  />
+      <HelpCard 
+      title="Precisa falar com a gente?"
+    link="https://wa.me/5547999123456"
+    text="Atendimento via WhatsApp"
+  />
       <div class="botoes">
         <button class="botao-verde" @click="realizarPedido()">Realizar Pedido</button>
       </div>

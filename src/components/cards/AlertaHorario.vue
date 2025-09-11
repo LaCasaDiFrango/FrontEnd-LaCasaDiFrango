@@ -1,11 +1,23 @@
 <template>
   <div class="alerta-container">
-    <img src="/src/assets/img/warning-sign.png" alt="Atenção" class="alert-icon" />
-    <p class="alert-title">ATENÇÃO</p>
-    <p class="alert-text">Horário de Funcionamento: <strong>Quarta a Domingo</strong></p>
-    <p class="alert-text">Retirada de Encomendas: <strong>9:00 a 12:30</strong> </p>
+    <img :src="icon" :alt="title" class="alert-icon" />
+    <p class="alert-title">{{ title }}</p>
+    <slot />
   </div>
 </template>
+
+<script setup>
+defineProps({
+  icon: {
+    type: String,
+    default: '/src/assets/img/warning-sign.png'
+  },
+  title: {
+    type: String,
+    default: 'ATENÇÃO'
+  }
+})
+</script>
 
 <style scoped>
 .alerta-container {
@@ -24,11 +36,5 @@
   font-size: 14px;
   margin-bottom: 6px;
   color: #000;
-}
-
-.alert-text {
-  font-size: 14px;
-  color: #333;
-  margin: 0;
 }
 </style>

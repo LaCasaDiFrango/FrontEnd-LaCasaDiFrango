@@ -10,13 +10,13 @@
       <InputForm label="Email" :modelValue="auth.user.email || ''" disabled />
     </form>
 
-    <ContinueButton @click="salvarAlteracoes" />
+    <AddPedidoButton label="Continuar" @click="salvarAlteracoes" />
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import { BackButton, ContinueButton, InputForm } from '@/components/index'
+import { BackButton, AddPedidoButton, InputForm } from '@/components/index'
 import { useAuthStore } from '@/stores/index'
 import { user as UserApi } from '@/api/index'
 import router from '@/router'
@@ -51,7 +51,6 @@ async function salvarAlteracoes() {
 
 <style scoped>
 .form-page {
-  padding: 24px 16px 80px;
   min-height: 100vh;
   box-sizing: border-box;
 }
@@ -59,6 +58,7 @@ async function salvarAlteracoes() {
 .form {
   display: flex;
   flex-direction: column;
+  padding: 24px 16px 80px;
   gap: 16px;
   margin-top: 24px;
   font-weight: 550;
