@@ -31,6 +31,9 @@ import HeaderComponent from "./layout/HeaderComponent.vue";
 import NavBar from "./layout/NavBar.vue";
 import TitlePages from "./layout/TitlePages.vue";
 import FooterFixed from "./layout/FooterFixed.vue";
+import HistoriaBanner from "./layout/HistoriaBanner.vue";
+import GaleriaCarousel from "./layout/GaleriaCarousel.vue";
+
 
 //cardapio
 import CardapioCategory from "./cardapio/CardapioCategory.vue";
@@ -73,6 +76,7 @@ export {
   FormaPagamentoSelector,
   RetiradaCard,
   FooterFixed,
+  HistoriaBanner,
   HelpCard,
   CommentCard,
   StatusPedidoCard,
@@ -81,4 +85,6 @@ export {
   HistoricoPedidoCard,
   SemPermission,
   PedidoSemItens,
+  GaleriaCarousel,
+
 };

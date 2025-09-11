@@ -12,9 +12,11 @@ import '@splidejs/splide/dist/css/splide.min.css'
 import { Splide, SplideSlide } from '@splidejs/vue-splide'
 
 const banners = [
-  'src/assets/img/',
-  'src/assets/img/',
-  'src/assets/img/',
+  new URL('@/assets/img/bannercostela.png', import.meta.url).href,
+  new URL('@/assets/img/bannermaionese.png', import.meta.url).href,
+  new URL('@/assets/img/bannerFrango.png', import.meta.url).href,
+
+ 
 ]
 
 const options = {
@@ -25,21 +27,25 @@ const options = {
   arrows: false,
   pagination: true,
   gap: '1rem',
-  heightRatio: 0.4,
+  
 }
 </script>
 
 <style scoped>
-.banner-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 12px;
-}
-.splide{
-  max-width: 90%;
-  margin: 52px auto 0 auto; 
+.splide {
+  max-width: 98%;        /* ocupa quase toda a largura */
+  margin: 32px auto;      /* centraliza */
   border-radius: 12px;
   overflow: hidden;
+
+}
+
+.banner-image {
+  width: 90%;             /* imagem ocupa 90% da largura */
+  height: auto;           /* mantém proporção */
+  object-fit: contain;    /* mostra a imagem inteira */
+  display: block;
+  margin: 0 auto;
+  border-radius: 12px;
 }
 </style>

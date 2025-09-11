@@ -14,6 +14,7 @@ import HistoricoPedidosView from '@/views/pedido/HistoricoPedidosView.vue'
 import DetalhesPedidoView from '@/views/pedido/DetalhesPedidoView.vue'
 import DetalhesPagamentoView from '@/views/pagamento/DetalhesPagamentoView.vue'
 import AtualizarUsuario from '@/views/usuario/AtualizarUsuario.vue'
+import HistoriaView from '@/views/HistoriaView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -51,17 +52,11 @@ const router = createRouter({
       name: 'produtos',
       component: CardapioView,
     },
-      {
-    path: '/home/produtos/:id',
-    name: 'ProdutoDetalhe',
-    component: ProdutoView,
-    props: true,
-  },
-
-       {
-      path: '/signup',
-      name: 'signup',
-      component: SignUpPageView,
+    {
+      path: '/home/produtos/:id',
+      name: 'ProdutoDetalhe',
+      component: ProdutoView,
+      props: true,
     },
     {
       path: '/home/perfil',
@@ -108,8 +103,20 @@ const router = createRouter({
       path: '/home/pedidos/detalhes-pagamento',
       name: 'detalhes-pagamento',
       component: DetalhesPagamentoView,
+    },
+    {
+      path: '/historia',
+      name: 'historia',
+      component: HistoriaView,
     }
   ],
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition 
+    } else {
+      return { top: 0 } 
+    }
+  }
 })
 
 export default router
