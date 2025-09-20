@@ -1,13 +1,26 @@
-<script setup></script>
+<script setup>
+defineProps({
+  title: {
+    type: String,
+    default: 'Retirar em'
+  },
+  endereco: {
+    type: String,
+    default: 'R. Santa Catarina, 683 - Floresta, Joinville - SC'
+  }
+})
+</script>
+
 <template>
-   <div class="retirada-card">
-      <img src="@/assets/img/logo.png" class="retirada-icon" alt="logo" />
-      <div class="retirada-texto">
-        <span class="retirada-title">Retirar em</span>
-        <span class="retirada-endereco">R. Santa Catarina, 683 - Floresta, Joinville - SC</span>
-      </div>
+  <div class="retirada-card">
+    <img src="@/assets/img/logo.png" class="retirada-icon" alt="logo" />
+    <div class="retirada-texto">
+      <span class="retirada-title">{{ title }}</span>
+      <span class="retirada-endereco">{{ endereco }}</span>
     </div>
+  </div>
 </template>
+
 <style scoped>
 .retirada-card {
   display: flex;

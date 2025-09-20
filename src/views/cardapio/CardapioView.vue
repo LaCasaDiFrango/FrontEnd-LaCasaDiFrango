@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useCardapioStore } from '@/stores'
 import { NavBar, CardapioCategory, CardapioNavbar, TitlePages, SearchBar } from '@/components/index'
 
@@ -10,7 +10,20 @@ onMounted(() => {
   cardapioStore.fetchProdutos()
 })
 
-// Você pode usar searchQuery para filtrar categorias ou itens, por exemplo
+const filteredCategories = computed(() => {
+  if (!cardapioStore.categories) return []
+
+  if (!searchQuery.value) return cardapioStore.categories
+
+  return cardapioStore.categories
+    .map(cat => {
+      const filteredItems = cat.items.filter(item =>
+        item.nome.toLowerCase().includes(searchQuery.value.toLowerCase())
+      )
+      return { ...cat, items: filteredItems }
+    })
+    .filter(cat => cat.items.length > 0)
+})
 </script>
 
 <template>
@@ -22,10 +35,9 @@ onMounted(() => {
       placeholder="Procure em nosso cardápio"
     />
 
-
     <section class="cardapioMain">
       <CardapioCategory
-        v-for="cat in cardapioStore.categories"
+        v-for="cat in filteredCategories"
         :key="cat.categoryName"
         :categoryName="cat.categoryName"
         :items="cat.items"
@@ -35,7 +47,6 @@ onMounted(() => {
     <NavBar />
   </div>
 </template>
-
 
 <style scoped>
 .cardapio-container {

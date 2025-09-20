@@ -61,6 +61,7 @@ const router = useRouter()
 }
 
 .add-payment-button .icon {
-  font-size: 1.1rem;
+  width: 24px;
+  height: auto;
 }
 </style>

@@ -3,13 +3,17 @@ defineProps({
   itens: {
     type: Array,
     required: true
-  }
+  },
+  title: {
+    type: String,
+    default: 'Itens do Pedido'
+  },
 })
 </script>
 
 <template>
   <div class="pedido-itens">
-    <h3>Seu Pedido</h3>
+    <h3>{{ title }}</h3>
     <div v-for="item in itens" :key="item.id || item.produto?.id || item.nome" class="item">
       <p>
         <strong>{{ item.quantidade }}</strong> {{ item.nome || item.produto?.nome || 'Sem nome' }}

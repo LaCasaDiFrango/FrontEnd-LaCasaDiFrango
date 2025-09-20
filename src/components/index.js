@@ -1,7 +1,6 @@
 // buttons
 import AuthButton from "@/components/buttons/AuthButton.vue";
 import BackButton from "@/components/buttons/BackButton.vue";
-import ContinueButton from "./buttons/ContinueButton.vue";
 import ManualAddressButton from "./buttons/ManualAddressButton.vue";
 import AddPedidoButton from "./buttons/AddPedidoButton.vue";
 
@@ -32,6 +31,9 @@ import HeaderComponent from "./layout/HeaderComponent.vue";
 import NavBar from "./layout/NavBar.vue";
 import TitlePages from "./layout/TitlePages.vue";
 import FooterFixed from "./layout/FooterFixed.vue";
+import HistoriaBanner from "./layout/HistoriaBanner.vue";
+import GaleriaCarousel from "./layout/GaleriaCarousel.vue";
+
 
 //cardapio
 import CardapioCategory from "./cardapio/CardapioCategory.vue";
@@ -51,7 +53,6 @@ import PedidoSemItens from "./convidado/PedidoSemItens.vue";
 export {
   AuthButton,
   BackButton,
-  ContinueButton,
   ManualAddressButton,
   AlertaHorario,
   ContatoRedes,
@@ -75,6 +76,7 @@ export {
   FormaPagamentoSelector,
   RetiradaCard,
   FooterFixed,
+  HistoriaBanner,
   HelpCard,
   CommentCard,
   StatusPedidoCard,
@@ -83,4 +85,6 @@ export {
   HistoricoPedidoCard,
   SemPermission,
   PedidoSemItens,
+  GaleriaCarousel,
+
 };

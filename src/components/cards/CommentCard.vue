@@ -1,13 +1,51 @@
 <script setup>
+const props = defineProps({
+  id: {
+    type: String,
+    default: 'comentario'
+  },
+  label: {
+    type: String,
+    default: 'Algum comentário?'
+  },
+  placeholder: {
+    type: String,
+    default: 'Digite aqui...'
+  },
+  modelValue: {
+    type: String,
+    default: ''
+  }
+})
 
+const emit = defineEmits(['update:modelValue', 'iconClick'])
+
+function onInput(event) {
+  emit('update:modelValue', event.target.value)
+}
+
+function onIconClick() {
+  emit('iconClick')
+}
 </script>
+
 <template>
-        <div class="comentario">
-      <label for="comentario">Algum comentário?</label>
-      <textarea id="comentario" rows="3" placeholder="Digite aqui..."></textarea>
-      <button class="icone-chat"><img src="@/assets/img/chat.svg" alt="Chat"></button>
-    </div>
+  <div class="comentario">
+    <label :for="id">{{ label }}</label>
+    <textarea
+      :id="id"
+      rows="3"
+      :placeholder="placeholder"
+      :value="modelValue"
+      @input="onInput"
+    ></textarea>
+
+    <button class="icone-chat" type="button" @click="onIconClick">
+      <img src="@/assets/img/chat.svg" alt="Chat" />
+    </button>
+  </div>
 </template>
+
 <style scoped>
 .comentario {
   margin-bottom: 20px;
@@ -40,13 +78,13 @@ textarea {
   bottom: -5px;
   background: #fff;
   border-radius: 12px;
-    border: 1px solid #ccc;
+  border: 1px solid #ccc;
   padding: 5px;
   cursor: pointer;
 }
 
 .icone-chat img {
-    width: 20px;
-    height: 20px;
+  width: 20px;
+  height: 20px;
 }
 </style>

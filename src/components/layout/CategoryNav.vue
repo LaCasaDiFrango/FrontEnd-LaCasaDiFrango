@@ -21,19 +21,19 @@ const router = useRouter()
 const categories = [
   {
     label: 'Frangos',
-    icon: 'src/assets/img/chicken-leg.png',
+    icon: '/src/assets/img/chicken-leg.png',
   },
   {
     label: 'Bebidas',
-    icon: 'src/assets/img/soda.png',
+    icon: '/src/assets/img/soda.png',
   },
   {
     label: 'Maionese',
-    icon: 'src/assets/img/mashed-potatoes.png',
+    icon: '/src/assets/img/mashed-potatoes.png',
   },
   {
     label: 'Outros',
-    icon: 'src/assets/img/more.png',
+    icon: '/src/assets/img/more.png',
     route: '/home/produtos', 
   },
 ]

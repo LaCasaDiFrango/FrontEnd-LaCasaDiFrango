@@ -4,14 +4,14 @@
 
     <PaymentOption
       title="Cartão de crédito"
-      :icon="iconCredito"
+      :icon="iconCartao"
       :isExpanded="formAberto === 'credito'"
       @toggle="toggleForm('credito')"
     />
 
     <PaymentOption
       title="Cartão de débito"
-      :icon="iconDebito"
+      :icon="iconCartao"
       :isExpanded="formAberto === 'debito'"
       @toggle="toggleForm('debito')"
     />
@@ -23,6 +23,8 @@ import { ref } from 'vue'
 import {PaymentOption, TitlePages} from '@/components/index'
 
 const formAberto = ref(null)
+
+import iconCartao from '@/assets/img/cartao-de-credito.png'
 
 function toggleForm(tipo) {
   if (formAberto.value === tipo) {
