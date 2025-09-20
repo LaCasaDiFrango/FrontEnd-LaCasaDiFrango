@@ -16,7 +16,7 @@
     "@splidejs/vue-splide": "^0.6.12",
     "axios": "^1.8.4",
     "pinia": "^3.0.1",
-    "swiper": "^11.2.10",
+    "swiper": "^12.0.2",
     "vue-router": "^4.5.0",
     "vue-scrollactive": "^0.9.3"
   },
