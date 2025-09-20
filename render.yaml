@@ -1,9 +1,10 @@
 services:
-  - type: web
-    name: lacasadifrango
-    env: static
+  - type: static_site
+    name: frontend-lacasadifrango
+    env: node
     buildCommand: npm install && npm run build
-    staticPublishPath: dist
+    publishPath: dist
     routes:
-      - path: /*
-        serve: index.html
+      - type: rewrite
+        source: /* 
+        destination: /index.html
