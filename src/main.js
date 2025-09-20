@@ -15,11 +15,11 @@ async function bootstrap() {
   app.use(pinia);
   app.use(router);
 
-  // 🔑 Importa a store e carrega usuário salvo no localStorage (await para garantir)
+  // 🔑 Importa a store e carrega usuário salvo no localStorage
   const { useAuthStore } = await import('@/stores/index');
   const authStore = useAuthStore();
 
-  // Carrega usuário e token do localStorage e tenta atualizar usuário real
+  // Carrega usuário e token do localStorage
   await authStore.loadFromStorage();
 
   console.log('[DEBUG main.js] Usuário carregado:', authStore.user);
@@ -29,7 +29,6 @@ async function bootstrap() {
 
   // ✅ Escuta login do Passage e pega token
   const passage = document.querySelector('passage-auth');
-
   passage?.addEventListener('passage-auth-success', async () => {
     const token = await passage.getAuthToken();
     if (token) {
@@ -37,6 +36,8 @@ async function bootstrap() {
         authStore.unsetToken();
         localStorage.removeItem('psg_auth_token');
       });
+      // Redireciona para /home após login
+      router.push('/home');
     }
   });
 }
