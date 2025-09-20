@@ -4,6 +4,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
+  base: '/',
   plugins: [
     vue({
       template: {
@@ -20,4 +21,3 @@ export default defineConfig({
     }
   }
 })
-
