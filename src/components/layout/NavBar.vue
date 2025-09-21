@@ -5,7 +5,7 @@ import PedidoIcon from '@/assets/img/bill.png'
 import PerfilIcon from '@/assets/img/people.png'
 
 const links = [
-  { to: '/', img: HomeIcon, alt: 'Início', text: 'Início' },
+  { to: '/home', img: HomeIcon, alt: 'Início', text: 'Início' },
   { to: '/home/produtos', img: ProdutosIcon, alt: 'Produtos', text: 'Produtos' },
   { to: '/home/pedidos', img: PedidoIcon, alt: 'Pedido', text: 'Pedido' },
   { to: '/home/perfil', img: PerfilIcon, alt: 'Perfil', text: 'Perfil' }

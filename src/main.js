@@ -7,6 +7,10 @@ import router from './router';
 import axios from 'axios';
 import '@passageidentity/passage-elements';
 
+import Toast, { POSITION } from "vue-toastification";
+import "vue-toastification/dist/index.css";
+
+
 async function bootstrap() {
   const app = createApp(App);
   app.config.globalProperties.$axios = axios;
@@ -25,6 +29,19 @@ async function bootstrap() {
   console.log('[DEBUG main.js] Usuário carregado:', authStore.user);
   console.log('[DEBUG main.js] isGuest:', authStore.isGuest.value);
 
+  // Configuração global do Toast
+app.use(Toast, {
+  transition: "Vue-Toastification__bounce",
+  maxToasts: 20,
+  newestOnTop: true,
+  position: POSITION.TOP_RIGHT,
+  closeOnClick: true,
+  pauseOnFocusLoss: true,
+  pauseOnHover: false,
+  draggable: false,
+  hideProgressBar: true,
+});
+
   app.mount('#app');
 
   // ✅ Escuta login do Passage e pega token
@@ -42,4 +59,7 @@ async function bootstrap() {
   });
 }
 
+
+
 bootstrap();
+
