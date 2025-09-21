@@ -9,10 +9,13 @@ import { usePedidoStore } from './pedido/pedido'
 import { useCardapioStore } from './produto/cardapio'
 import { useProdutoStore } from './produto/produto'
 
+import { useToastStore } from './toast' // import da store do toast
+
 export {
   useAuthStore,
   useCardapioStore,
   useProdutoStore,
+  useToastStore,
   usePedidoStore,
   useUserStore
 }

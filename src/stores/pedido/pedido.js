@@ -1,11 +1,13 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { pedido } from '@/api/index'
+import { useToastStore } from '@/stores/index' // import da store do toast
 
 export const usePedidoStore = defineStore('pedido', () => {
   const pedidos = ref([])
   const pedidoAtual = ref(null)
   const pedidoService = new pedido.default()
+  const toast = useToastStore() // store de toast
 
   const statusMap = {
     'Carrinho': 1,
@@ -15,29 +17,31 @@ export const usePedidoStore = defineStore('pedido', () => {
   }
 
   const statusMapInverse = {
-  1: 'Carrinho',
-  2: 'Realizado',
-  3: 'Pago',
-  4: 'Entregue'
-}
-
-function normalizarPedido(p) {
-  if (!p) return null
-  const statusNum = typeof p.status === 'string' ? statusMap[p.status] || p.status : p.status
-  return {
-    ...p,
-    status: statusNum,
-    statusNome: statusMapInverse[statusNum] || statusNum,
-    finalizado: p.finalizado ?? false
+    1: 'Carrinho',
+    2: 'Realizado',
+    3: 'Pago',
+    4: 'Entregue'
   }
-}
+
+  function normalizarPedido(p) {
+    if (!p) return null
+    const statusNum = typeof p.status === 'string' ? statusMap[p.status] || p.status : p.status
+    return {
+      ...p,
+      status: statusNum,
+      statusNome: statusMapInverse[statusNum] || statusNum,
+      finalizado: p.finalizado ?? false
+    }
+  }
 
   async function carregarPedidos() {
     try {
       const lista = await pedidoService.getAll()
       pedidos.value = lista.map(normalizarPedido)
+      toast.success('Pedidos carregados com sucesso!')
     } catch (error) {
       console.error('Erro ao carregar pedidos:', error)
+      toast.error('Erro ao carregar pedidos.')
     }
   }
 
@@ -47,6 +51,7 @@ function normalizarPedido(p) {
       pedidoAtual.value = todosPedidos.find(p => !p.finalizado && p.status === 1) || null
     } catch (error) {
       console.error('Erro ao carregar pedido atual:', error)
+      toast.error('Erro ao carregar pedido atual.')
     }
   }
 
@@ -58,28 +63,31 @@ function normalizarPedido(p) {
     } catch (error) {
       console.error('Erro ao carregar pedido:', error)
       pedidoAtual.value = null
+      toast.error('Erro ao carregar pedido.')
       throw error
     }
   }
 
-async function criarPedido(dados) {
-  try {
-    console.debug('[DEBUG criarPedido] Dados enviados:', dados)
-    const novoPedido = await pedidoService.create(dados)
-    console.debug('[DEBUG criarPedido] Resposta do servidor:', novoPedido)
-    pedidoAtual.value = novoPedido
-    return novoPedido
-  } catch (error) {
-    console.error('Erro ao criar pedido:', error)
-    if (error.response) {
-      console.error('[DEBUG criarPedido] Erro status:', error.response.status)
-      console.error('[DEBUG criarPedido] Erro data:', error.response.data)
+  async function criarPedido(dados) {
+    try {
+      console.debug('[DEBUG criarPedido] Dados enviados:', dados)
+      const novoPedido = await pedidoService.create(dados)
+      console.debug('[DEBUG criarPedido] Resposta do servidor:', novoPedido)
+      pedidoAtual.value = novoPedido
+      toast.success('Pedido criado com sucesso!')
+      return novoPedido
+    } catch (error) {
+      console.error('Erro ao criar pedido:', error)
+      if (error.response) {
+        console.error('[DEBUG criarPedido] Erro status:', error.response.status)
+        console.error('[DEBUG criarPedido] Erro data:', error.response.data)
+        toast.error('Erro ao criar pedido. Tente novamente.')
+      } else {
+        toast.error('Erro inesperado ao criar pedido.')
+      }
+      throw error
     }
-    throw error
   }
-}
-
-
 
   async function atualizarStatusPedido(id, novoStatus) {
     try {
@@ -91,6 +99,7 @@ async function criarPedido(dados) {
 
       if (pedidoAtualizado.status !== statusMap['Carrinho']) {
         pedidoAtual.value = null
+        toast.success(`Pedido atualizado para ${statusMapInverse[statusNum]}`)
       } else {
         pedidoAtual.value = pedidoAtualizado
       }
@@ -99,6 +108,7 @@ async function criarPedido(dados) {
       if (error.response) {
         console.error('Detalhes do erro:', error.response.data)
       }
+      toast.error('Erro ao atualizar status do pedido.')
       throw error
     }
   }
@@ -107,8 +117,10 @@ async function criarPedido(dados) {
     try {
       await pedidoService.finalizar(id)
       pedidoAtual.value = null
+      toast.success('Pedido finalizado com sucesso!')
     } catch (error) {
       console.error('Erro ao finalizar pedido:', error)
+      toast.error('Erro ao finalizar pedido.')
       throw error
     }
   }
