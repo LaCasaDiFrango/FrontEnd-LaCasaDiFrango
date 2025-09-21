@@ -1,27 +1,17 @@
 <script setup>
-import { CategoryNav, BannerCarousel, FrangoCard, AlertaHorario, HistoriaCard, LocalizacaoMapa, ContatoRedes } from '@/components/index';
-
-const frangos = [
-  {
-    label: 'Recheado R$65,00.',
-    icon: '/src/assets/img/chicken-leg.png',
-  },
-  {
-    label: 'Sem Recheio R$55,00.',
-    icon: '/src/assets/img/chicken-leg.png',
-  },
-]
+import { CategoryNav, BannerCarousel, FrangoCard, AlertaHorario, LocalizacaoMapa, ContatoRedes } from '@/components/index'
+import WarningIcon from '@/assets/img/warning-sign.png'
+import FileIcon from '@/assets/img/file.png'
 </script>
-
 <template>
   <div class="home-page">
-
     <CategoryNav />
     <BannerCarousel />
-    <div class="frango-cards-container">
-      <FrangoCard v-for="(frango, index) in frangos" :key="index" :label="frango.label" :icon="frango.icon" />
-    </div>
-    <AlertaHorario title="ATENÇÃO" icon="/src/assets/img/warning-sign.png">
+
+    <!-- Só chamamos o FrangoCard, que já lida com suas imagens e labels -->
+    <FrangoCard />
+
+    <AlertaHorario title="ATENÇÃO" :icon="WarningIcon">
       <p class="alert-text">
         Horário de Funcionamento: <strong>Quarta a Domingo</strong>
       </p>
@@ -29,7 +19,8 @@ const frangos = [
         Retirada de Encomendas: <strong>9:00 a 12:30</strong>
       </p>
     </AlertaHorario>
-    <AlertaHorario title="Nossa História" icon="/src/assets/img/file.png">
+
+    <AlertaHorario title="Nossa História" :icon="FileIcon">
       <p class="alert-text">
         Conheça nossa história de <strong>31 anos</strong> de
       </p>
@@ -38,29 +29,22 @@ const frangos = [
       </p>
       <router-link to="/historia" class="historia-link">
         <button class="historia-button">
-
           <span>Ver História</span>
-
-
         </button>
       </router-link>
     </AlertaHorario>
+
     <LocalizacaoMapa />
-    <ContatoRedes :whatsapp="{ href: 'https://wa.me/5547999112233', text: '(47) 99991-12233' }"
-      :instagram="{ href: 'https://instagram.com/minhaempresa', text: '@lacasadifrango' }" />
-
-
-
+    <ContatoRedes
+      :whatsapp="{ href: 'https://wa.me/5547999112233', text: '(47) 99991-12233' }"
+      :instagram="{ href: 'https://instagram.com/minhaempresa', text: '@lacasadifrango' }"
+    />
   </div>
 </template>
-<style scoped>
-.frango-cards-container {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  margin: 24px 0;
-}
 
+
+
+<style scoped>
 .home-page {
   padding-bottom: 80px;
 }
@@ -70,6 +54,7 @@ const frangos = [
   color: #333;
   margin: 0;
 }
+
 .historia-button {
   margin-top: 15px;
   position: relative;

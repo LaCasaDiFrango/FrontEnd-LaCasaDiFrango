@@ -12,29 +12,33 @@
   </div>
 </template>
 
-
 <script setup>
 import { useRouter } from 'vue-router'
+
+import ChickenIcon from '@/assets/img/chicken-leg.png'
+import SodaIcon from '@/assets/img/soda.png'
+import MaioneseIcon from '@/assets/img/mashed-potatoes.png'
+import MoreIcon from '@/assets/img/more.png'
 
 const router = useRouter()
 
 const categories = [
   {
     label: 'Frangos',
-    icon: '/src/assets/img/chicken-leg.png',
+    icon: ChickenIcon,
   },
   {
     label: 'Bebidas',
-    icon: '/src/assets/img/soda.png',
+    icon: SodaIcon,
   },
   {
     label: 'Maionese',
-    icon: '/src/assets/img/mashed-potatoes.png',
+    icon: MaioneseIcon,
   },
   {
     label: 'Outros',
-    icon: '/src/assets/img/more.png',
-    route: '/home/produtos', 
+    icon: MoreIcon,
+    route: '/home/produtos',
   },
 ]
 
@@ -45,13 +49,14 @@ function handleClick(item) {
 }
 </script>
 
+
 <style scoped>
 .category-nav {
-display: flex;
-justify-content: center; 
-gap: 16px; 
-margin: 26px 0;
-flex-wrap: wrap;
+  display: flex;
+  justify-content: center; 
+  gap: 16px; 
+  margin: 26px 0;
+  flex-wrap: wrap;
 }
 
 .category-button {
