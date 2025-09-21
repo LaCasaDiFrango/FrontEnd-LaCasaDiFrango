@@ -53,7 +53,7 @@ export const useProdutoStore = defineStore('produto', () => {
       const pedidoStore = usePedidoStore()
       pedidoStore.pedidoAtual = response
 
-      toast.success('Produto adicionado ao pedido (carrinho)!')
+      toast.success(`${produtoSelecionado.value.nome} adicionado ao pedido!`)
       router.push('/home/pedidos')
     } catch (error) {
       if (error.response) {

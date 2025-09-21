@@ -21,7 +21,7 @@ export const useAuthStore = defineStore('auth', () => {
       console.log('[DEBUG setToken retorno API]:', data)
       user.value = { ...data, perfil: data.perfil };
       loggedIn.value = true;
-      toast.success(`Bem-vindo, ${user.value.nome || 'usuário'}!`);
+      toast.success(`Bem-vindo!!`);
       console.log('[DEBUG] setToken - usuário logado:', user.value);
     } catch (error) {
       console.error('[ERROR] setToken failed:', error);
