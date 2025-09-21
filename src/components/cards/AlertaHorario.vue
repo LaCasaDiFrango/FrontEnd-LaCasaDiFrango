@@ -9,8 +9,8 @@
 <script setup>
 defineProps({
   icon: {
-    type: String,
-    default: '/src/assets/img/warning-sign.png'
+    type: [String, Object], // aceita o import da imagem
+    required: true
   },
   title: {
     type: String,

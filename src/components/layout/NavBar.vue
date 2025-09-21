@@ -1,15 +1,15 @@
 <script setup>
-defineProps({
-  links: {
-    type: Array,
-    default: () => [
-      { to: '/', img: '/src/assets/img/home.png', alt: 'Início', text: 'Início' },
-      { to: '/home/produtos', img: '/src/assets/img/roasted-chicken.png', alt: 'Produtos', text: 'Produtos' },
-      { to: '/home/pedidos', img: '/src/assets/img/bill.png', alt: 'Pedido', text: 'Pedido' },
-      { to: '/home/perfil', img: '/src/assets/img/people.png', alt: 'Perfil', text: 'Perfil' }
-    ]
-  }
-})
+import HomeIcon from '@/assets/img/home.png'
+import ProdutosIcon from '@/assets/img/roasted-chicken.png'
+import PedidoIcon from '@/assets/img/bill.png'
+import PerfilIcon from '@/assets/img/people.png'
+
+const links = [
+  { to: '/', img: HomeIcon, alt: 'Início', text: 'Início' },
+  { to: '/home/produtos', img: ProdutosIcon, alt: 'Produtos', text: 'Produtos' },
+  { to: '/home/pedidos', img: PedidoIcon, alt: 'Pedido', text: 'Pedido' },
+  { to: '/home/perfil', img: PerfilIcon, alt: 'Perfil', text: 'Perfil' }
+]
 </script>
 
 <template>

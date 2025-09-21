@@ -13,7 +13,7 @@
         </template>
       </div>
 
-      <img src="/src/assets/img/user.png" alt="Ícone de usuário" class="user-icon" />
+      <img :src="UserIcon" alt="Ícone de usuário" class="user-icon" />
     </div>
 
     <template v-if="auth.isGuest">
@@ -30,17 +30,17 @@
 
     <ProfileActionCard
       text="Formas De Pagamento"
-      icon="/src/assets/img/wallet.png"
+      :icon="WalletIcon"
       :onClick="() => router.push('/home/perfil/pagamento')"
     />
     <ProfileActionCard
       text="Histórico De Pedidos"
-      icon="/src/assets/img/add-to-cart.png"
+      :icon="CartIcon"
       :onClick="() => router.push('/home/perfil/historico-pedidos')"
     />
     <ProfileActionCard
       text="Editar Endereço"
-      icon="/src/assets/img/house.png"
+      :icon="HouseIcon"
       :onClick="() => router.push('/home/perfil/endereco')"
     />
   </div>
@@ -51,6 +51,12 @@ import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { BackButton, ProfileActionCard, AuthButton } from '@/components/index'
 import { useAuthStore } from '@/stores/index'
+
+// Import das imagens
+import UserIcon from '@/assets/img/user.png'
+import WalletIcon from '@/assets/img/wallet.png'
+import CartIcon from '@/assets/img/add-to-cart.png'
+import HouseIcon from '@/assets/img/house.png'
 
 const router = useRouter()
 const auth = useAuthStore()
