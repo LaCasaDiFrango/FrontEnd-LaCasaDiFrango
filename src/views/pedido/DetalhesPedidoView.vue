@@ -84,14 +84,14 @@ onMounted(() => {
       <PedidoCupom
         title="Cupom"
         subtitle="Código de cupom"
-        img="/src/assets/img/coupon.svg"
+        img="@/assets/img/coupon.svg"
         customClass="cupom-style"
       />
 
       <PedidoCupom
         title="Formas de pagamentos"
         :subtitle="metodoPagamento"
-        img="/src/assets/img/credit-card.png"
+        img="@/assets/img/credit-card.png"
         customClass="pagamento-style"
         @click="router.push('/home/pedidos/detalhes-pagamento')"
       />
