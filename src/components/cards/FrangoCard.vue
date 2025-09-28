@@ -3,7 +3,7 @@
     <div 
       class="frango-card" 
       v-for="(item, index) in frangos" 
-      :key="index"
+      :key="index" @click="$router.push(item.url) "
     >
       <img :src="item.icon" alt="Ícone do frango" class="frango-icon" />
       <span class="frango-label">{{ item.label }}</span>
@@ -15,8 +15,8 @@
 import ChickenIcon from '@/assets/img/chicken-leg.png'
 
 const frangos = [
-  { label: 'Recheado R$65,00.', icon: ChickenIcon },
-  { label: 'Sem Recheio R$55,00.', icon: ChickenIcon }
+  { label: 'Recheado R$65,00.', icon: ChickenIcon, url: '/home/produtos/18' },
+  { label: 'Sem Recheio R$55,00.', icon: ChickenIcon, url: '/home/produtos/17' }
 ]
 </script>
 
