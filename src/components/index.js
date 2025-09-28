@@ -50,6 +50,9 @@ import FormaPagamentoSelector from "./selector/FormaPagamentoSelector.vue";
 import SemPermission from "./convidado/SemPermission.vue";
 import PedidoSemItens from "./convidado/PedidoSemItens.vue";
 
+//pedido
+import PedidoCupom from "./pedido/PedidoCupom.vue";
+
 export {
   AuthButton,
   BackButton,
@@ -86,5 +89,5 @@ export {
   SemPermission,
   PedidoSemItens,
   GaleriaCarousel,
-
+  PedidoCupom,
 };

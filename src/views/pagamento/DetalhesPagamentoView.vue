@@ -30,7 +30,7 @@ const { pedidoAtual } = storeToRefs(pedidoStore)
       </div>
     </div>
 <FooterFixed :itens="pedidoAtual?.itens">
-  <button class="botao-verde" @click="router.push(`/home/perfil/historico-pedidos/detalhes-pedido/${pedidoAtual?.id || ''}`)">Próxima Etapa</button>
+  <button class="botao-verde" @click="router.push(`/home/perfil/historico-pedidos/detalhes-pedido/${pedidoAtual?.id || ''}`)">Efetuar o Pagamento</button>
 </FooterFixed> 
 
 
