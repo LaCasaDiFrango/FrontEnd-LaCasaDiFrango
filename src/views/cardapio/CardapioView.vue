@@ -28,7 +28,7 @@ const filteredCategories = computed(() => {
 
 <template>
   <div class="cardapio-container">
-    <TitlePages title="Cardápio" />
+    <TitlePages title="Cardápio" @click="$router.back()" />
 
     <SearchBar
       v-model="searchQuery"

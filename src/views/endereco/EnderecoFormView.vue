@@ -1,6 +1,6 @@
 <template>
   <div class="form-page">
-      <BackButton />
+      <BackButton @click="$router.back()" />
 
     
     <form class="form">

@@ -30,7 +30,7 @@ watch(
 </script>
 
 <template>
-  <BackButton />
+  <BackButton @click="$router.back()" />
 <div class="produto-container" v-if="produtoStore.produtoSelecionado">
   <div class="title">
     <h1>{{ produtoStore.produtoSelecionado.nome }}</h1>
