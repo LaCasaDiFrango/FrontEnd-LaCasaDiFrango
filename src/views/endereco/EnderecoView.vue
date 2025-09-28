@@ -2,7 +2,7 @@
   <div class="page">
     <!-- Topo -->
     <div class="top-section">
-        <BackButton />
+        <BackButton @click="$router.back()" />
        <ManualAddressButton label="+ Adicionar Manualmente" @click="goToForm" />
       <!-- Imagem de localização -->
       <div class="image-placeholder">

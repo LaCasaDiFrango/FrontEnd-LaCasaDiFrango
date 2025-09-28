@@ -74,7 +74,6 @@ export const useCardapioStore = defineStore('cardapio', () => {
       }))
 
       console.log('Categorias finais montadas:', categories.value)
-      toast.success('Produtos carregados com sucesso!')
     } catch (error) {
       console.error('Erro ao buscar produtos:', error)
       toast.error('Erro ao buscar produtos. Tente novamente.')

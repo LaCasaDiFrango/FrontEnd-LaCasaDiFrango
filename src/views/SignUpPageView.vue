@@ -1,6 +1,6 @@
 <template>
   <div class="register-page">
-    <BackButton />
+    <BackButton @click="$router.back()" />
     <passage-auth
       app-id="WEG5lzsWo0bbZlaYwtVYYb6Q"
     ></passage-auth>

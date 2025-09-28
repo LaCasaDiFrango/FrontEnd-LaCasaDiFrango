@@ -60,7 +60,7 @@ const itensPedidoAtual = computed(() => pedidoAtual.value?.itens || [])
 
 <template>
   <div class="pedido-container">
-    <TitlePages title="Meu Pedido" />
+    <TitlePages title="Meu Pedido" @click="$router.back()" />
 
     <!-- Convidado -->
     <SemPermission

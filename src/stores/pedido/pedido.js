@@ -38,7 +38,6 @@ export const usePedidoStore = defineStore('pedido', () => {
     try {
       const lista = await pedidoService.getAll()
       pedidos.value = lista.map(normalizarPedido)
-      toast.success('Pedidos carregados com sucesso!')
     } catch (error) {
       console.error('Erro ao carregar pedidos:', error)
       toast.error('Erro ao carregar pedidos.')

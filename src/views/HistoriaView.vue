@@ -1,5 +1,6 @@
 <script setup>
 import { HistoriaBanner, GaleriaCarousel, BackButton } from '@/components'
+import router from '@/router'
 
 const inicioImages = [
   { src: '/src/assets/img/GaleriaFrango/referencia.jpg', alt: 'História 1' },
@@ -23,7 +24,7 @@ const temposRecentesImages = [
 </script>
 
 <template>
-  <BackButton />
+  <BackButton @click="router.push('/home')" />
 
   <div class="historia-page">
     <HistoriaBanner />

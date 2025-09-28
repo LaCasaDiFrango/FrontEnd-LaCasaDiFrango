@@ -19,7 +19,7 @@ onMounted(async () => {
 
 <template>
   <div class="historico-container">
-    <TitlePages title="Histórico de pedidos" class="first-child" />
+    <TitlePages title="Histórico de pedidos" class="first-child" @click="$router.back()" />
 
     <!-- Convidado -->
     <SemPermission

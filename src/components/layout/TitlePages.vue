@@ -9,11 +9,12 @@ defineProps({
     required: true
   }
 })
+const emit = defineEmits(['click'])
 </script>
 
 <template>
   <div class="page-header" v-bind="attrs">
-    <BackButton />
+    <BackButton @click="emit('click')" />
     <h2>{{ title }}</h2>
   </div>
 </template>

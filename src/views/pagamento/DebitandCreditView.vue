@@ -1,6 +1,6 @@
 <template>
   <div class="payment-container">
-    <TitlePages title="Adicionar formas de Pagamento" class="first-child"/>
+    <TitlePages title="Adicionar formas de Pagamento" class="first-child" @click="$router.back()" />
 
     <PaymentOption
       title="Cartão de crédito"

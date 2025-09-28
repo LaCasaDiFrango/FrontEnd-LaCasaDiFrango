@@ -11,6 +11,8 @@ import {
   DetalhePedidoTotalCard,
   PedidoCupom,
 } from '@/components/index'
+const couponImg = new URL('@/assets/img/coupon.svg', import.meta.url).href
+const creditCardImg = new URL('@/assets/img/credit-card.png', import.meta.url).href
 
 const router = useRouter()
 const pedidoStore = usePedidoStore()
@@ -64,7 +66,7 @@ onMounted(() => {
 
 <template>
   <div class="pedido-detalhes">
-    <TitlePages title="Detalhes do pedido" class="first-child" />
+    <TitlePages title="Detalhes do pedido" class="first-child" @click="$router.back()" />
 
     <template v-if="!pedido">
       <p>Carregando pedido...</p>
@@ -81,20 +83,20 @@ onMounted(() => {
         label="Comentário sobre o pedido"
         placeholder="Digite sua observação..."
       />
-      <PedidoCupom
-        title="Cupom"
-        subtitle="Código de cupom"
-        img="@/assets/img/coupon.svg"
-        customClass="cupom-style"
-      />
+  <PedidoCupom
+    title="Cupom"
+    subtitle="Código de cupom"
+    :img="couponImg"
+    customClass="cupom-style"
+  />
 
-      <PedidoCupom
-        title="Formas de pagamentos"
-        :subtitle="metodoPagamento"
-        img="@/assets/img/credit-card.png"
-        customClass="pagamento-style"
-        @click="router.push('/home/pedidos/detalhes-pagamento')"
-      />
+  <PedidoCupom
+    title="Formas de pagamentos"
+    :subtitle="metodoPagamento"
+    :img="creditCardImg"
+    customClass="pagamento-style"
+    @click="router.push('/home/pedidos/detalhes-pagamento')"
+  />
       <HelpCard
         title="Precisa falar com a gente?"
         link="https://wa.me/5547999123456"
