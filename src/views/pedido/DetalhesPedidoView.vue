@@ -26,6 +26,11 @@ const metodoPagamento = ref('Pagar na Retirada')
 
 const pedido = computed(() => pedidoStore.pedidoAtual)
 
+const isCarrinho = computed(() => pedido.value?.statusNome === 'Carrinho')
+
+const isFinalizado = computed(() => ['Pago', 'Entregue', 'Realizado'].includes(pedido.value?.statusNome))
+
+
 async function carregarPedido() {
   try {
     if (!props.id) {
@@ -95,7 +100,7 @@ onMounted(() => {
         link="https://wa.me/5547999123456"
         text="Atendimento via WhatsApp"
       />
-      <div class="botoes">
+      <div v-if="isCarrinho && !isFinalizado" class="botoes">
         <button class="botao-verde" @click="realizarPedido()">Realizar Pedido</button>
       </div>
     </template>
