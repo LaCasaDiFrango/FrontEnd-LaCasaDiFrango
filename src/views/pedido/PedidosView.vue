@@ -103,7 +103,7 @@ const itensPedidoAtual = computed(() => pedidoAtual.value?.itens || [])
           <button class="botao-claro" @click="router.push('/home/produtos')">
             Adicionar Produtos
           </button>
-          <button class="botao-verde" @click="router.push('/home/pedidos/detalhes-pagamento')">
+          <button class="botao-verde" @click="router.push(`/home/perfil/historico-pedidos/detalhes-pedido/${pedidoAtual?.id}`)">
             Próxima Etapa
           </button>
         </div>

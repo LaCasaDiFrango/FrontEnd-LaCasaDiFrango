@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, computed } from 'vue'
+import { onMounted, computed, ref } from 'vue'
 import { usePedidoStore } from '@/stores/index'
 import { useRouter } from 'vue-router'
 import {
@@ -9,6 +9,7 @@ import {
   StatusPedidoCard,
   DetalhePedidoItensCard,
   DetalhePedidoTotalCard,
+  PedidoCupom,
 } from '@/components/index'
 
 const router = useRouter()
@@ -18,10 +19,17 @@ const props = defineProps({
   id: {
     type: [String, Number],
     required: false,
-  }
+  },
 })
 
+const metodoPagamento = ref('Pagar na Retirada') 
+
 const pedido = computed(() => pedidoStore.pedidoAtual)
+
+const isCarrinho = computed(() => pedido.value?.statusNome === 'Carrinho')
+
+const isFinalizado = computed(() => ['Pago', 'Entregue', 'Realizado'].includes(pedido.value?.statusNome))
+
 
 async function carregarPedido() {
   try {
@@ -33,7 +41,6 @@ async function carregarPedido() {
     console.error('Erro ao carregar pedido:', e)
   }
 }
-
 
 async function realizarPedido() {
   if (!pedido.value?.id) {
@@ -69,18 +76,31 @@ onMounted(() => {
       <DetalhePedidoItensCard :itens="pedido.itens" title="Itens do Pedido" />
 
       <DetalhePedidoTotalCard :total="pedido.total" title="Total" />
+      <CommentCard
+        v-model="comentario"
+        label="Comentário sobre o pedido"
+        placeholder="Digite sua observação..."
+      />
+      <PedidoCupom
+        title="Cupom"
+        subtitle="Código de cupom"
+        img="/src/assets/img/coupon.svg"
+        customClass="cupom-style"
+      />
 
-      <CommentCard 
-          v-model="comentario"
-    label="Comentário sobre o pedido"
-    placeholder="Digite sua observação..."
-  />
-      <HelpCard 
-      title="Precisa falar com a gente?"
-    link="https://wa.me/5547999123456"
-    text="Atendimento via WhatsApp"
-  />
-      <div class="botoes">
+      <PedidoCupom
+        title="Formas de pagamentos"
+        :subtitle="metodoPagamento"
+        img="/src/assets/img/credit-card.png"
+        customClass="pagamento-style"
+        @click="router.push('/home/pedidos/detalhes-pagamento')"
+      />
+      <HelpCard
+        title="Precisa falar com a gente?"
+        link="https://wa.me/5547999123456"
+        text="Atendimento via WhatsApp"
+      />
+      <div v-if="isCarrinho && !isFinalizado" class="botoes">
         <button class="botao-verde" @click="realizarPedido()">Realizar Pedido</button>
       </div>
     </template>
@@ -90,12 +110,13 @@ onMounted(() => {
 
 <style scoped>
 .pedido-detalhes {
-  padding: 14px 50px 50px 50px;
+  padding: 14px 50px;
   display: flex;
   flex-direction: column;
   align-items: start;
   gap: 15px;
   justify-content: center;
+  margin: 0 0 70px 0;
 }
 
 .first-child {
