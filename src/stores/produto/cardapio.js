@@ -7,6 +7,7 @@ import { useToastStore } from '@/stores/index' // import da store do toast
 export const useCardapioStore = defineStore('cardapio', () => {
   const categories = ref([])
   const toast = useToastStore() // instanciando a store de toast
+  const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
   const categoriaMap = {
     1: 'Bebidas',
@@ -62,7 +63,11 @@ export const useCardapioStore = defineStore('cardapio', () => {
           nome: item.nome,
           preco: parseFloat(item.preco).toFixed(2).replace('.', ','),
           categoria: item.categoria,
-          image: imgFrango,
+          // se já for uma URL completa (Cloudinary), não adiciona BASE_URL
+          image: item.imagem
+            ? (item.imagem.startsWith('http') ? item.imagem : `${BASE_URL}${item.imagem}`)
+            : imgFrango,
+
         })
       }
 

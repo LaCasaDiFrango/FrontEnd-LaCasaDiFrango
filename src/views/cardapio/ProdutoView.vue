@@ -37,7 +37,7 @@ watch(
     <p>R$ {{ parseFloat(produtoStore.produtoSelecionado.preco).toFixed(2).replace('.', ',') }}</p>
   </div>
 
-  <img :src="produtoStore.produtoSelecionado.image" :alt="produtoStore.produtoSelecionado.nome" />
+  <img :src="produtoStore.produtoSelecionado.imagem" :alt="produtoStore.produtoSelecionado.nome" />
   <p>{{ produtoStore.produtoSelecionado.descricao }}</p>
 
   <div class="quantidade">
@@ -63,6 +63,11 @@ watch(
   justify-content: center;
   gap: 40px;
   width: 100%;
+}
+
+.produto-container img{
+  width: 200px;
+  height: auto;
 }
 
 .produto-container .title {
