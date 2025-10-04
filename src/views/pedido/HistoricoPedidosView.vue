@@ -3,6 +3,9 @@ import { onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { usePedidoStore, useAuthStore } from '@/stores/index'
 import { TitlePages, HistoricoPedidoCard, SemPermission, PedidoSemItens } from '@/components/index'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const pedidoStore = usePedidoStore()
 const authStore = useAuthStore()
@@ -19,7 +22,7 @@ onMounted(async () => {
 
 <template>
   <div class="historico-container">
-    <TitlePages title="Histórico de pedidos" class="first-child" @click="$router.back()" />
+    <TitlePages title="Histórico de pedidos" class="first-child" @click="router.push('/home/perfil')" />
 
     <!-- Convidado -->
     <SemPermission

@@ -34,6 +34,7 @@ onMounted(async () => {
           preco: item?.produto?.preco,
           quantidade: item?.quantidade,
           total: item?.total,
+          imagem: item?.produto?.imagem || item?.produto?.image || 'N/A',
         })
       })
     } else {
@@ -75,7 +76,7 @@ const itensPedidoAtual = computed(() => pedidoAtual.value?.itens || [])
         <div v-for="item in itensPedidoAtual" :key="item.produto.id" class="item-selecionado">
           <div class="item-info">
             <img
-              :src="item.produto.image || '/src/assets/img/chicken-leg.png'"
+              :src="item.produto.imagem"
               alt="Produto"
               class="item-img"
             />
