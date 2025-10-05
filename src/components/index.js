@@ -53,6 +53,15 @@ import PedidoSemItens from "./convidado/PedidoSemItens.vue";
 //pedido
 import PedidoCupom from "./pedido/PedidoCupom.vue";
 
+//admin
+import NavLateralAdmin from "./admin/navbar/NavLateralAdmin.vue";
+import NavLateralResponsive from "./admin/navbar/NavLateralResponsive.vue";
+import NavbarAdminMenu from "./admin/navbar/NavbarAdminMenu.vue";
+import NavbarAdminUser from "./admin/navbar/NavbarAdminUser.vue";
+import NavbarDropdown from "./admin/dropdown/NavbarDropdown.vue";
+import ButtonActionAdmin from "./admin/buttons/ButtonActionAdmin.vue";
+import ButtonDropdown from "./admin/dropdown/ButtonDropdown.vue";
+
 export {
   AuthButton,
   BackButton,
@@ -90,4 +99,11 @@ export {
   PedidoSemItens,
   GaleriaCarousel,
   PedidoCupom,
+  NavLateralAdmin,
+  NavLateralResponsive,
+  NavbarAdminMenu,
+  NavbarAdminUser,
+  NavbarDropdown,
+  ButtonDropdown,
+  ButtonActionAdmin,
 };
