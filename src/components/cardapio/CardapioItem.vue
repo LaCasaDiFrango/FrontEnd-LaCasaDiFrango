@@ -31,14 +31,14 @@ function irParaDetalhe() {
   display: flex;
   align-items: center;
   gap: 20px;
-  padding-bottom: 20px;
+  padding: 20px;
   border-bottom: 2px solid #ccc;
   cursor: pointer;
 }
 
 .cardapioItem img {
-  width: 100px;
-  height: 100px;
+  width: 85px;
+  height: 85px;
   border-radius: 8px;
 }
 

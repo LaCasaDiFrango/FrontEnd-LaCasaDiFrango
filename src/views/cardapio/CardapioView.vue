@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useCardapioStore } from '@/stores'
-import { NavBar, CardapioCategory, CardapioNavbar, TitlePages, SearchBar } from '@/components/index'
+import { NavBar, CardapioCategory, NavCardapio, TitlePages, SearchBar } from '@/components/index'
 
 const cardapioStore = useCardapioStore()
 const searchQuery = ref('')
@@ -35,6 +35,10 @@ const filteredCategories = computed(() => {
       placeholder="Procure em nosso cardápio"
     />
 
+    <section>
+      <NavCardapio />
+    </section>
+
     <section class="cardapioMain">
       <CardapioCategory
         v-for="cat in filteredCategories"
@@ -49,8 +53,9 @@ const filteredCategories = computed(() => {
 </template>
 
 <style scoped>
+
 .cardapio-container {
-  padding: 50px 30px 50px 30px;
+  padding: 50px 12px 50px 12px;
   display: flex;
   flex-direction: column;
   align-items: start;

@@ -33,6 +33,7 @@ import TitlePages from "./layout/TitlePages.vue";
 import FooterFixed from "./layout/FooterFixed.vue";
 import HistoriaBanner from "./layout/HistoriaBanner.vue";
 import GaleriaCarousel from "./layout/GaleriaCarousel.vue";
+import NavCardapio from "./layout/NavCardapio.vue"; 
 
 
 //cardapio
@@ -52,6 +53,7 @@ import PedidoSemItens from "./convidado/PedidoSemItens.vue";
 
 //pedido
 import PedidoCupom from "./pedido/PedidoCupom.vue";
+
 
 export {
   AuthButton,
@@ -90,4 +92,5 @@ export {
   PedidoSemItens,
   GaleriaCarousel,
   PedidoCupom,
+  NavCardapio,
 };
