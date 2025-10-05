@@ -50,7 +50,7 @@ const filteredCategories = computed(() => {
 
 <style scoped>
 .cardapio-container {
-  padding: 14px 50px 50px 50px;
+  padding: 50px 30px 50px 30px;
   display: flex;
   flex-direction: column;
   align-items: start;
