@@ -52,16 +52,12 @@ watch(
         <h1>{{ produtoStore.produtoSelecionado.nome }}</h1>
         <p>
           R$
-          {{
-            parseFloat(produtoStore.produtoSelecionado.preco)
-              .toFixed(2)
-              .replace('.', ',')
-          }}
+          {{ parseFloat(produtoStore.produtoSelecionado.preco).toFixed(2).replace('.', ',') }}
         </p>
       </div>
 
       <img
-        :src="produtoStore.produtoSelecionado.image"
+        :src="produtoStore.produtoSelecionado.imagem"
         :alt="produtoStore.produtoSelecionado.nome"
       />
       <p>{{ produtoStore.produtoSelecionado.descricao }}</p>
@@ -77,21 +73,7 @@ watch(
       </div>
     </div>
 
-    <AddPedidoButton
-      label="Adicionar Pedido"
-      @click="produtoStore.criarPedido"
-    />
-  <img :src="produtoStore.produtoSelecionado.imagem" :alt="produtoStore.produtoSelecionado.nome" />
-  <p>{{ produtoStore.produtoSelecionado.descricao }}</p>
-
-  <div class="quantidade">
-    <span @click="produtoStore.diminuir">
-      <img src="@/assets/img/minus.png" alt="Menos" />
-    </span>
-    <span>{{ produtoStore.quantidade }}</span>
-    <span @click="produtoStore.aumentar">
-      <img src="@/assets/img/plus.png" alt="Mais" />
-    </span>
+    <AddPedidoButton label="Adicionar Pedido" @click="produtoStore.criarPedido" />
   </div>
 </template>
 
@@ -106,7 +88,7 @@ watch(
   width: 100%;
 }
 
-.produto-container img{
+.produto-container img {
   width: 200px;
   height: auto;
 }

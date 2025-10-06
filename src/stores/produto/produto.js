@@ -15,10 +15,8 @@ export const useProdutoStore = defineStore('produto', () => {
   const toast = useToastStore() // instanciando a store de toast
 
   async function carregarProduto(id) {
-
     try {
       produtoSelecionado.value = await produtoService.getById(id)
-    
     } catch (error) {
       console.error('Erro ao carregar produto:', error)
       toast.error('Erro ao carregar o produto!')
@@ -36,7 +34,6 @@ export const useProdutoStore = defineStore('produto', () => {
   }
 
   async function criarPedido() {
-
     try {
       const dadosParaEnviar = {
         itens: [
@@ -57,7 +54,6 @@ export const useProdutoStore = defineStore('produto', () => {
       pedidoStore.pedidoAtual = response
 
       toast.success(`${produtoSelecionado.value.nome} adicionado ao pedido!`)
-    
       router.push('/home/pedidos')
     } catch (error) {
       if (error.response) {
@@ -71,12 +67,10 @@ export const useProdutoStore = defineStore('produto', () => {
   }
 
   async function finalizarPedido(pedidoId) {
-
     try {
       const response = await pedidoService.finalizar(pedidoId)
       console.log('Pedido finalizado com sucesso!', response)
       toast.success('Pedido finalizado com sucesso!')
-    
     } catch (error) {
       console.error('Erro inesperado:', error)
       toast.error('Erro ao finalizar pedido.')
