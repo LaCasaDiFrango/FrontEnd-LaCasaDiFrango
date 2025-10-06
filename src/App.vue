@@ -10,6 +10,7 @@
 <script setup>
 import { useRoute } from 'vue-router'
 import {HeaderComponent, NavBar} from '@/components/index'
+import { useUiStore } from '@/stores/index'
 const menuLinks = [
   { to: '/', img: '/src/assets/img/home.png', alt: 'Início', text: 'Início' },
   { to: '/home/produtos', img: '/src/assets/img/roasted-chicken.png', alt: 'Produtos', text: 'Produtos' },

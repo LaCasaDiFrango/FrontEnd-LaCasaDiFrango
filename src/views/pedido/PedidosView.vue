@@ -2,8 +2,8 @@
 import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import { BackButton, SemPermission, TitlePages, PedidoSemItens } from '@/components/index'
-import { usePedidoStore, useAuthStore } from '@/stores/index'
+import { BackButton, SemPermission, TitlePages, PedidoSemItens, LoadingPage } from '@/components/index'
+import { usePedidoStore, useAuthStore, useUiStore } from '@/stores/index'
 
 // Router
 const router = useRouter()
@@ -11,6 +11,7 @@ const router = useRouter()
 // Stores
 const pedidoStore = usePedidoStore()
 const authStore = useAuthStore()
+const ui = useUiStore() // 👈 Adicionado
 
 // Refs do pedido
 const { pedidoAtual } = storeToRefs(pedidoStore)
@@ -20,8 +21,9 @@ const carregarPedidoAtual = pedidoStore.carregarPedidoAtual
 const { isGuest, isUser } = storeToRefs(authStore)
 
 onMounted(async () => {
-  // Segurança: só tenta carregar pedido se for usuário autenticado
   if (isUser.value) {
+    ui.showLoading()
+    try {
     console.log('🔄 Carregando pedido atual...')
     await carregarPedidoAtual()
     console.log('📦 pedidoAtual após carregar:', JSON.parse(JSON.stringify(pedidoAtual.value)))
@@ -34,10 +36,15 @@ onMounted(async () => {
           preco: item?.produto?.preco,
           quantidade: item?.quantidade,
           total: item?.total,
+          imagem: item?.produto?.imagem || item?.produto?.image || 'N/A',
         })
-      })
-    } else {
-      console.log('⚠️ Nenhum item no pedido.')
+      } else {
+        console.log('⚠️ Nenhum item no pedido.')
+      }
+    } catch (err) {
+      console.error('Erro ao carregar pedido:', err)
+    } finally {
+      ui.hideLoading() // 👈 encerra o loading
     }
   } else {
     console.warn('⛔ Acesso negado: não é um usuário autenticado.')
@@ -59,8 +66,13 @@ const itensPedidoAtual = computed(() => pedidoAtual.value?.itens || [])
 </script>
 
 <template>
-  <div class="pedido-container">
-    <TitlePages title="Meu Pedido" />
+  <!-- Loading global -->
+  <div v-if="ui.loading">
+    <LoadingPage />
+  </div>
+
+  <div v-else class="pedido-container">
+    <TitlePages title="Meu Pedido" @click="$router.back()" />
 
     <!-- Convidado -->
     <SemPermission
@@ -75,7 +87,7 @@ const itensPedidoAtual = computed(() => pedidoAtual.value?.itens || [])
         <div v-for="item in itensPedidoAtual" :key="item.produto.id" class="item-selecionado">
           <div class="item-info">
             <img
-              :src="item.produto.image || '/src/assets/img/chicken-leg.png'"
+              :src="item.produto.imagem"
               alt="Produto"
               class="item-img"
             />
@@ -103,18 +115,20 @@ const itensPedidoAtual = computed(() => pedidoAtual.value?.itens || [])
           <button class="botao-claro" @click="router.push('/home/produtos')">
             Adicionar Produtos
           </button>
-          <button class="botao-verde" @click="router.push(`/home/perfil/historico-pedidos/detalhes-pedido/${pedidoAtual?.id}`)">
+          <button
+            class="botao-verde"
+            @click="router.push(`/home/perfil/historico-pedidos/detalhes-pedido/${pedidoAtual?.id}`)"
+          >
             Próxima Etapa
           </button>
         </div>
       </div>
     </template>
 
-    <!-- Outros perfis (ex.: admin) -->
+    <!-- Outros perfis -->
     <SemPermission v-else text="'Você não tem permissão para acessar esta página.'" />
   </div>
 </template>
-
 
 <style scoped>
 .pedido-container {
@@ -190,7 +204,6 @@ const itensPedidoAtual = computed(() => pedidoAtual.value?.itens || [])
   color: #1d4523;
   text-align: right;
 }
-
 
 .footer {
   position: fixed;

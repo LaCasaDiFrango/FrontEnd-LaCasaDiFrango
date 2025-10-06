@@ -7,15 +7,18 @@ import { useToastStore } from '@/stores/index' // import da store do toast
 export const useCardapioStore = defineStore('cardapio', () => {
   const categories = ref([])
   const toast = useToastStore() // instanciando a store de toast
+  const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
   const categoriaMap = {
-    1: 'Bebidas',
+    1: 'Frangos',
     2: 'Maioneses',
-    3: 'Frangos',
-    4: 'Conservas',
-    5: 'Farofas',
-    6: 'Costela Assada',
+    3: 'Costela Assada',
+    4: 'Bebidas',
+    5: 'Conservas',
+    6: 'Farofas',
   }
+
+  const categoriaOrdem = ['Frangos', 'Maioneses', 'Costela Assada','Bebidas', , 'Conservas', 'Farofas']
 
   async function fetchProdutos() {
     try {
@@ -62,19 +65,23 @@ export const useCardapioStore = defineStore('cardapio', () => {
           nome: item.nome,
           preco: parseFloat(item.preco).toFixed(2).replace('.', ','),
           categoria: item.categoria,
-          image: imgFrango,
+          image: item.imagem
+            ? (item.imagem.startsWith('http') ? item.imagem : `${BASE_URL}${item.imagem}`)
+            : imgFrango,
         })
       }
 
       console.log('Agrupados por categoria:', agrupados)
 
-      categories.value = Object.entries(agrupados).map(([categoryName, items]) => ({
-        categoryName,
-        items,
-      }))
+      // Ordena as categorias conforme categoriaOrdem
+      categories.value = categoriaOrdem
+        .filter(categoriaNome => agrupados[categoriaNome]) // inclui apenas categorias que existem
+        .map(categoriaNome => ({
+          categoryName: categoriaNome,
+          items: agrupados[categoriaNome],
+        }))
 
       console.log('Categorias finais montadas:', categories.value)
-      toast.success('Produtos carregados com sucesso!')
     } catch (error) {
       console.error('Erro ao buscar produtos:', error)
       toast.error('Erro ao buscar produtos. Tente novamente.')

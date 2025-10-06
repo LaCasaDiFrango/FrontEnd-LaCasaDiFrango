@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, computed, ref } from 'vue'
-import { usePedidoStore } from '@/stores/index'
+import { storeToRefs } from 'pinia'
+import { usePedidoStore, useUiStore } from '@/stores/index'
 import { useRouter } from 'vue-router'
 import {
   TitlePages,
@@ -10,10 +11,16 @@ import {
   DetalhePedidoItensCard,
   DetalhePedidoTotalCard,
   PedidoCupom,
+  LoadingPage,
 } from '@/components/index'
+
+const couponImg = new URL('@/assets/img/coupon.svg', import.meta.url).href
+const creditCardImg = new URL('@/assets/img/credit-card.png', import.meta.url).href
 
 const router = useRouter()
 const pedidoStore = usePedidoStore()
+const uiStore = useUiStore()
+const { loading } = storeToRefs(uiStore) // ✅ reativo
 
 const props = defineProps({
   id: {
@@ -22,23 +29,30 @@ const props = defineProps({
   },
 })
 
-const metodoPagamento = ref('Pagar na Retirada') 
+const metodoPagamento = ref('Pagar na Retirada')
+const comentario = ref('') // adicionei para v-model do CommentCard
 
+// Computeds
 const pedido = computed(() => pedidoStore.pedidoAtual)
-
 const isCarrinho = computed(() => pedido.value?.statusNome === 'Carrinho')
+const isFinalizado = computed(() =>
+  ['Pago', 'Entregue', 'Realizado'].includes(pedido.value?.statusNome)
+)
 
-const isFinalizado = computed(() => ['Pago', 'Entregue', 'Realizado'].includes(pedido.value?.statusNome))
-
-
+// Funções
 async function carregarPedido() {
+  if (!props.id) {
+    console.error('ID do pedido não fornecido via props')
+    return
+  }
+
   try {
-    if (!props.id) {
-      throw new Error('ID do pedido não fornecido via props')
-    }
+    uiStore.showLoading()
     await pedidoStore.carregarPedidoPorCodigo(props.id)
   } catch (e) {
     console.error('Erro ao carregar pedido:', e)
+  } finally {
+    uiStore.hideLoading()
   }
 }
 
@@ -60,53 +74,66 @@ onMounted(() => {
 })
 </script>
 
-
-
 <template>
-  <div class="pedido-detalhes">
-    <TitlePages title="Detalhes do pedido" class="first-child" />
+  <!-- Loading global -->
+  <div v-if="loading">
+    <LoadingPage />
+  </div>
 
-    <template v-if="!pedido">
-      <p>Carregando pedido...</p>
-    </template>
+  <!-- Conteúdo principal -->
+  <div v-else class="pedido-detalhes">
+    <TitlePages title="Detalhes do pedido" class="first-child" @click="$router.back()" />
 
-    <template v-else>
-      <StatusPedidoCard :status="pedido.statusNome" :data="29122025" :id="pedido.id" />
+    <!-- ✅ Renderiza só se pedido existir -->
+    <StatusPedidoCard
+      v-if="pedido"
+      :status="pedido?.statusNome"
+      :data="29122025"
+      :id="pedido?.id"
+    />
+    <DetalhePedidoItensCard
+      v-if="pedido"
+      :itens="pedido?.itens"
+      title="Itens do Pedido"
+    />
+    <DetalhePedidoTotalCard
+      v-if="pedido"
+      :total="pedido?.total"
+      title="Total"
+    />
 
-      <DetalhePedidoItensCard :itens="pedido.itens" title="Itens do Pedido" />
+    <CommentCard
+      v-model="comentario"
+      label="Comentário sobre o pedido"
+      placeholder="Digite sua observação..."
+    />
 
-      <DetalhePedidoTotalCard :total="pedido.total" title="Total" />
-      <CommentCard
-        v-model="comentario"
-        label="Comentário sobre o pedido"
-        placeholder="Digite sua observação..."
-      />
-      <PedidoCupom
-        title="Cupom"
-        subtitle="Código de cupom"
-        img="@/assets/img/coupon.svg"
-        customClass="cupom-style"
-      />
+    <PedidoCupom
+      title="Cupom"
+      subtitle="Código de cupom"
+      :img="couponImg"
+      customClass="cupom-style"
+    />
 
-      <PedidoCupom
-        title="Formas de pagamentos"
-        :subtitle="metodoPagamento"
-        img="@/assets/img/credit-card.png"
-        customClass="pagamento-style"
-        @click="router.push('/home/pedidos/detalhes-pagamento')"
-      />
-      <HelpCard
-        title="Precisa falar com a gente?"
-        link="https://wa.me/5547999123456"
-        text="Atendimento via WhatsApp"
-      />
-      <div v-if="isCarrinho && !isFinalizado" class="botoes">
-        <button class="botao-verde" @click="realizarPedido()">Realizar Pedido</button>
-      </div>
-    </template>
+    <PedidoCupom
+      title="Formas de pagamentos"
+      :subtitle="metodoPagamento"
+      :img="creditCardImg"
+      customClass="pagamento-style"
+      @click="router.push('/home/pedidos/detalhes-pagamento')"
+    />
+
+    <HelpCard
+      title="Precisa falar com a gente?"
+      link="https://wa.me/5547999123456"
+      text="Atendimento via WhatsApp"
+    />
+
+    <div v-if="isCarrinho && !isFinalizado" class="botoes">
+      <button class="botao-verde" @click="realizarPedido()">Realizar Pedido</button>
+    </div>
   </div>
 </template>
-
 
 <style scoped>
 .pedido-detalhes {
@@ -140,8 +167,6 @@ onMounted(() => {
   font-size: 1rem;
   cursor: pointer;
   border: none;
-}
-.botao-verde {
   background-color: #1d4523;
   border-top: 2px solid #1d4523;
   color: white;

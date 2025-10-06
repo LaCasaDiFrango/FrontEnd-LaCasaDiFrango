@@ -1,6 +1,6 @@
 <template>
   <div class="perfil-container">
-    <BackButton />
+    <BackButton @click="router.push('/home')"/>
 
     <div class="user-info">
       <div class="user-name">

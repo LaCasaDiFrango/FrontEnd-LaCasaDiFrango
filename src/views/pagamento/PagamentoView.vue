@@ -1,6 +1,6 @@
 <template>
   <div class="pagamento-container">
-    <TitlePages title="Formas de pagamento"/>
+    <TitlePages title="Formas de pagamento" @click="$router.back()" />
     <p class="subtitle">Você ainda não tem um formato de pagamento salvo.</p>
 
     <img

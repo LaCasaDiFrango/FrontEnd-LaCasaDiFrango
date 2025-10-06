@@ -26,14 +26,17 @@ const categories = [
   {
     label: 'Frangos',
     icon: ChickenIcon,
+    route: '/home/produtos',
   },
   {
     label: 'Bebidas',
     icon: SodaIcon,
+    route: '/home/produtos',
   },
   {
     label: 'Maionese',
     icon: MaioneseIcon,
+    route: '/home/produtos',
   },
   {
     label: 'Outros',

@@ -53,6 +53,9 @@ import PedidoSemItens from "./convidado/PedidoSemItens.vue";
 //pedido
 import PedidoCupom from "./pedido/PedidoCupom.vue";
 
+//loading
+import LoadingPage from "./loading/LoadingPage.vue";
+
 export {
   AuthButton,
   BackButton,
@@ -90,4 +93,5 @@ export {
   PedidoSemItens,
   GaleriaCarousel,
   PedidoCupom,
+  LoadingPage
 };

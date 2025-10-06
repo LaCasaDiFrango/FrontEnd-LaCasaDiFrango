@@ -1,43 +1,87 @@
 <script setup>
 import { onMounted, watch } from 'vue'
-import { useProdutoStore } from '@/stores/index'
-import { BackButton, AddPedidoButton } from '@/components/index'
+import { useProdutoStore, useUiStore } from '@/stores/index'
+import { BackButton, AddPedidoButton, LoadingPage } from '@/components/index'
 
 const props = defineProps({
   id: [String, Number],
 })
 
 const produtoStore = useProdutoStore()
+const ui = useUiStore()
 
 onMounted(async () => {
   if (props.id) {
-    produtoStore.produtoSelecionado = null
-    await produtoStore.carregarProduto(props.id)
+    ui.showLoading() // 👈 inicia o loading global
+    try {
+      produtoStore.produtoSelecionado = null
+      await produtoStore.carregarProduto(props.id)
+    } finally {
+      ui.hideLoading() // 👈 encerra o loading global
+    }
   }
 })
 
 watch(
   () => props.id,
   async (novoId) => {
-    console.log('ID mudou para:', novoId)
     if (novoId) {
-      produtoStore.produtoSelecionado = null
-      await produtoStore.carregarProduto(novoId)
+      ui.showLoading()
+      try {
+        produtoStore.produtoSelecionado = null
+        await produtoStore.carregarProduto(novoId)
+      } finally {
+        ui.hideLoading()
+      }
     }
   }
 )
-
 </script>
 
 <template>
-  <BackButton />
-<div class="produto-container" v-if="produtoStore.produtoSelecionado">
-  <div class="title">
-    <h1>{{ produtoStore.produtoSelecionado.nome }}</h1>
-    <p>R$ {{ parseFloat(produtoStore.produtoSelecionado.preco).toFixed(2).replace('.', ',') }}</p>
+  <!-- Loading global -->
+  <div v-if="ui.loading">
+    <LoadingPage />
   </div>
 
-  <img :src="produtoStore.produtoSelecionado.image" :alt="produtoStore.produtoSelecionado.nome" />
+  <div v-else>
+    <BackButton @click="$router.back()" />
+
+    <div class="produto-container" v-if="produtoStore.produtoSelecionado">
+      <div class="title">
+        <h1>{{ produtoStore.produtoSelecionado.nome }}</h1>
+        <p>
+          R$
+          {{
+            parseFloat(produtoStore.produtoSelecionado.preco)
+              .toFixed(2)
+              .replace('.', ',')
+          }}
+        </p>
+      </div>
+
+      <img
+        :src="produtoStore.produtoSelecionado.image"
+        :alt="produtoStore.produtoSelecionado.nome"
+      />
+      <p>{{ produtoStore.produtoSelecionado.descricao }}</p>
+
+      <div class="quantidade">
+        <span @click="produtoStore.diminuir">
+          <img src="@/assets/img/minus.png" alt="Menos" />
+        </span>
+        <span>{{ produtoStore.quantidade }}</span>
+        <span @click="produtoStore.aumentar">
+          <img src="@/assets/img/plus.png" alt="Mais" />
+        </span>
+      </div>
+    </div>
+
+    <AddPedidoButton
+      label="Adicionar Pedido"
+      @click="produtoStore.criarPedido"
+    />
+  <img :src="produtoStore.produtoSelecionado.imagem" :alt="produtoStore.produtoSelecionado.nome" />
   <p>{{ produtoStore.produtoSelecionado.descricao }}</p>
 
   <div class="quantidade">
@@ -49,9 +93,6 @@ watch(
       <img src="@/assets/img/plus.png" alt="Mais" />
     </span>
   </div>
-</div>
-
-<AddPedidoButton label="Adicionar Pedido" @click="produtoStore.criarPedido" />
 </template>
 
 <style scoped>
@@ -63,6 +104,11 @@ watch(
   justify-content: center;
   gap: 40px;
   width: 100%;
+}
+
+.produto-container img{
+  width: 200px;
+  height: auto;
 }
 
 .produto-container .title {

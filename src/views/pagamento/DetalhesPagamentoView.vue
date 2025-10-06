@@ -12,7 +12,7 @@ const { pedidoAtual } = storeToRefs(pedidoStore)
 
 <template>
   <div class="pagamento-container">
-    <TitlePages title="Detalhes do pagamento" />
+    <TitlePages title="Detalhes do pagamento" @click="$router.back()" />
 
     <RetiradaCard 
     title="Ponto de Retirada"
