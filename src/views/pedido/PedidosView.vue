@@ -22,21 +22,21 @@ const { isGuest, isUser } = storeToRefs(authStore)
 
 onMounted(async () => {
   if (isUser.value) {
-    ui.showLoading() // 👈 inicia o loading
+    ui.showLoading()
     try {
-      console.log('🔄 Carregando pedido atual...')
-      await carregarPedidoAtual()
-      console.log('📦 pedidoAtual após carregar:', JSON.parse(JSON.stringify(pedidoAtual.value)))
+    console.log('🔄 Carregando pedido atual...')
+    await carregarPedidoAtual()
+    console.log('📦 pedidoAtual após carregar:', JSON.parse(JSON.stringify(pedidoAtual.value)))
 
-      if (pedidoAtual.value?.itens?.length) {
-        pedidoAtual.value.itens.forEach((item, idx) => {
-          console.log(`🛒 Item ${idx + 1}:`, {
-            id: item?.produto?.id,
-            nome: item?.produto?.nome,
-            preco: item?.produto?.preco,
-            quantidade: item?.quantidade,
-            total: item?.total,
-          })
+    if (pedidoAtual.value?.itens?.length) {
+      pedidoAtual.value.itens.forEach((item, idx) => {
+        console.log(`🛒 Item ${idx + 1}:`, {
+          id: item?.produto?.id,
+          nome: item?.produto?.nome,
+          preco: item?.produto?.preco,
+          quantidade: item?.quantidade,
+          total: item?.total,
+          imagem: item?.produto?.imagem || item?.produto?.image || 'N/A',
         })
       } else {
         console.log('⚠️ Nenhum item no pedido.')
@@ -87,7 +87,7 @@ const itensPedidoAtual = computed(() => pedidoAtual.value?.itens || [])
         <div v-for="item in itensPedidoAtual" :key="item.produto.id" class="item-selecionado">
           <div class="item-info">
             <img
-              :src="item.produto.image || '/src/assets/img/chicken-leg.png'"
+              :src="item.produto.imagem"
               alt="Produto"
               class="item-img"
             />

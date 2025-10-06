@@ -81,6 +81,17 @@ watch(
       label="Adicionar Pedido"
       @click="produtoStore.criarPedido"
     />
+  <img :src="produtoStore.produtoSelecionado.imagem" :alt="produtoStore.produtoSelecionado.nome" />
+  <p>{{ produtoStore.produtoSelecionado.descricao }}</p>
+
+  <div class="quantidade">
+    <span @click="produtoStore.diminuir">
+      <img src="@/assets/img/minus.png" alt="Menos" />
+    </span>
+    <span>{{ produtoStore.quantidade }}</span>
+    <span @click="produtoStore.aumentar">
+      <img src="@/assets/img/plus.png" alt="Mais" />
+    </span>
   </div>
 </template>
 
@@ -93,6 +104,11 @@ watch(
   justify-content: center;
   gap: 40px;
   width: 100%;
+}
+
+.produto-container img{
+  width: 200px;
+  height: auto;
 }
 
 .produto-container .title {
