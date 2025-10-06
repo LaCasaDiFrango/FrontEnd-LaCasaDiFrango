@@ -2,7 +2,13 @@
 import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import { BackButton, SemPermission, TitlePages, PedidoSemItens, LoadingPage } from '@/components/index'
+import {
+  BackButton,
+  SemPermission,
+  TitlePages,
+  PedidoSemItens,
+  LoadingPage,
+} from '@/components/index'
 import { usePedidoStore, useAuthStore, useUiStore } from '@/stores/index'
 
 // Router
@@ -11,7 +17,7 @@ const router = useRouter()
 // Stores
 const pedidoStore = usePedidoStore()
 const authStore = useAuthStore()
-const ui = useUiStore() // 👈 Adicionado
+const ui = useUiStore() // Loading global
 
 // Refs do pedido
 const { pedidoAtual } = storeToRefs(pedidoStore)
@@ -24,19 +30,20 @@ onMounted(async () => {
   if (isUser.value) {
     ui.showLoading()
     try {
-    console.log('🔄 Carregando pedido atual...')
-    await carregarPedidoAtual()
-    console.log('📦 pedidoAtual após carregar:', JSON.parse(JSON.stringify(pedidoAtual.value)))
+      console.log('🔄 Carregando pedido atual...')
+      await carregarPedidoAtual()
+      console.log('📦 pedidoAtual após carregar:', JSON.parse(JSON.stringify(pedidoAtual.value)))
 
-    if (pedidoAtual.value?.itens?.length) {
-      pedidoAtual.value.itens.forEach((item, idx) => {
-        console.log(`🛒 Item ${idx + 1}:`, {
-          id: item?.produto?.id,
-          nome: item?.produto?.nome,
-          preco: item?.produto?.preco,
-          quantidade: item?.quantidade,
-          total: item?.total,
-          imagem: item?.produto?.imagem || item?.produto?.image || 'N/A',
+      if (pedidoAtual.value?.itens?.length) {
+        pedidoAtual.value.itens.forEach((item, idx) => {
+          console.log(`🛒 Item ${idx + 1}:`, {
+            id: item?.produto?.id,
+            nome: item?.produto?.nome,
+            preco: item?.produto?.preco,
+            quantidade: item?.quantidade,
+            total: item?.total,
+            imagem: item?.produto?.imagem || item?.produto?.image || 'N/A',
+          })
         })
       } else {
         console.log('⚠️ Nenhum item no pedido.')
@@ -44,7 +51,7 @@ onMounted(async () => {
     } catch (err) {
       console.error('Erro ao carregar pedido:', err)
     } finally {
-      ui.hideLoading() // 👈 encerra o loading
+      ui.hideLoading()
     }
   } else {
     console.warn('⛔ Acesso negado: não é um usuário autenticado.')
@@ -63,6 +70,15 @@ const total = computed(() => {
 })
 
 const itensPedidoAtual = computed(() => pedidoAtual.value?.itens || [])
+
+const irParaDetalhes = () => {
+  if (pedidoAtual.value?.id) {
+    router.push(`/home/perfil/historico-pedidos/detalhes-pedido/${pedidoAtual.value.id}`)
+  } else {
+    console.warn('Pedido ainda não carregado ou não existe.')
+  }
+}
+
 </script>
 
 <template>
@@ -72,7 +88,7 @@ const itensPedidoAtual = computed(() => pedidoAtual.value?.itens || [])
   </div>
 
   <div v-else class="pedido-container">
-    <TitlePages title="Meu Pedido" @click="$router.back()" />
+    <TitlePages title="Meu Pedido" @click="router.back()" />
 
     <!-- Convidado -->
     <SemPermission
@@ -86,11 +102,7 @@ const itensPedidoAtual = computed(() => pedidoAtual.value?.itens || [])
       <div class="pedidos" v-if="itensPedidoAtual.length > 0">
         <div v-for="item in itensPedidoAtual" :key="item.produto.id" class="item-selecionado">
           <div class="item-info">
-            <img
-              :src="item.produto.imagem"
-              alt="Produto"
-              class="item-img"
-            />
+            <img :src="item.produto.imagem" alt="Produto" class="item-img" />
             <div class="sub-info">
               <p class="item-nome">{{ item.produto.nome }}</p>
               <p class="preco">R$ {{ Number(item.produto.preco).toFixed(2).replace('.', ',') }}</p>
@@ -117,7 +129,8 @@ const itensPedidoAtual = computed(() => pedidoAtual.value?.itens || [])
           </button>
           <button
             class="botao-verde"
-            @click="router.push(`/home/perfil/historico-pedidos/detalhes-pedido/${pedidoAtual?.id}`)"
+            :disabled="!pedidoAtual || !pedidoAtual.id"
+            @click="irParaDetalhes"
           >
             Próxima Etapa
           </button>
@@ -126,7 +139,7 @@ const itensPedidoAtual = computed(() => pedidoAtual.value?.itens || [])
     </template>
 
     <!-- Outros perfis -->
-    <SemPermission v-else text="'Você não tem permissão para acessar esta página.'" />
+    <SemPermission v-else text="Você não tem permissão para acessar esta página." />
   </div>
 </template>
 
@@ -153,7 +166,7 @@ const itensPedidoAtual = computed(() => pedidoAtual.value?.itens || [])
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid 000;
+  border-bottom: 1px solid #000;
   gap: 1rem;
   padding: 1rem;
   width: 100%;
