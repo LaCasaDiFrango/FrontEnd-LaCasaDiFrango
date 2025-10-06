@@ -11,11 +11,14 @@ import { useProdutoStore } from './produto/produto'
 
 import { useToastStore } from './toast' // import da store do toast
 
+import { useUiStore } from './ui'
+
 export {
   useAuthStore,
   useCardapioStore,
   useProdutoStore,
   useToastStore,
   usePedidoStore,
-  useUserStore
+  useUserStore,
+  useUiStore
 }

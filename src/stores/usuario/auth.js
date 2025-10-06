@@ -3,7 +3,7 @@
 import { ref, watch, computed } from 'vue';
 import { defineStore } from 'pinia';
 import AuthService from '@/api/usuario/auth';
-import { useToastStore } from '@/stores/toast'; // import do toast
+import { useToastStore } from '@/stores/index'; // import do toast
 
 const authService = new AuthService(); 
 
@@ -15,7 +15,7 @@ export const useAuthStore = defineStore('auth', () => {
   // Login usando token (Passage ID)
   async function setToken(token) {
     localStorage.setItem('psg_auth_token', token);
-
+  
     try {
       const data = await authService.postUserToken();
       console.log('[DEBUG setToken retorno API]:', data)
@@ -23,6 +23,7 @@ export const useAuthStore = defineStore('auth', () => {
       loggedIn.value = true;
       toast.success(`Bem-vindo!!`);
       console.log('[DEBUG] setToken - usuário logado:', user.value);
+      
     } catch (error) {
       console.error('[ERROR] setToken failed:', error);
       toast.error('Falha ao autenticar usuário. Tente novamente.');
@@ -62,8 +63,10 @@ export const useAuthStore = defineStore('auth', () => {
 
     const token = localStorage.getItem('psg_auth_token');
     if (token) {
+    
       try {
         await setToken(token);
+        
       } catch (e) {
         console.log('[DEBUG] Falha ao atualizar usuário com token, limpando token');
         unsetToken();

@@ -1,24 +1,35 @@
 <script setup>
 import { onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
-import { usePedidoStore, useAuthStore } from '@/stores/index'
-import { TitlePages, HistoricoPedidoCard, SemPermission, PedidoSemItens } from '@/components/index'
+import { usePedidoStore, useAuthStore, useUiStore } from '@/stores/index'
+import { TitlePages, HistoricoPedidoCard, SemPermission, PedidoSemItens, LoadingPage } from '@/components/index'
 
 const pedidoStore = usePedidoStore()
 const authStore = useAuthStore()
+const ui = useUiStore()
 
 const { pedidos } = storeToRefs(pedidoStore)
 const { isGuest, isUser } = storeToRefs(authStore)
 
 onMounted(async () => {
   if (isUser.value) {
-    await pedidoStore.carregarPedidos()
+    ui.showLoading()
+    try {
+      await pedidoStore.carregarPedidos()
+    } catch (error) {
+      console.error('Erro ao carregar pedidos:', error)
+    } finally {
+      ui.hideLoading()
+    }
   }
 })
 </script>
 
 <template>
-  <div class="historico-container">
+  <div v-if="ui.loading">
+    <LoadingPage />
+  </div>
+  <div v-else class="historico-container">
     <TitlePages title="Histórico de pedidos" class="first-child" @click="$router.back()" />
 
     <!-- Convidado -->

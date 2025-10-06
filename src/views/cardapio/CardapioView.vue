@@ -1,13 +1,19 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { useCardapioStore } from '@/stores'
-import { NavBar, CardapioCategory, CardapioNavbar, TitlePages, SearchBar } from '@/components/index'
+import { useCardapioStore, useUiStore } from '@/stores'
+import { NavBar, CardapioCategory, TitlePages, SearchBar, LoadingPage } from '@/components/index'
 
 const cardapioStore = useCardapioStore()
+const ui = useUiStore()  // 👈 aqui
 const searchQuery = ref('')
 
-onMounted(() => {
-  cardapioStore.fetchProdutos()
+onMounted(async () => {
+  ui.showLoading() // ativa o loading
+  try {
+    await cardapioStore.fetchProdutos()
+  } finally {
+    ui.hideLoading() // desativa o loading
+  }
 })
 
 const filteredCategories = computed(() => {
@@ -27,7 +33,12 @@ const filteredCategories = computed(() => {
 </script>
 
 <template>
-  <div class="cardapio-container">
+  <!-- Loading global -->
+  <div v-if="ui.loading">
+    <LoadingPage />
+  </div>
+
+  <div v-else class="cardapio-container">
     <TitlePages title="Cardápio" @click="$router.back()" />
 
     <SearchBar
