@@ -79,12 +79,11 @@
   font-weight: 600;
   padding: 10px 18px;
   border: none;
-  border-radius: 50px;
+  border-radius: 10px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(9, 218, 79, 0.4);
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
