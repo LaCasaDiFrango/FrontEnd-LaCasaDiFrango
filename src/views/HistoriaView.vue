@@ -1,5 +1,5 @@
 <script setup>
-import { HistoriaBanner, GaleriaCarousel, BackButton } from '@/components'
+import { HistoriaBanner, GaleriaCarousel, BackButton } from '@/components/index'
 import router from '@/router'
 
 const inicioImages = [
