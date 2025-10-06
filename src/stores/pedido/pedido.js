@@ -9,6 +9,7 @@ export const usePedidoStore = defineStore('pedido', () => {
   const pedidoService = new pedido.default()
   const toast = useToastStore() // store de toast
 
+
   const statusMap = {
     'Carrinho': 1,
     'Realizado': 2,
@@ -35,9 +36,11 @@ export const usePedidoStore = defineStore('pedido', () => {
   }
 
   async function carregarPedidos() {
+    
     try {
       const lista = await pedidoService.getAll()
       pedidos.value = lista.map(normalizarPedido)
+
     } catch (error) {
       console.error('Erro ao carregar pedidos:', error)
       toast.error('Erro ao carregar pedidos.')
@@ -45,9 +48,11 @@ export const usePedidoStore = defineStore('pedido', () => {
   }
 
   async function carregarPedidoAtual() {
+    
     try {
       const todosPedidos = (await pedidoService.getAll()).map(normalizarPedido)
       pedidoAtual.value = todosPedidos.find(p => !p.finalizado && p.status === 1) || null
+
     } catch (error) {
       console.error('Erro ao carregar pedido atual:', error)
       toast.error('Erro ao carregar pedido atual.')
@@ -55,9 +60,11 @@ export const usePedidoStore = defineStore('pedido', () => {
   }
 
   async function carregarPedidoPorCodigo(codigo) {
+    
     try {
       const pedidoBuscado = normalizarPedido(await pedidoService.getById(codigo))
       pedidoAtual.value = pedidoBuscado
+
       return pedidoBuscado
     } catch (error) {
       console.error('Erro ao carregar pedido:', error)
@@ -68,12 +75,14 @@ export const usePedidoStore = defineStore('pedido', () => {
   }
 
   async function criarPedido(dados) {
+    
     try {
       console.debug('[DEBUG criarPedido] Dados enviados:', dados)
       const novoPedido = await pedidoService.create(dados)
       console.debug('[DEBUG criarPedido] Resposta do servidor:', novoPedido)
       pedidoAtual.value = novoPedido
       toast.success('Pedido criado com sucesso!')
+
       return novoPedido
     } catch (error) {
       console.error('Erro ao criar pedido:', error)
@@ -89,6 +98,7 @@ export const usePedidoStore = defineStore('pedido', () => {
   }
 
   async function atualizarStatusPedido(id, novoStatus) {
+    
     try {
       const statusNum = typeof novoStatus === 'string' ? statusMap[novoStatus] : novoStatus
       const dadosAtualizados = { status: statusNum }
@@ -102,6 +112,7 @@ export const usePedidoStore = defineStore('pedido', () => {
       } else {
         pedidoAtual.value = pedidoAtualizado
       }
+
     } catch (error) {
       console.error('Erro ao atualizar status do pedido:', error)
       if (error.response) {
@@ -113,10 +124,12 @@ export const usePedidoStore = defineStore('pedido', () => {
   }
 
   async function finalizarPedido(id) {
+    
     try {
       await pedidoService.finalizar(id)
       pedidoAtual.value = null
       toast.success('Pedido finalizado com sucesso!')
+
     } catch (error) {
       console.error('Erro ao finalizar pedido:', error)
       toast.error('Erro ao finalizar pedido.')
