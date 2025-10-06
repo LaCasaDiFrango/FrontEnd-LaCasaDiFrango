@@ -19,7 +19,7 @@ import FileIcon from '@/assets/img/file.png'
         Retirada de Encomendas: <strong>9:00 a 12:30</strong>
       </p>
     </AlertaHorario>
-
+    <div class="buttonHistoria"  @click="$router.push('/historia')">
     <AlertaHorario title="Nossa História" :icon="FileIcon">
       <p class="alert-text">
         Conheça nossa história de <strong>31 anos</strong> de
@@ -27,12 +27,8 @@ import FileIcon from '@/assets/img/file.png'
       <p class="alert-text">
         comércio, nossa equipe e algumas lembranças.
       </p>
-      <router-link to="/historia" class="historia-link">
-        <button class="historia-button">
-          <span>Ver História</span>
-        </button>
-      </router-link>
     </AlertaHorario>
+    </div>
 
     <LocalizacaoMapa />
     <ContatoRedes
@@ -55,24 +51,19 @@ import FileIcon from '@/assets/img/file.png'
   margin: 0;
 }
 
-.historia-button {
-  margin-top: 15px;
-  position: relative;
-  display: inline-block;
-  padding: 10px 25px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #fff;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  border: none;
-  border-radius: 50px;
-  background: linear-gradient(45deg, #004d40, #00695c, #1b5e20);
-  background-size: 300% 300%;
+.buttonHistoria {
   cursor: pointer;
-  transition: all 0.4s ease-in-out;
-  animation: gradientMove 5s ease infinite;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-  overflow: hidden;
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+padding: .1rem 0;
+  border-radius: 4px;
+  max-width: 90%;
+  margin: auto;
+  transition: all 0.3s ease;
+}
+
+.buttonHistoria:hover {
+  background-color: #f9f9f9;
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
 }
 </style>
