@@ -65,7 +65,7 @@ const filteredCategories = computed(() => {
   display: flex;
   flex-direction: column;
   align-items: start;
-  gap: 15px;
+  gap: 20px;
   justify-content: center;
 }
 .cardapioMain {
