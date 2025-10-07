@@ -108,7 +108,20 @@ const router = createRouter({
       path: '/historia',
       name: 'historia',
       component: HistoriaView,
-    }
+    },
+        {
+      path: '/dashboard',
+      name: 'admin',
+      meta: { requiresAdmin: true },
+      children: [
+        {
+          path: '',
+          name: 'Painel Administrativo',
+          component: () => import('@/views/admin/HomeView.vue')
+        },
+      ],
+    },
+
   ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {

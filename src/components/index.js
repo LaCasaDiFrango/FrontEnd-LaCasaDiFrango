@@ -53,6 +53,21 @@ import PedidoSemItens from "./convidado/PedidoSemItens.vue";
 //pedido
 import PedidoCupom from "./pedido/PedidoCupom.vue";
 
+//admin
+import NavLateralAdmin from "./admin/navbar/NavLateralAdmin.vue";
+import NavLateralResponsive from "./admin/navbar/NavLateralResponsive.vue";
+import NavbarAdminMenu from "./admin/navbar/NavbarAdminMenu.vue";
+import NavbarAdminUser from "./admin/navbar/NavbarAdminUser.vue";
+import NavbarDropdown from "./admin/dropdown/NavbarDropdown.vue";
+import ButtonActionAdmin from "./admin/buttons/ButtonActionAdmin.vue";
+import ButtonDropdown from "./admin/dropdown/ButtonDropdown.vue";
+import InputDateAdmin from "./admin/inputs/InputDateAdmin.vue";
+import InputImageAdmin from "./admin/inputs/InputImageAdmin.vue";
+import InputSelectAdmin from "./admin/inputs/InputSelectAdmin.vue";
+import InputStringAdmin from "./admin/inputs/InputStringAdmin.vue";
+import TitleAdmin from "./admin/layouts/TitleAdmin.vue";
+
+
 //loading
 import LoadingPage from "./loading/LoadingPage.vue";
 
@@ -93,5 +108,17 @@ export {
   PedidoSemItens,
   GaleriaCarousel,
   PedidoCupom,
-  LoadingPage
+  NavLateralAdmin,
+  NavLateralResponsive,
+  NavbarAdminMenu,
+  NavbarAdminUser,
+  NavbarDropdown,
+  ButtonDropdown,
+  ButtonActionAdmin,
+  InputDateAdmin,
+  InputImageAdmin,
+  InputSelectAdmin,
+  InputStringAdmin,
+  TitleAdmin,
+  LoadingPage,
 };
