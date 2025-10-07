@@ -66,6 +66,7 @@ import InputImageAdmin from "./admin/inputs/InputImageAdmin.vue";
 import InputSelectAdmin from "./admin/inputs/InputSelectAdmin.vue";
 import InputStringAdmin from "./admin/inputs/InputStringAdmin.vue";
 import TitleAdmin from "./admin/layouts/TitleAdmin.vue";
+import InfoCardAdmin from "./admin/layouts/InfoCardAdmin.vue";
 
 
 //loading
@@ -121,4 +122,5 @@ export {
   InputStringAdmin,
   TitleAdmin,
   LoadingPage,
+  InfoCardAdmin,
 };
