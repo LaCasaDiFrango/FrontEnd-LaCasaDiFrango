@@ -15,6 +15,9 @@ import { useToastStore } from './toast' // import da store do toast
 import { useNavBarAdminStore } from './admin/navbar_admin'
 import { useActionSelectorStore } from './admin/button_action_admin'
 
+//loading
+import { useUiStore } from './ui'
+
 export {
   useAuthStore,
   useCardapioStore,
@@ -24,4 +27,5 @@ export {
   useUserStore,
   useNavBarAdminStore,
   useActionSelectorStore,
+  useUiStore,
 }

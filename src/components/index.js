@@ -67,6 +67,10 @@ import InputSelectAdmin from "./admin/inputs/InputSelectAdmin.vue";
 import InputStringAdmin from "./admin/inputs/InputStringAdmin.vue";
 import TitleAdmin from "./admin/layouts/TitleAdmin.vue";
 
+
+//loading
+import LoadingPage from "./loading/LoadingPage.vue";
+
 export {
   AuthButton,
   BackButton,
@@ -116,4 +120,5 @@ export {
   InputSelectAdmin,
   InputStringAdmin,
   TitleAdmin,
+  LoadingPage,
 };

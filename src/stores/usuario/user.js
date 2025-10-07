@@ -22,6 +22,7 @@ export const useUserStore = defineStore('user', {
         localStorage.setItem('user', JSON.stringify(auth.user))
 
         toast.success('Usuário atualizado com sucesso!')
+      
       } catch (error) {
         console.error('Erro ao atualizar usuário:', error)
         toast.error('Falha ao atualizar usuário. Tente novamente.')
