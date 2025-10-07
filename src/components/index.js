@@ -65,6 +65,7 @@ import InputDateAdmin from "./admin/inputs/InputDateAdmin.vue";
 import InputImageAdmin from "./admin/inputs/InputImageAdmin.vue";
 import InputSelectAdmin from "./admin/inputs/InputSelectAdmin.vue";
 import InputStringAdmin from "./admin/inputs/InputStringAdmin.vue";
+import TitleAdmin from "./admin/layouts/TitleAdmin.vue";
 
 export {
   AuthButton,
@@ -114,4 +115,5 @@ export {
   InputImageAdmin,
   InputSelectAdmin,
   InputStringAdmin,
+  TitleAdmin,
 };

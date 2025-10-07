@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia'
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import imageBone from '@/assets/img/admin/bone-svgrepo-com.svg'
-import ImageLamina from '@/assets/img/admin/microscope-svgrepo-com.svg'
+import imageFluxo from '@/assets/img/admin/money-cash-svgrepo-com.svg'
+import ImagePedido from '@/assets/img/admin/order-svgrepo-com.svg'
 import ImageDocument from '@/assets/img/admin/document-svgrepo-com.svg'
 import ImageUser from '@/assets/img/admin/users-svgrepo-com.svg'
 import ImageTest from '@/assets/img/admin/test-svgrepo-com.svg'
-import ImagePet from '@/assets/img/admin/pet-svgrepo-com.svg'
+import ImageEstoque from '@/assets/img/admin/inventorymajor-svgrepo-com.svg'
 import ImageSystem from '@/assets/img/admin/dog-svgrepo-com.svg'
 import ImageLogout from '@/assets/img/admin/logout-svgrepo-com.svg'
 import ImageReturn from '@/assets/img/admin/arrow-back-svgrepo-com.svg'
@@ -26,33 +26,14 @@ export const useNavBarAdminStore = defineStore('navbarAdminStore', () => {
 
   const menuSections = ref([
     {
-      title: 'Portal',
+      title: 'Sistema',
       items: [
-        { label: 'Geral', icon: ImageMenu, to:('')},
-        { label: 'Órgãos', icon: imageBone, to:('')},
-        { label: 'Lâminas', icon: ImageLamina, to:('')},
-        { label: 'Espécies', icon: ImagePet, to:('')},
-        { label: 'Sistemas', icon: ImageSystem, to:('')}
+        { label: 'Estoque', icon: ImageEstoque, to:('/dashboard/estoque')},
+        { label: 'Fluxo do Caixa', icon: imageFluxo, to:('/dashboard/fluxo')},
+        { label: 'Pedidos', icon: ImagePedido, to:('/dashboard/pedidos')},
+        { label: 'Usuários', icon: ImageUser, to:('/dashboard/usuarios')},
       ]
     },
-    // {
-    //   title: 'Usuários',
-    //   items: [
-    //     { label: 'Usuários', icon: ImageUser, to: '/admin/users' }
-    //   ]
-    // },
-    {
-      title: 'Quiz',
-      items: [
-        { label: 'Perguntas', icon: ImageTest, to: '' }
-      ]
-    },
-    {
-      title: 'Material de Suporte',
-      items: [
-        { label: 'Conteúdos', icon: ImageDocument, to: '' }
-      ]
-    }
   ])
 
     function navigateTo(to) {
@@ -88,7 +69,7 @@ export const useNavBarAdminStore = defineStore('navbarAdminStore', () => {
       {
         label: 'Voltar ao site',
         icon: ImageReturn,
-        to: '' // modifique para o caminho correto do site
+        to: '/home' // modifique para o caminho correto do site
       }
     ]
   }

@@ -7,6 +7,7 @@ import {
   InputImageAdmin,
   InputSelectAdmin,
   InputStringAdmin,
+  TitleAdmin,
 } from '@/components/index'
 
 const nome = ref('')
@@ -48,7 +49,12 @@ function handleAddClick() {
   <div class="flex">
     <NavLateralAdmin />
     <main class="flex-1 p-6 space-y-6">
-      <ButtonActionAdmin
+    <TitleAdmin title="Painel Administrativo" subtitle="Veja um resumo do que há cadastrado no Sistema"/>
+
+
+
+
+      <!--<ButtonActionAdmin
         title="Adicionar"
         :showDropdown="showDropdown"
         :options="options"
@@ -65,7 +71,7 @@ function handleAddClick() {
         <div class="md:col-span-2">
           <InputImageAdmin label="Imagem" :modelValue="imagem" @action="imagem = $event"/>
         </div>
-      </form>
+      </form>-->
     </main>
   </div>
 </template>
