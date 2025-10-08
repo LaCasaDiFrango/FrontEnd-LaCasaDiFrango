@@ -6,9 +6,20 @@ import App from './App.vue';
 import router from './router';
 import axios from 'axios';
 import '@passageidentity/passage-elements';
-
+import { registerSW } from 'virtual:pwa-register'
 import Toast, { POSITION } from "vue-toastification";
 import "vue-toastification/dist/index.css";
+
+const updateSW = registerSW({
+  onNeedRefresh() {
+    if (confirm('Nova versão disponível! Deseja atualizar agora?')) {
+      updateSW(true)
+    }
+  },
+  onOfflineReady() {
+    console.log('App pronto para uso offline!')
+  },
+})
 
 
 async function bootstrap() {
