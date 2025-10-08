@@ -1,58 +1,86 @@
 <script setup>
-import { ref } from 'vue'
-import {
-  NavLateralAdmin,
-  ButtonActionAdmin,
-  InputDateAdmin,
-  InputImageAdmin,
-  InputSelectAdmin,
-  InputStringAdmin,
-  TitleAdmin,
-} from '@/components/index'
+import { onMounted } from 'vue'
+import { useDashboardStore } from '@/stores'
 
-const nome = ref('')
-const nivelEducacao = ref('medio')
-const dataAnalise = ref('')
-const imagem = ref(null)
+import { NavLateralAdmin, InfoCardAdmin, TitleAdmin } from '@/components/index'
 
-const opcoesEducacao = [
-  { label: 'Fundamental', value: 'fundamental' },
-  { label: 'Médio', value: 'medio' },
-  { label: 'Superior', value: 'superior' },
-]
+import imageFluxo from '@/assets/img/admin/money-cash-svgrepo-com.svg'
+import imagePedido from '@/assets/img/admin/order-svgrepo-com.svg'
+import imageUser from '@/assets/img/admin/users-svgrepo-com.svg'
+import imageEstoque from '@/assets/img/admin/inventorymajor-svgrepo-com.svg'
 
-const showDropdown = ref(false)
+const dashboardStore = useDashboardStore()
 
-// ações definidas no pai
-function adicionarProduto() {
-  // aqui pode abrir modal, navegar, chamar API, etc
-  console.log('Executando: adicionar produto')
-}
-function adicionarCliente() {
-  console.log('Executando: adicionar cliente')
-}
-
-const options = ref([
-  { label: 'Adicionar produto', action: adicionarProduto },
-  { label: 'Adicionar cliente', action: adicionarCliente }
-])
-
-const selectedOption = ref(null) // ou options.value[0] para já ter uma selecionada
-
-function handleAddClick() {
-  // toggle do dropdown quando não há opção selecionada
-  showDropdown.value = !showDropdown.value
-}
+onMounted(() => {
+  dashboardStore.fetchDashboardData()
+})
 </script>
 
 <template>
   <div class="flex">
     <NavLateralAdmin />
     <main class="flex-1 p-6 space-y-6">
-    <TitleAdmin title="Painel Administrativo" subtitle="Veja um resumo do que há cadastrado no Sistema"/>
+      <TitleAdmin
+        title="Painel Administrativo"
+        subtitle="Veja um resumo do que há cadastrado no Sistema"
+      />
+      <div class="flex gap-6">
+        <InfoCardAdmin
+          title="Usuários"
+          :value="`${dashboardStore.usuarios} Clientes`"
+          :subtitle="
+            dashboardStore.lastUpdatedUsuarios
+              ? `Atualizado às ${new Date(dashboardStore.lastUpdatedUsuarios).toLocaleTimeString(
+                  [],
+                  { hour: '2-digit', minute: '2-digit' }
+                )}`
+              : 'Atualizando...'
+          "
+          :icon="imageUser"
+          color="bg-green-400"
+          link="/usuarios"
+        />
 
+        <InfoCardAdmin
+          title="Estoque"
+          :value="`${dashboardStore.produtos} Produtos`"
+          :subtitle="
+            dashboardStore.lastUpdatedPedidos
+              ? `Atualizado às ${new Date(dashboardStore.lastUpdatedPedidos).toLocaleTimeString(
+                  [],
+                  { hour: '2-digit', minute: '2-digit' }
+                )}`
+              : 'Atualizando...'"
+          :icon="imageEstoque"
+          color="bg-yellow-400"
+          link="/estoque"
+        />
 
+        <InfoCardAdmin
+          title="Fluxo de Caixa"
+          :value="`R$${dashboardStore.fluxo}`"
+          subtitle="Movimentação do dia"
+          :icon="imageFluxo"
+          color="bg-blue-400"
+          link="/fluxo"
+        />
 
+        <InfoCardAdmin
+          title="Pedidos"
+          :value="`${dashboardStore.pedidos} Realizados`"
+          :subtitle="
+            dashboardStore.lastUpdatedPedidos
+              ? `Atualizado às ${new Date(dashboardStore.lastUpdatedPedidos).toLocaleTimeString(
+                  [],
+                  { hour: '2-digit', minute: '2-digit' }
+                )}`
+              : 'Atualizando...'
+          "
+          :icon="imagePedido"
+          color="bg-orange-400"
+          link="/pedidos"
+        />
+      </div>
 
       <!--<ButtonActionAdmin
         title="Adicionar"
@@ -77,5 +105,4 @@ function handleAddClick() {
 </template>
 
 <style scoped>
-
 </style>

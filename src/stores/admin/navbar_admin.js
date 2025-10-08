@@ -28,10 +28,10 @@ export const useNavBarAdminStore = defineStore('navbarAdminStore', () => {
     {
       title: 'Sistema',
       items: [
-        { label: 'Estoque', icon: ImageEstoque, to:('/dashboard/estoque')},
-        { label: 'Fluxo do Caixa', icon: imageFluxo, to:('/dashboard/fluxo')},
-        { label: 'Pedidos', icon: ImagePedido, to:('/dashboard/pedidos')},
-        { label: 'Usuários', icon: ImageUser, to:('/dashboard/usuarios')},
+        { label: 'Estoque', to:('/dashboard/estoque')},
+        { label: 'Fluxo do Caixa', to:('/dashboard/fluxo')},
+        { label: 'Pedidos', to:('/dashboard/pedidos')},
+        { label: 'Usuários', to:('/dashboard/usuarios')},
       ]
     },
   ])
