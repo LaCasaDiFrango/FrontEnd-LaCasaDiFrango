@@ -78,7 +78,7 @@ export const useAuthStore = defineStore('auth', () => {
   // Getters reativos para facilitar verificação de permissões
   const isGuest = computed(() => user.value.perfil === 'convidado');
   const isAdmin = computed(() => user.value.perfil === 'administrador');
-  const isUser = computed(() => user.value.perfil === 'usuario');
+  const isUser = computed(() => user.value.perfil === 'usuario' || user.value.perfil === 'administrador');
 
   // Salva automaticamente o usuário no localStorage (exceto convidado)
   watch(user, (val) => {

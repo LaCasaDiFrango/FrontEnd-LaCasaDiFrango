@@ -21,7 +21,7 @@ function irParaDetalhe() {
     <img :src="image" :alt="nome" />
     <div class="itemInfo">
       <h4>{{ nome }}</h4>
-      <span>{{ preco }}</span>
+      <span>R$ {{ preco }}</span>
     </div>
   </div>
 </template>
@@ -30,7 +30,7 @@ function irParaDetalhe() {
 .cardapioItem {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 30px;
   padding-bottom: 20px;
   border-bottom: 2px solid #ccc;
   cursor: pointer;
@@ -45,16 +45,17 @@ function irParaDetalhe() {
 .itemInfo {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 7px;
 }
 
 .itemInfo h4 {
-  font-size: 20px;
+  font-size: 18px;
   color: #333;
 }
 
 .itemInfo span {
-  font-size: 18px;
+  font-size: 15px;
   color: #000;
+  font-weight: 700;
 }
 </style>
