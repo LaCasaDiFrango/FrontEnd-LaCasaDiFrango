@@ -1,33 +1,41 @@
 <script setup>
-import { ref } from 'vue'
-import {
-  NavLateralAdmin,
-  ButtonActionAdmin,
-  InputDateAdmin,
-  InputImageAdmin,
-  InputSelectAdmin,
-  InputStringAdmin,
-  TitleAdmin,
-  InfoCardAdmin,
-} from '@/components/index'
+import { onMounted } from 'vue'
+import { useDashboardStore } from '@/stores'
+
+import { NavLateralAdmin, InfoCardAdmin, TitleAdmin } from '@/components/index'
 
 import imageFluxo from '@/assets/img/admin/money-cash-svgrepo-com.svg'
 import imagePedido from '@/assets/img/admin/order-svgrepo-com.svg'
 import imageUser from '@/assets/img/admin/users-svgrepo-com.svg'
 import imageEstoque from '@/assets/img/admin/inventorymajor-svgrepo-com.svg'
 
+const dashboardStore = useDashboardStore()
+
+onMounted(() => {
+  dashboardStore.fetchDashboardData()
+})
 </script>
 
 <template>
   <div class="flex">
     <NavLateralAdmin />
     <main class="flex-1 p-6 space-y-6">
-    <TitleAdmin title="Painel Administrativo" subtitle="Veja um resumo do que há cadastrado no Sistema"/>
-  <div class="flex gap-6">
+      <TitleAdmin
+        title="Painel Administrativo"
+        subtitle="Veja um resumo do que há cadastrado no Sistema"
+      />
+      <div class="flex gap-6">
         <InfoCardAdmin
           title="Usuários"
-          value="23 Clientes"
-          subtitle="Última atualização há 1 hora"
+          :value="`${dashboardStore.usuarios} Clientes`"
+          :subtitle="
+            dashboardStore.lastUpdatedUsuarios
+              ? `Atualizado às ${new Date(dashboardStore.lastUpdatedUsuarios).toLocaleTimeString(
+                  [],
+                  { hour: '2-digit', minute: '2-digit' }
+                )}`
+              : 'Atualizando...'
+          "
           :icon="imageUser"
           color="bg-green-400"
           link="/usuarios"
@@ -35,8 +43,15 @@ import imageEstoque from '@/assets/img/admin/inventorymajor-svgrepo-com.svg'
 
         <InfoCardAdmin
           title="Estoque"
-          value="102 Produtos"
-          subtitle="Última atualização hoje às 13:05"
+          :value="`${dashboardStore.produtos} Produtos`"
+          :subtitle="
+            dashboardStore.lastUpdatedPedidos
+              ? `Atualizado às ${new Date(dashboardStore.lastUpdatedPedidos).toLocaleTimeString(
+                  [],
+                  { hour: '2-digit', minute: '2-digit' }
+                )}`
+              : 'Atualizando...'
+          "
           :icon="imageEstoque"
           color="bg-yellow-400"
           link="/estoque"
@@ -44,7 +59,7 @@ import imageEstoque from '@/assets/img/admin/inventorymajor-svgrepo-com.svg'
 
         <InfoCardAdmin
           title="Fluxo de Caixa"
-          value="R$2700"
+          :value="`R$${dashboardStore.fluxo}`"
           subtitle="Movimentação do dia"
           :icon="imageFluxo"
           color="bg-blue-400"
@@ -53,17 +68,20 @@ import imageEstoque from '@/assets/img/admin/inventorymajor-svgrepo-com.svg'
 
         <InfoCardAdmin
           title="Pedidos"
-          value="54 Entregues"
-          subtitle="Última atualização há 2h"
+          :value="`${dashboardStore.pedidos} Realizados`"
+          :subtitle="
+            dashboardStore.lastUpdatedPedidos
+              ? `Atualizado às ${new Date(dashboardStore.lastUpdatedPedidos).toLocaleTimeString(
+                  [],
+                  { hour: '2-digit', minute: '2-digit' }
+                )}`
+              : 'Atualizando...'
+          "
           :icon="imagePedido"
           color="bg-orange-400"
           link="/pedidos"
         />
       </div>
-
-
-
-
 
       <!--<ButtonActionAdmin
         title="Adicionar"
@@ -88,5 +106,4 @@ import imageEstoque from '@/assets/img/admin/inventorymajor-svgrepo-com.svg'
 </template>
 
 <style scoped>
-
 </style>
