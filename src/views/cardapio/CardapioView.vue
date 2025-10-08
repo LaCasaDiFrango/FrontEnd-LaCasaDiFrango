@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useCardapioStore, useUiStore } from '@/stores'
-import { NavBar, CardapioCategory, TitlePages, SearchBar, LoadingPage } from '@/components/index'
+import { NavBar, CardapioCategory, TitlePages, SearchBar, LoadingPage, CardapioNavbar } from '@/components/index'
 
 const cardapioStore = useCardapioStore()
 const ui = useUiStore()  // 👈 aqui
@@ -30,6 +30,14 @@ const filteredCategories = computed(() => {
     })
     .filter(cat => cat.items.length > 0)
 })
+
+const slugify = (str) =>
+  str
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, '-')
+
 </script>
 
 <template>
@@ -46,12 +54,15 @@ const filteredCategories = computed(() => {
       placeholder="Procure em nosso cardápio"
     />
 
+    <CardapioNavbar />
+
     <section class="cardapioMain">
       <CardapioCategory
         v-for="cat in filteredCategories"
         :key="cat.categoryName"
         :categoryName="cat.categoryName"
         :items="cat.items"
+        :id="slugify(cat.categoryName)" 
       />
     </section>
 
