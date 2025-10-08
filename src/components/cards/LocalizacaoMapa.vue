@@ -1,8 +1,13 @@
 <template>
   <div class="localizacao-container">
-    <img src="/src/assets/img/lugar-colocar.png" alt="Localização" class="localizacao-icon" />
+    <img
+      src="/src/assets/img/lugar-colocar.png"
+      alt="Localização"
+      class="localizacao-icon"
+    />
+
     <p class="localizacao-text">
-      Saiba Nossa Localização Acompanhando o<br />
+      Saiba nossa localização acompanhando o<br />
       mapa abaixo
     </p>
 
@@ -18,36 +23,45 @@
   </div>
 </template>
 
-
 <style scoped>
 .localizacao-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  margin: 52px 0;
+  margin: 52px auto;
+  padding: 16px;
+  max-width: 90%;
+
 }
 
 .localizacao-icon {
   width: 55px;
   height: 55px;
-  margin-bottom: 17px;
+  margin-bottom: 12px;
+  display: block;
 }
 
 .localizacao-text {
-  font-size: 14px;
+  font-size: 15px;
   color: #333;
-  margin-bottom: 29px;
+  margin-bottom: 24px;
+  line-height: 1.4;
 }
 
 .mapa-wrapper {
-  max-width: 100%;
-  padding: 0 16px;
+  width: 100%;
   display: flex;
   justify-content: center;
 }
 
 .mapa-frame {
-  width: 320px;
-  height: 200px;
+  width: 100%;
+  max-width: 400px;
+  height: 250px;
   border: 0;
   border-radius: 12px;
+ 
 }
 </style>

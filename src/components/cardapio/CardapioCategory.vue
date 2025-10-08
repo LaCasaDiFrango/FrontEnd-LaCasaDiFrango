@@ -32,5 +32,6 @@ defineProps({
 .categoriaCardapio h3 {
   font-size: 24px;
   color: #333;
+  font-weight: 600;
 }
 </style>
