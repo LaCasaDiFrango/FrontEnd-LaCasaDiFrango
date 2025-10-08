@@ -68,7 +68,7 @@ const scrollToSection = (id) => {
 
 
 .carousel-item {
-  flex: 0 0 calc(25% - 16px); /* mostra 3 por vez */
+  flex: 0 0 calc(29.333% - 16px); /* mostra 3 por vez */
   scroll-snap-align: start;
   text-align: center;
   border: none;
