@@ -6,9 +6,20 @@ import App from './App.vue';
 import router from './router';
 import axios from 'axios';
 import '@passageidentity/passage-elements';
-
+import { registerSW } from 'virtual:pwa-register'
 import Toast, { POSITION } from "vue-toastification";
 import "vue-toastification/dist/index.css";
+
+const updateSW = registerSW({
+  onNeedRefresh() {
+    if (confirm('Nova versão disponível! Deseja atualizar agora?')) {
+      updateSW(true)
+    }
+  },
+  onOfflineReady() {
+    console.log('App pronto para uso offline!')
+  },
+})
 
 
 async function bootstrap() {
@@ -43,6 +54,17 @@ app.use(Toast, {
 });
 
   app.mount('#app');
+
+ if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/service-worker.js')
+      .then(() => console.log('✅ Service Worker registrado com sucesso!'))
+      .catch((err) => console.log('❌ Erro ao registrar Service Worker:', err));
+  });
+}
+
+
 
   // ✅ Escuta login do Passage e pega token
   const passage = document.querySelector('passage-auth');
