@@ -1,25 +1,42 @@
 <script setup>
-import { HistoriaBanner, GaleriaCarousel, BackButton } from '@/components/index'
+import { HistoriaBanner, GaleriaCarousel, BackButton } from '@/components'
 import router from '@/router'
 
+// 🔹 Imagens corretamente importadas para produção Vercel
+import inicio1 from '@/assets/img/GaleriaFrango/referencia.jpg'
+import inicio2 from '@/assets/img/GaleriaFrango/inauguração 2.jpg'
+import inicio3 from '@/assets/img/GaleriaFrango/inauguração 3.jpg'
+import inicio4 from '@/assets/img/GaleriaFrango/inauguração.jpg'
+
+import primeiros1 from '@/assets/img/GaleriaFrango/frente muito mais velha.jpg'
+import primeiros2 from '@/assets/img/GaleriaFrango/maquinas.jpg'
+import primeiros3 from '@/assets/img/GaleriaFrango/primeiros dias.jpg'
+import primeiros4 from '@/assets/img/GaleriaFrango/frente velha.jpg'
+
+import recentes1 from '@/assets/img/GaleriaFrango/frente media.jpg'
+import recentes2 from '@/assets/img/GaleriaFrango/equipe.jpg'
+import recentes3 from '@/assets/img/GaleriaFrango/equipe frente.jpg'
+
+import logoImg from '@/assets/img/logo.png' 
+
 const inicioImages = [
-  { src: '/src/assets/img/GaleriaFrango/referencia.jpg', alt: 'História 1' },
-  { src: '/src/assets/img/GaleriaFrango/inauguração 2.jpg', alt: 'História 2' },
-  { src: '/src/assets/img/GaleriaFrango/inauguração 3.jpg', alt: 'História 3' },
-  { src: '/src/assets/img/GaleriaFrango/inauguração.jpg', alt: 'História 4' },
+  { src: inicio1, alt: 'História 1' },
+  { src: inicio2, alt: 'História 2' },
+  { src: inicio3, alt: 'História 3' },
+  { src: inicio4, alt: 'História 4' },
 ]
 
 const primeirosAnosImages = [
-  { src: '/src/assets/img/GaleriaFrango/frente muito mais velha.jpg', alt: 'História 5' },
-  { src: '/src/assets/img/GaleriaFrango/maquinas.jpg', alt: 'História 6' },
-  { src: '/src/assets/img/GaleriaFrango/primeiros dias.jpg', alt: 'História 7' },
-  { src: '/src/assets/img/GaleriaFrango/frente velha.jpg', alt: 'História 8' },
+  { src: primeiros1, alt: 'História 5' },
+  { src: primeiros2, alt: 'História 6' },
+  { src: primeiros3, alt: 'História 7' },
+  { src: primeiros4, alt: 'História 8' },
 ]
 
 const temposRecentesImages = [
-  { src: '/src/assets/img/GaleriaFrango/frente media.jpg', alt: 'História 9' },
-  { src: '/src/assets/img/GaleriaFrango/equipe.jpg', alt: 'História 10' },
-  { src: '/src/assets/img/GaleriaFrango/equipe frente.jpg', alt: 'História 11' },
+  { src: recentes1, alt: 'História 9' },
+  { src: recentes2, alt: 'História 10' },
+  { src: recentes3, alt: 'História 11' },
 ]
 </script>
 
@@ -48,9 +65,9 @@ const temposRecentesImages = [
     </p>
     <GaleriaCarousel :imagens="inicioImages" />
     <p>
-      Em meio a essa fase desafiadora, decidiram visitar familiares em Curitiba. Foi nessa viagem
+      Em meio a essa fase desafiadora, decidiram visitar familiares em Videira (SC). Foi nessa viagem
       que descobriram uma novidade que chamava a atenção: a venda de frango assado. Algo simples,
-      mas inovador para a época, especialmente porque em Joinville ainda não existia esse tipo de
+      mas inovador para a época, especialmente porque em Joinville eram poucos que forneciam esse tipo de
       serviço. Eles voltaram para casa com uma ideia na cabeça: levar esse sabor para a nossa cidade
       e conquistar os joinvilenses com qualidade e carinho.
     </p>
@@ -73,7 +90,7 @@ const temposRecentesImages = [
     <p>
       No dia 7 de setembro de 1995, nascia a La Casa Di Frango. A inauguração foi marcada por uma
       festa simples, mas cheia de significado, reunindo cerca de 30 pessoas – vizinhos, amigos da
-      igreja e familiares. Naquele primeiro dia, saíram do forno apenas 4 frangos e 2 espetos de
+      igreja e familiares. Naquele primeiro dia, saíram do forno apenas 7 frangos e 2 espetos de
       costela, preparados com dedicação e esperança.
     </p>
      <GaleriaCarousel :imagens="primeirosAnosImages" />
@@ -126,7 +143,7 @@ const temposRecentesImages = [
     </p>
   </div>
 
-  <img class="logo" src="/src/assets/img/logo.png" alt="" />
+  <img class="logo" :src="logoImg" alt="Logo La Casa Di Frango" />
 </template>
 
 <style scoped>
