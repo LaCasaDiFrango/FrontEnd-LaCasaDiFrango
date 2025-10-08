@@ -50,8 +50,7 @@ onMounted(() => {
                   [],
                   { hour: '2-digit', minute: '2-digit' }
                 )}`
-              : 'Atualizando...'
-          "
+              : 'Atualizando...'"
           :icon="imageEstoque"
           color="bg-yellow-400"
           link="/estoque"
