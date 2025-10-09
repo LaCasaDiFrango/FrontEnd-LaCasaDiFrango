@@ -32,8 +32,8 @@ import FileIcon from '@/assets/img/file.png'
 
     <LocalizacaoMapa />
     <ContatoRedes
-      :whatsapp="{ href: 'https://wa.me/5547999112233', text: '(47) 99991-12233' }"
-      :instagram="{ href: 'https://instagram.com/minhaempresa', text: '@lacasadifrango' }"
+      :whatsapp="{ href: 'https://wa.me/5547999942292', text: '(47) 99994-2292' }"
+      :instagram="{ href: 'https://instagram.com/lacasadifrangojoinville', text: '@lacasadifrangojoinville' }"
     />
   </div>
 </template>
