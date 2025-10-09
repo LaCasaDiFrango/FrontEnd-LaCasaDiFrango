@@ -11,7 +11,7 @@ defineProps({
 
 <template>
   <div
-    class="bg-white rounded-2xl shadow-md border border-gray-100 p-5 flex flex-col justify-between transition hover:shadow-lg w-full"
+    class="bg-white rounded-2xl shadow-md border border-gray-100 p-5 flex flex-col justify-between transition min-w-[325px] hover:shadow-lg"
   >
     <!-- Topo -->
     <div class="flex items-center justify-between">
@@ -22,7 +22,7 @@ defineProps({
 
       <button
         class="text-black-400 text-sm hover:text-black-800 flex items-center gap-1 transition flex items-center justify-center"
-      >
+        @click="$router.push(link)">
         <span>Ver mais</span>
         <img src="@/assets/img/left-chevron.png" alt="Seta Esquerda" class="w-4 h-4 rotate-180" />
       </button>

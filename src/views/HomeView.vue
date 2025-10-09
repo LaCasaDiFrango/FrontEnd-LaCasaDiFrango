@@ -1,5 +1,12 @@
 <script setup>
-import { CategoryNav, BannerCarousel, FrangoCard, AlertaHorario, LocalizacaoMapa, ContatoRedes } from '@/components/index'
+import {
+  CategoryNav,
+  BannerCarousel,
+  FrangoCard,
+  AlertaHorario,
+  LocalizacaoMapa,
+  ContatoRedes,
+} from '@/components/index'
 import WarningIcon from '@/assets/img/warning-sign.png'
 import FileIcon from '@/assets/img/file.png'
 </script>
@@ -12,22 +19,15 @@ import FileIcon from '@/assets/img/file.png'
     <FrangoCard />
 
     <AlertaHorario title="ATENÇÃO" :icon="WarningIcon">
-      <p class="alert-text">
-        Horário de Funcionamento: <strong>Quarta a Domingo</strong>
-      </p>
-      <p class="alert-text">
-        Retirada de Encomendas: <strong>9:00 a 12:30</strong>
-      </p>
+      <p class="alert-text">Horário de Funcionamento: <strong>Quarta a Domingo</strong></p>
+      <p class="alert-text">Retirada de Encomendas: <strong>9:00 a 12:30</strong></p>
     </AlertaHorario>
-    <div class="buttonHistoria"  @click="$router.push('/historia')">
-    <AlertaHorario title="Nossa História" :icon="FileIcon">
-      <p class="alert-text">
-        Conheça nossa história de <strong>31 anos</strong> de
-      </p>
-      <p class="alert-text">
-        comércio, nossa equipe e algumas lembranças.
-      </p>
-    </AlertaHorario>
+    <div class="buttonHistoria" @click="$router.push('/historia')">
+      <AlertaHorario title="Nossa História" :icon="FileIcon">
+        <p class="alert-text">Conheça nossa história de <strong>31 anos</strong> de</p>
+        <p class="alert-text">comércio, nossa equipe e algumas lembranças.</p>
+        <p class="button-text">Ver mais</p>
+      </AlertaHorario>
     </div>
 
     <LocalizacaoMapa />
@@ -52,9 +52,10 @@ import FileIcon from '@/assets/img/file.png'
 }
 
 .buttonHistoria {
+  position: relative;
   cursor: pointer;
-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-padding: .1rem 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 0.1rem 0;
   border-radius: 4px;
   max-width: 90%;
   margin: auto;
@@ -65,5 +66,15 @@ padding: .1rem 0;
   background-color: #f9f9f9;
   transform: translateY(-2px);
   transition: all 0.3s ease;
+}
+.button-text {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  font-size: 14px;
+  color: #1d4523;
+  text-decoration: underline;
+  font-weight: 600;
+  cursor: pointer;
 }
 </style>
