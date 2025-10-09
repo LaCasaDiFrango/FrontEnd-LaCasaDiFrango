@@ -26,4 +26,8 @@ export default class ProdutoService {
     const response = await axios.delete(`/produtos/${id}/`);
     return response.status === 204;
   }
+    async getMaisVendidos() {
+    const response = await axios.get('/produtos/mais_vendidos/');
+    return response.data;
+  }
 }

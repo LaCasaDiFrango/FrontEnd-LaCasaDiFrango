@@ -8,8 +8,9 @@ export const useDashboardStore = defineStore('dashboard', () => {
   const produtos = ref(0)
   const pedidos = ref(0)
   const fluxo = ref(0)
-  const loading = ref(false)
   const error = ref(null)
+
+  const produtosMaisVendidos = ref([]) // novo estado
 
   // novos estados para armazenar o horário de atualização individual
   const lastUpdatedUsuarios = ref(null)
@@ -28,14 +29,14 @@ export const useDashboardStore = defineStore('dashboard', () => {
 
   // função principal para atualizar os dados
   async function fetchDashboardData() {
-    loading.value = true
     error.value = null
 
     try {
-      const [usuariosData, produtosData, pedidosData] = await Promise.all([
+      const [usuariosData, produtosData, pedidosData, produtosVendidosData] = await Promise.all([
         userService.getAll(),
         produtoService.getAll(),
         pedidoService.getAll(),
+        produtoService.getMaisVendidos(), // novo
       ])
 
       // atualizar usuários
@@ -59,13 +60,14 @@ export const useDashboardStore = defineStore('dashboard', () => {
         lastUpdatedPedidos.value = new Date()
       }
 
+      // atualizar produtos mais vendidos
+      produtosMaisVendidos.value = produtosVendidosData
+
       fluxo.value = 2700 // ainda está estático
 
     } catch (err) {
       console.error('[DashboardStore] Erro ao buscar dados:', err)
       error.value = 'Falha ao carregar os dados do painel.'
-    } finally {
-      loading.value = false
     }
   }
 
@@ -75,8 +77,8 @@ export const useDashboardStore = defineStore('dashboard', () => {
     produtos,
     pedidos,
     fluxo,
-    loading,
     error,
+    produtosMaisVendidos,
     lastUpdatedUsuarios,
     lastUpdatedProdutos,
     lastUpdatedPedidos,

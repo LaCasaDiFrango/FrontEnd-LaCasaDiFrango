@@ -2,7 +2,13 @@
 import { onMounted } from 'vue'
 import { useDashboardStore } from '@/stores'
 
-import { NavLateralAdmin, InfoCardAdmin, TitleAdmin, TopProdutosTableAdmin, TopProdutosChart } from '@/components/index'
+import {
+  NavLateralAdmin,
+  InfoCardAdmin,
+  TitleAdmin,
+  TopProdutosTableAdmin,
+  TopProdutosChart,
+} from '@/components/index'
 
 import imageFluxo from '@/assets/img/admin/money-cash-svgrepo-com.svg'
 import imagePedido from '@/assets/img/admin/order-svgrepo-com.svg'
@@ -29,10 +35,7 @@ onMounted(() => {
 
       <!-- Carrossel -->
       <div class="overflow-x-auto hide-scrollbar">
-        <div
-          class="flex gap-6 min-w-max px-2"
-          style="scroll-snap-type: x mandatory"
-        >
+        <div class="flex gap-6 min-w-max px-2" style="scroll-snap-type: x mandatory">
           <div class="py-2 flex-shrink-0 w-[325px] scroll-snap-align-start">
             <InfoCardAdmin
               title="Usuários"
@@ -56,9 +59,10 @@ onMounted(() => {
               :value="`${dashboardStore.produtos} Produtos`"
               :subtitle="
                 dashboardStore.lastUpdatedPedidos
-                  ? `Atualizado às ${new Date(
-                      dashboardStore.lastUpdatedPedidos
-                    ).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
+                  ? `Atualizado às ${new Date(dashboardStore.lastUpdatedPedidos).toLocaleTimeString(
+                      [],
+                      { hour: '2-digit', minute: '2-digit' }
+                    )}`
                   : 'Atualizando...'
               "
               :icon="imageEstoque"
@@ -84,9 +88,10 @@ onMounted(() => {
               :value="`${dashboardStore.pedidos} Realizados`"
               :subtitle="
                 dashboardStore.lastUpdatedPedidos
-                  ? `Atualizado às ${new Date(
-                      dashboardStore.lastUpdatedPedidos
-                    ).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
+                  ? `Atualizado às ${new Date(dashboardStore.lastUpdatedPedidos).toLocaleTimeString(
+                      [],
+                      { hour: '2-digit', minute: '2-digit' }
+                    )}`
                   : 'Atualizando...'
               "
               :icon="imagePedido"
@@ -94,7 +99,7 @@ onMounted(() => {
               link="/pedidos"
             />
           </div>
-                    <div class="py-2 flex-shrink-0 scroll-snap-align-start">
+          <div class="py-2 flex-shrink-0 scroll-snap-align-start">
             <InfoCardAdmin
               title="Estatísticas"
               value="18 Relatórios"
@@ -107,14 +112,13 @@ onMounted(() => {
         </div>
       </div>
       <div class="flex gap-6 items-end">
-  <div class="flex-[0.5]">
-    <TopProdutosTableAdmin />
-  </div>
-  <div class="flex-[0.4]">
-    <TopProdutosChart />
-  </div>
-</div>
-
+        <div class="flex-[0.5]">
+          <TopProdutosTableAdmin :produtos="dashboardStore.produtosMaisVendidos" />
+        </div>
+        <div class="flex-[0.4]">
+          <TopProdutosChart />
+        </div>
+      </div>
     </main>
   </div>
 </template>
