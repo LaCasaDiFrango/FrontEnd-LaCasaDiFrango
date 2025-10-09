@@ -145,12 +145,15 @@ const irParaDetalhes = () => {
 
 <style scoped>
 .pedido-container {
-  padding: 14px 50px 50px 50px;
+  padding: 14px 50px 0 50px;
   display: flex;
   flex-direction: column;
   align-items: start;
   gap: 15px;
-  justify-content: center;
+  justify-content: start;
+  height: 100vh; /* ocupa a tela toda */
+  overflow: hidden; /* impede scroll na página */
+  box-sizing: border-box;
 }
 
 .pedidos {
@@ -158,8 +161,8 @@ const irParaDetalhes = () => {
   flex-direction: column;
   gap: 1rem;
   width: 100%;
-  max-height: 80dvh;
-  overflow-y: auto;
+  overflow-y: auto; /* só aqui pode rolar */
+  max-height: calc(100vh - 210px); /* ajusta p/ caber o footer e o título */
 }
 
 .item-selecionado {
@@ -232,6 +235,7 @@ const irParaDetalhes = () => {
 .total {
   display: flex;
   justify-content: space-around;
+  background-color: #fff;
   border-top: 1px solid #ccc;
   font-weight: 600;
   font-size: 1.125rem;

@@ -23,13 +23,14 @@ const carousel = ref(null)
 
 
 const items = [
-  { img: '/src/assets/img/chicken-leg.png', label: 'Frangos', targetId: 'frangos' },
-  { img: '/src/assets/img/mashed-potatoes.png', label: 'Maioneses', targetId: 'maioneses' },
-  { img: '/src/assets/img/ribs.png', label: 'Costela', targetId: 'costela-assada' },
-  { img: '/src/assets/img/soda.png', label: 'Bebidas', targetId: 'bebidas' },
-  { img: '/src/assets/img/zucchini.png', label: 'Conservas', targetId: 'conservas' },
-  { img: '/src/assets/img/migalhas.png', label: 'Farofas', targetId: 'farofas' }
+  { img: new URL('@/assets/img/chicken-leg.png', import.meta.url).href, label: 'Frangos', targetId: 'frangos' },
+  { img: new URL('@/assets/img/mashed-potatoes.png', import.meta.url).href, label: 'Maioneses', targetId: 'maioneses' },
+  { img: new URL('@/assets/img/ribs.png', import.meta.url).href, label: 'Costela', targetId: 'costela-assada' },
+  { img: new URL('@/assets/img/soda.png', import.meta.url).href, label: 'Bebidas', targetId: 'bebidas' },
+  { img: new URL('@/assets/img/zucchini.png', import.meta.url).href, label: 'Conservas', targetId: 'conservas' },
+  { img: new URL('@/assets/img/migalhas.png', import.meta.url).href, label: 'Farofas', targetId: 'farofas' }
 ]
+
 
 
 // 🔹 Rolar até a seção correspondente na página

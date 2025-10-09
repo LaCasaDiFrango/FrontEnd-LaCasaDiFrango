@@ -86,6 +86,7 @@ watch(
   justify-content: center;
   gap: 40px;
   width: 100%;
+  margin: 0 0 100px 0;
 }
 
 .produto-container img {
