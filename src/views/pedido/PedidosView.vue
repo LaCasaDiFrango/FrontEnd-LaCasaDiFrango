@@ -11,14 +11,17 @@ import {
 } from '@/components/index'
 import { usePedidoStore, useAuthStore, useUiStore, useToastStore } from '@/stores/index'
 
+// Import SVG do jeito que Vite aceita
+import deleteIcon from '@/assets/img/icons/delete.svg'
+
 // Router
 const router = useRouter()
 
 // Stores
 const pedidoStore = usePedidoStore()
 const authStore = useAuthStore()
-const ui = useUiStore() // Loading global
-const toast = useToastStore() // Toast global
+const ui = useUiStore()
+const toast = useToastStore()
 
 // Refs do pedido
 const { pedidoAtual } = storeToRefs(pedidoStore)
@@ -42,11 +45,13 @@ onMounted(async () => {
 
 const total = computed(() => {
   if (!pedidoAtual.value) return 0
-  return pedidoAtual.value.itens?.reduce((soma, item) => {
-    const valor =
-      Number(item.total) || Number(item?.produto?.preco) * Number(item?.quantidade) || 0
-    return soma + valor
-  }, 0) || 0
+  return (
+    pedidoAtual.value.itens?.reduce((soma, item) => {
+      const valor =
+        Number(item.total) || Number(item?.produto?.preco) * Number(item?.quantidade) || 0
+      return soma + valor
+    }, 0) || 0
+  )
 })
 
 const itensPedidoAtual = computed(() => pedidoAtual.value?.itens || [])
@@ -57,32 +62,23 @@ const irParaDetalhes = () => {
   }
 }
 
-// Função corrigida para remover item
+// Função para remover item
 const removerItem = async (produtoId) => {
   if (!produtoId) return
 
   try {
     ui.showLoading()
-
     await pedidoStore.removerItemDoPedido(pedidoAtual.value.id, produtoId)
-
-    // Atualiza o pedido na tela
     await carregarPedidoAtual()
-
-    // ✅ usa toast da store de toast
-    toast.success('Item removido com sucesso!')
   } catch (err) {
     console.error('Erro ao remover item:', err)
-    toast.error('Erro ao remover item. Tente novamente.')
   } finally {
     ui.hideLoading()
   }
 }
 </script>
 
-
 <template>
-  <!-- Loading global -->
   <div v-if="ui.loading">
     <LoadingPage />
   </div>
@@ -90,15 +86,12 @@ const removerItem = async (produtoId) => {
   <div v-else class="pedido-container">
     <TitlePages title="Meu Pedido" @click="router.back()" />
 
-    <!-- Convidado -->
     <SemPermission
       v-if="isGuest"
       text="Para adicionar itens no Pedido faça login ou se cadastre!"
     />
 
-    <!-- Usuário autenticado -->
     <template v-else-if="isUser">
-      <!-- Se tiver itens -->
       <div class="pedidos" v-if="itensPedidoAtual.length > 0">
         <div v-for="item in itensPedidoAtual" :key="item.produto.id" class="item-selecionado">
           <div class="item-info">
@@ -108,17 +101,21 @@ const removerItem = async (produtoId) => {
               <p class="preco">R$ {{ Number(item.produto.preco).toFixed(2).replace('.', ',') }}</p>
             </div>
           </div>
+
+          <!-- Quantidade no canto inferior direito -->
           <div class="quantidade-controles">
             <span>Qtd: {{ item.quantidade }}</span>
-                <button @click="removerItem(item.produto.id)" class="remover-btn">🗑</button>
           </div>
+
+          <!-- Botão delete no topo direito -->
+          <button @click="removerItem(item.produto.id)" class="remover-btn">
+            <img :src="deleteIcon" alt="Delete" />
+          </button>
         </div>
       </div>
 
-      <!-- Pedido vazio -->
       <PedidoSemItens v-else text="Nenhum produto foi adicionado ao seu pedido." />
 
-      <!-- Footer -->
       <div class="footer">
         <div class="total">
           <p>Total</p>
@@ -139,7 +136,6 @@ const removerItem = async (produtoId) => {
       </div>
     </template>
 
-    <!-- Outros perfis -->
     <SemPermission v-else text="Você não tem permissão para acessar esta página." />
   </div>
 </template>
@@ -149,11 +145,9 @@ const removerItem = async (produtoId) => {
   padding: 14px 50px 0 50px;
   display: flex;
   flex-direction: column;
-  align-items: start;
   gap: 15px;
-  justify-content: start;
-  height: 100vh; /* ocupa a tela toda */
-  overflow: hidden; /* impede scroll na página */
+  height: 100vh;
+  overflow: hidden;
   box-sizing: border-box;
 }
 
@@ -162,25 +156,26 @@ const removerItem = async (produtoId) => {
   flex-direction: column;
   gap: 1rem;
   width: 100%;
-  overflow-y: auto; /* só aqui pode rolar */
-  max-height: calc(100vh - 210px); /* ajusta p/ caber o footer e o título */
+  overflow-y: auto;
+  max-height: calc(100vh - 210px);
 }
 
 .item-selecionado {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
+  position: relative;
   border-bottom: 1px solid #000;
   gap: 1rem;
-  padding: 1rem;
+  padding: 1.5rem 1rem 2rem 1rem; /* espaço superior e direito para o botão delete */
   width: 100%;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  min-height: 70px;
 }
 
 .item-info {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 1rem;
 }
 
@@ -192,8 +187,6 @@ const removerItem = async (produtoId) => {
 .sub-info {
   display: flex;
   flex-direction: column;
-  align-items: start;
-  justify-content: center;
   gap: 0.25rem;
 }
 
@@ -202,52 +195,63 @@ const removerItem = async (produtoId) => {
   font-size: 1rem;
 }
 
-.quantidade-controles {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.quantidade-controles button {
-  background-color: #e0e0e0;
-  border: none;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
 .preco {
   font-weight: 600;
   color: #1d4523;
-  text-align: right;
+}
+
+.remover-btn {
+  position: relative;
+  right: 0;
+  background-color: #B91C1C;
+  border: none;
+  padding: 0.35rem;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  border: 1px solid #fff;
+}
+
+.remover-btn img {
+  width: 16px;
+  height: auto;
+}
+
+.quantidade-controles {
+  position: absolute;
+  bottom: .5rem;
+  right: .5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .footer {
   position: fixed;
   bottom: 0;
   left: 0;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  width: 100%;
   align-items: center;
-  justify-content: center;
 }
 
 .total {
   display: flex;
   justify-content: space-around;
-  background-color: #fff;
-  border-top: 1px solid #ccc;
-  font-weight: 600;
-  font-size: 1.125rem;
-  padding: 1rem;
   width: 100%;
+  padding: 1rem;
+  font-weight: 600;
+  border-top: 1px solid #ccc;
+  background-color: #fff;
 }
 
 .botoes {
   display: flex;
   justify-content: center;
-  align-items: center;
   width: 100%;
 }
 
@@ -257,8 +261,8 @@ const removerItem = async (produtoId) => {
   padding: 1.5rem;
   font-weight: 500;
   font-size: 1rem;
-  cursor: pointer;
   border: none;
+  cursor: pointer;
 }
 
 .botao-claro {
@@ -268,7 +272,7 @@ const removerItem = async (produtoId) => {
 
 .botao-verde {
   background-color: #1d4523;
+  color: #fff;
   border-top: 2px solid #1d4523;
-  color: white;
 }
 </style>
