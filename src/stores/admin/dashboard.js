@@ -1,86 +1,102 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { user, produto, pedido } from '@/api/index'
+import { user, produto, pedido, categoria } from '@/api/index'
 
 export const useDashboardStore = defineStore('dashboard', () => {
-  // estados
+  // === Estados principais ===
   const usuarios = ref(0)
   const produtos = ref(0)
   const pedidos = ref(0)
   const fluxo = ref(0)
-  const loading = ref(false)
   const error = ref(null)
 
-  // novos estados para armazenar o horário de atualização individual
+  // === Estados adicionais ===
+  const produtosMaisVendidos = ref([])
+  const vendasPorCategoria = ref(null) // 🟢 novo gráfico de vendas por categoria
+
+  // === Horários de atualização ===
   const lastUpdatedUsuarios = ref(null)
   const lastUpdatedProdutos = ref(null)
   const lastUpdatedPedidos = ref(null)
 
-  // instanciar os serviços
+  // === Serviços ===
   const userService = new user.default()
   const produtoService = new produto.default()
   const pedidoService = new pedido.default()
+  const categoriaService = new categoria.default() // 🟢 novo
 
+  // === Função auxiliar ===
   function getTotalFromPagination(data) {
     if (!data) return 0
     return (data.total_pages - 1) * data.page_size + data.results.length
   }
 
-  // função principal para atualizar os dados
+  // === Função principal ===
   async function fetchDashboardData() {
-    loading.value = true
     error.value = null
 
     try {
-      const [usuariosData, produtosData, pedidosData] = await Promise.all([
+      const [
+        usuariosData,
+        produtosData,
+        pedidosData,
+        produtosVendidosData,
+        vendasCategoriaData,
+      ] = await Promise.all([
         userService.getAll(),
         produtoService.getAll(),
         pedidoService.getAll(),
+        produtoService.getMaisVendidos(),
+        categoriaService.getVendasPorCategoria(), // 🟢 novo endpoint
       ])
 
-      // atualizar usuários
+      // === Usuários ===
       const totalUsuarios = getTotalFromPagination(usuariosData)
       if (totalUsuarios !== usuarios.value) {
         usuarios.value = totalUsuarios
         lastUpdatedUsuarios.value = new Date()
       }
 
-      // atualizar produtos
+      // === Produtos ===
       const totalProdutos = getTotalFromPagination(produtosData)
       if (totalProdutos !== produtos.value) {
         produtos.value = totalProdutos
         lastUpdatedProdutos.value = new Date()
       }
 
-      // atualizar pedidos realizados
+      // === Pedidos ===
       const totalPedidos = pedidosData.filter(p => p.status === 2).length
       if (totalPedidos !== pedidos.value) {
         pedidos.value = totalPedidos
         lastUpdatedPedidos.value = new Date()
       }
 
-      fluxo.value = 2700 // ainda está estático
+      // === Produtos mais vendidos ===
+      produtosMaisVendidos.value = produtosVendidosData
 
+      // === Vendas por categoria (para o gráfico) ===
+      vendasPorCategoria.value = vendasCategoriaData
+
+      // === Fluxo de caixa (ainda fixo) ===
+      fluxo.value = 2700
     } catch (err) {
       console.error('[DashboardStore] Erro ao buscar dados:', err)
       error.value = 'Falha ao carregar os dados do painel.'
-    } finally {
-      loading.value = false
     }
   }
 
+  // === Retorno da store ===
   return {
-    // estados
     usuarios,
     produtos,
     pedidos,
     fluxo,
-    loading,
     error,
+    produtosMaisVendidos,
+    vendasPorCategoria, // 🟢 exportado
     lastUpdatedUsuarios,
     lastUpdatedProdutos,
     lastUpdatedPedidos,
-    // ações
     fetchDashboardData,
   }
 })

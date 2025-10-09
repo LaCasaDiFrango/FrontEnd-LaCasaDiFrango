@@ -67,7 +67,8 @@ import InputSelectAdmin from "./admin/inputs/InputSelectAdmin.vue";
 import InputStringAdmin from "./admin/inputs/InputStringAdmin.vue";
 import TitleAdmin from "./admin/layouts/TitleAdmin.vue";
 import InfoCardAdmin from "./admin/layouts/InfoCardAdmin.vue";
-
+import TopProdutosChart from "./admin/graficos/TopProdutosChart.vue";
+import TopProdutosTableAdmin from "./admin/tables/TopProdutosTableAdmin.vue";
 
 //loading
 import LoadingPage from "./loading/LoadingPage.vue";
@@ -123,4 +124,6 @@ export {
   TitleAdmin,
   LoadingPage,
   InfoCardAdmin,
+  TopProdutosChart,
+  TopProdutosTableAdmin,
 };
