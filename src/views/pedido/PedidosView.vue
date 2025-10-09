@@ -9,7 +9,7 @@ import {
   PedidoSemItens,
   LoadingPage,
 } from '@/components/index'
-import { usePedidoStore, useAuthStore, useUiStore } from '@/stores/index'
+import { usePedidoStore, useAuthStore, useUiStore, useToastStore } from '@/stores/index'
 
 // Router
 const router = useRouter()
@@ -18,6 +18,7 @@ const router = useRouter()
 const pedidoStore = usePedidoStore()
 const authStore = useAuthStore()
 const ui = useUiStore() // Loading global
+const toast = useToastStore() // Toast global
 
 // Refs do pedido
 const { pedidoAtual } = storeToRefs(pedidoStore)
@@ -30,43 +31,22 @@ onMounted(async () => {
   if (isUser.value) {
     ui.showLoading()
     try {
-      console.log('🔄 Carregando pedido atual...')
       await carregarPedidoAtual()
-      console.log('📦 pedidoAtual após carregar:', JSON.parse(JSON.stringify(pedidoAtual.value)))
-
-      if (pedidoAtual.value?.itens?.length) {
-        pedidoAtual.value.itens.forEach((item, idx) => {
-          console.log(`🛒 Item ${idx + 1}:`, {
-            id: item?.produto?.id,
-            nome: item?.produto?.nome,
-            preco: item?.produto?.preco,
-            quantidade: item?.quantidade,
-            total: item?.total,
-            imagem: item?.produto?.imagem || item?.produto?.image || 'N/A',
-          })
-        })
-      } else {
-        console.log('⚠️ Nenhum item no pedido.')
-      }
     } catch (err) {
       console.error('Erro ao carregar pedido:', err)
     } finally {
       ui.hideLoading()
     }
-  } else {
-    console.warn('⛔ Acesso negado: não é um usuário autenticado.')
   }
 })
 
 const total = computed(() => {
   if (!pedidoAtual.value) return 0
-  return (
-    pedidoAtual.value.itens?.reduce((soma, item) => {
-      const valor =
-        Number(item.total) || Number(item?.produto?.preco) * Number(item?.quantidade) || 0
-      return soma + valor
-    }, 0) || 0
-  )
+  return pedidoAtual.value.itens?.reduce((soma, item) => {
+    const valor =
+      Number(item.total) || Number(item?.produto?.preco) * Number(item?.quantidade) || 0
+    return soma + valor
+  }, 0) || 0
 })
 
 const itensPedidoAtual = computed(() => pedidoAtual.value?.itens || [])
@@ -74,12 +54,32 @@ const itensPedidoAtual = computed(() => pedidoAtual.value?.itens || [])
 const irParaDetalhes = () => {
   if (pedidoAtual.value?.id) {
     router.push(`/home/perfil/historico-pedidos/detalhes-pedido/${pedidoAtual.value.id}`)
-  } else {
-    console.warn('Pedido ainda não carregado ou não existe.')
   }
 }
 
+// Função corrigida para remover item
+const removerItem = async (produtoId) => {
+  if (!produtoId) return
+
+  try {
+    ui.showLoading()
+
+    await pedidoStore.removerItemDoPedido(pedidoAtual.value.id, produtoId)
+
+    // Atualiza o pedido na tela
+    await carregarPedidoAtual()
+
+    // ✅ usa toast da store de toast
+    toast.success('Item removido com sucesso!')
+  } catch (err) {
+    console.error('Erro ao remover item:', err)
+    toast.error('Erro ao remover item. Tente novamente.')
+  } finally {
+    ui.hideLoading()
+  }
+}
 </script>
+
 
 <template>
   <!-- Loading global -->
@@ -110,6 +110,7 @@ const irParaDetalhes = () => {
           </div>
           <div class="quantidade-controles">
             <span>Qtd: {{ item.quantidade }}</span>
+                <button @click="removerItem(item.produto.id)" class="remover-btn">🗑</button>
           </div>
         </div>
       </div>

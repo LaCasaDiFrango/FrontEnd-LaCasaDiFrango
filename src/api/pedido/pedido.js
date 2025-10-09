@@ -35,4 +35,11 @@ export default class PedidoService {
     const response = await axios.delete(`/pedidos/${id}/`);
     return response.status === 204;
   }
+
+  async removerItem(pedidoId, produtoId) {
+    const response = await axios.delete(`/pedidos/${pedidoId}/remover_item/`, {
+      data: { produto_id: produtoId },
+    })
+    return response.data
+  }
 }
