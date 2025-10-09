@@ -31,7 +31,7 @@ const produtosFiltrados = computed(() => props.produtos)
         <tr
           v-for="(p, index) in produtosFiltrados"
           :key="p.id"
-          class="border-b border-gray-100 hover:bg-gray-50 transition"
+          class="border-b border-gray-200 hover:bg-gray-50 transition"
         >
           <td class="py-2">{{ index + 1 }}</td>
           <td class="py-2 font-medium text-gray-700">{{ p.nome }}</td>

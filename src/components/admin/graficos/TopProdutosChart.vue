@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, toRefs, watch } from 'vue'
+import { reactive, watch, computed } from 'vue'
 import { Bar } from 'vue-chartjs'
 import {
   Chart as ChartJS,
@@ -13,31 +13,17 @@ import {
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
-// Definindo props
+// Props
 const props = defineProps({
   chartData: {
     type: Object,
     default: () => ({
-      labels: [
-        'Frangos',
-        'Maioneses',
-        'Costelas',
-        'Bebida',
-        'Conservas',
-        'Farofas',
-      ],
+      labels: [],
       datasets: [
         {
           label: 'Vendas',
-          data: [150, 120, 40, 80, 65, 50],
-          backgroundColor: [
-            '#1b3d1f',
-            '#3b82f6',
-            '#B91C1C',
-            '#facc15',
-            '#facc15',
-            '#B91C1C',
-          ],
+          data: [],
+          backgroundColor: [],
           borderRadius: 10,
         },
       ],
@@ -64,7 +50,7 @@ const props = defineProps({
         },
         y: {
           grid: { color: '#e5e7eb' },
-          ticks: { color: '#4b5563', stepSize: 20 },
+          ticks: { color: '#4b5563', stepSize: 1 },
           beginAtZero: true,
           grace: '10%',
         },
@@ -73,15 +59,63 @@ const props = defineProps({
   },
 })
 
-// Transformando props em reactive para Chart.js
-const reactiveChartData = reactive(props.chartData)
+// Computed que cria cores automáticas por ranking
+const reactiveChartData = computed(() => {
+  if (
+    !props.chartData ||
+    !props.chartData.datasets ||
+    !props.chartData.datasets[0] ||
+    !props.chartData.labels
+  ) {
+    // fallback vazio para evitar erro
+    return {
+      labels: [],
+      datasets: [
+        {
+          label: 'Vendas',
+          data: [],
+          backgroundColor: [],
+          borderRadius: 10,
+        },
+      ],
+    }
+  }
+
+  const data = [...props.chartData.datasets[0].data]
+  const labels = [...props.chartData.labels]
+
+  // Ordena índices pelo valor
+  const sortedIndices = data.map((v, i) => i).sort((a, b) => data[b] - data[a])
+
+  // Cria array de cores baseado no ranking
+  const colors = data.map((_, i) => {
+    const rank = sortedIndices.indexOf(i)
+    if (rank === 0) return '#1b3d1f' // top1 verde
+    if (rank === 1) return '#3b82f6' // top2 azul
+    if (rank === 2) return '#facc15' // top3 amarelo
+    return '#B91C1C'                 // resto vermelho
+  })
+
+  return {
+    labels,
+    datasets: [
+      {
+        ...props.chartData.datasets[0],
+        backgroundColor: colors,
+      },
+    ],
+  }
+})
+
+
+// Reatividade das options
 const reactiveChartOptions = reactive(props.chartOptions)
 
-// Se você quiser atualizar os dados dinamicamente via prop
+// Atualiza reativamente quando chartData mudar
 watch(
   () => props.chartData,
   (newData) => {
-    Object.assign(reactiveChartData, newData)
+    Object.assign(reactiveChartOptions, props.chartOptions)
   },
   { deep: true }
 )

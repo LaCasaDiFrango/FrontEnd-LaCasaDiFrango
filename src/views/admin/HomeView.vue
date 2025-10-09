@@ -116,7 +116,7 @@ onMounted(() => {
           <TopProdutosTableAdmin :produtos="dashboardStore.produtosMaisVendidos" />
         </div>
         <div class="flex-[0.4]">
-          <TopProdutosChart />
+<TopProdutosChart :chartData="dashboardStore.vendasPorCategoria" />
         </div>
       </div>
     </main>
