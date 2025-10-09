@@ -2,7 +2,7 @@
 import { onMounted } from 'vue'
 import { useDashboardStore } from '@/stores'
 
-import { NavLateralAdmin, InfoCardAdmin, TitleAdmin } from '@/components/index'
+import { NavLateralAdmin, InfoCardAdmin, TitleAdmin, TopProdutosTableAdmin, TopProdutosChart } from '@/components/index'
 
 import imageFluxo from '@/assets/img/admin/money-cash-svgrepo-com.svg'
 import imagePedido from '@/assets/img/admin/order-svgrepo-com.svg'
@@ -106,6 +106,15 @@ onMounted(() => {
           </div>
         </div>
       </div>
+      <div class="flex gap-6 items-end">
+  <div class="flex-[0.5]">
+    <TopProdutosTableAdmin />
+  </div>
+  <div class="flex-[0.4]">
+    <TopProdutosChart />
+  </div>
+</div>
+
     </main>
   </div>
 </template>
