@@ -4,6 +4,11 @@ defineProps({
     type: String,
   }
 })
+
+function ligar() {
+  window.location.href = 'tel:+5547999942292'
+}
+
 </script>
 
 <template>
@@ -22,9 +27,10 @@ defineProps({
     </div>
 
   
-    <button class="phone-button">
-      <img src="@/assets/img/phone-call.png" alt="Telefone" class="phone-icon" />
-    </button>
+ <button class="phone-button" @click="ligar">
+  <img src="@/assets/img/phone-call.png" alt="Telefone" class="phone-icon" />
+</button>
+
   </header>
 </template>
 
