@@ -2,7 +2,7 @@
 
 Frontend desenvolvido em **Vue 3 + Vite** para o sistema **La Casa Di Frango**, com foco em usabilidade, experiência do usuário e integração completa com a API REST do backend.
 
-> Projeto acadêmico com autenticação via Passage ID, gerenciamento de pedidos, produtos e usuários, além de dashboards com dados dinâmicos.
+> Projeto acadêmico com autenticação via Passage id, gerenciamento de pedidos, produtos e usuários, além de dashboards com dados dinâmicos.
 
 ---
 
