@@ -8,6 +8,7 @@ import imageFluxo from '@/assets/img/admin/money-cash-svgrepo-com.svg'
 import imagePedido from '@/assets/img/admin/order-svgrepo-com.svg'
 import imageUser from '@/assets/img/admin/users-svgrepo-com.svg'
 import imageEstoque from '@/assets/img/admin/inventorymajor-svgrepo-com.svg'
+import imageEstatisca from '@/assets/img/admin/statistics-svgrepo-com.svg'
 
 const dashboardStore = useDashboardStore()
 
@@ -32,7 +33,7 @@ onMounted(() => {
           class="flex gap-6 min-w-max px-2"
           style="scroll-snap-type: x mandatory"
         >
-          <div class="flex-shrink-0 w-[375px] scroll-snap-align-start">
+          <div class="py-2 flex-shrink-0 w-[325px] scroll-snap-align-start">
             <InfoCardAdmin
               title="Usuários"
               :value="`${dashboardStore.usuarios} Clientes`"
@@ -49,7 +50,7 @@ onMounted(() => {
             />
           </div>
 
-          <div class="flex-shrink-0 w-[375px] scroll-snap-align-start">
+          <div class="py-2 flex-shrink-0 w-[325px] scroll-snap-align-start">
             <InfoCardAdmin
               title="Estoque"
               :value="`${dashboardStore.produtos} Produtos`"
@@ -66,7 +67,7 @@ onMounted(() => {
             />
           </div>
 
-          <div class="flex-shrink-0 w-[375px] scroll-snap-align-start">
+          <div class="py-2 flex-shrink-0 w-[325px] scroll-snap-align-start">
             <InfoCardAdmin
               title="Fluxo de Caixa"
               :value="`R$${dashboardStore.fluxo}`"
@@ -77,7 +78,7 @@ onMounted(() => {
             />
           </div>
 
-          <div class="flex-shrink-0 w-[375px] scroll-snap-align-start">
+          <div class="py-2 flex-shrink-0 w-[325px] scroll-snap-align-start">
             <InfoCardAdmin
               title="Pedidos"
               :value="`${dashboardStore.pedidos} Realizados`"
@@ -91,6 +92,16 @@ onMounted(() => {
               :icon="imagePedido"
               color="bg-orange-400"
               link="/pedidos"
+            />
+          </div>
+                    <div class="py-2 flex-shrink-0 scroll-snap-align-start">
+            <InfoCardAdmin
+              title="Estatísticas"
+              value="18 Relatórios"
+              subtitle="Veja as estatísticas e relatórios"
+              :icon="imageEstatisca"
+              color="bg-orange-400"
+              link="/estatisticas"
             />
           </div>
         </div>
