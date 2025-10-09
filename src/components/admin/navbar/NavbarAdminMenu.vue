@@ -50,6 +50,6 @@ function handleClick(to) {
 }
 
 .links:hover {
-  border-left-color: #1b3d1f;
+  border-left-color: #B91C1C;
 }
 </style>
