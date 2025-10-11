@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { pedido } from '@/api/index'
-import { useToastStore } from '@/stores/index' // import da store do toast
+import { useToastStore, useAuthStore } from '@/stores/index' // import da store do toast
 
 export const usePedidoStore = defineStore('pedido', () => {
   const pedidos = ref([])
@@ -44,15 +44,31 @@ export const usePedidoStore = defineStore('pedido', () => {
     }
   }
 
-  async function carregarPedidoAtual() {
-    try {
-      const todosPedidos = (await pedidoService.getAll()).map(normalizarPedido)
-      pedidoAtual.value = todosPedidos.find(p => !p.finalizado && p.status === 1) || null
-    } catch (error) {
-      console.error('Erro ao carregar pedido atual:', error)
-      toast.error('Erro ao carregar pedido atual.')
-    }
+ async function carregarPedidoAtual() {
+  const authStore = useAuthStore()
+  const authUser = authStore.user
+
+  try {
+    const todosPedidos = (await pedidoService.getAll()).map(normalizarPedido)
+
+    // filtra pedidos do usuário, independente se o backend retorna email ou objeto
+    const meusPedidos = todosPedidos.filter(p => {
+      const usuario = p.usuario
+      if (typeof usuario === 'string') {
+        return usuario === authUser.email
+      }
+      if (usuario && typeof usuario === 'object') {
+        return usuario.id === authUser.id || usuario.email === authUser.email
+      }
+      return false
+    })
+
+    pedidoAtual.value = meusPedidos.find(p => !p.finalizado && p.status === 1) || null
+  } catch (error) {
+    console.error('Erro ao carregar pedido atual:', error)
+    toast.error('Erro ao carregar pedido atual.')
   }
+}
 
   async function carregarPedidoPorCodigo(codigo) {
     try {
@@ -112,28 +128,24 @@ export const usePedidoStore = defineStore('pedido', () => {
   }
 
   async function removerItemDoPedido(pedidoId, produtoId) {
-    if (!pedidoId || !produtoId) {
-      toast.error('Pedido ou produto inválido.')
-      return
-    }
-
-    try {
-      // Chama o serviço do backend
-      await pedidoService.removerItem(pedidoId, produtoId)
-
-      // Remove o item localmente do pedidoAtual
-      if (pedidoAtual.value && pedidoAtual.value.itens) {
-        pedidoAtual.value.itens = pedidoAtual.value.itens.filter(
-          item => item.produto.id !== produtoId
-        )
-      }
-
-      toast.success('Item removido com sucesso!')
-    } catch (err) {
-      console.error('Erro ao remover item do pedido:', err)
-      toast.error('Erro ao remover item do pedido.')
-    }
+  if (!pedidoId || !produtoId) {
+    toast.error('Pedido ou produto inválido.')
+    return
   }
+
+  try {
+    await pedidoService.removerItem(pedidoId, produtoId)
+    toast.success('Item removido com sucesso!')
+
+    // ✅ Recarrega o pedido do backend para manter o estado sincronizado
+    const pedidoAtualizado = normalizarPedido(await pedidoService.getById(pedidoId))
+    pedidoAtual.value = pedidoAtualizado
+  } catch (err) {
+    console.error('Erro ao remover item do pedido:', err)
+    toast.error('Erro ao remover item do pedido.')
+  }
+}
+
 
   return {
     pedidos,
