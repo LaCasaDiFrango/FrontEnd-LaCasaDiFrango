@@ -69,6 +69,7 @@ import TitleAdmin from "./admin/layouts/TitleAdmin.vue";
 import InfoCardAdmin from "./admin/layouts/InfoCardAdmin.vue";
 import TopProdutosChart from "./admin/graficos/TopProdutosChart.vue";
 import TopProdutosTableAdmin from "./admin/tables/TopProdutosTableAdmin.vue";
+import TablePagesAdmin from "./admin/tables/TablePagesAdmin.vue";
 
 //loading
 import LoadingPage from "./loading/LoadingPage.vue";
@@ -126,4 +127,5 @@ export {
   InfoCardAdmin,
   TopProdutosChart,
   TopProdutosTableAdmin,
+  TablePagesAdmin,
 };

@@ -11,16 +11,21 @@ export const useDashboardTitleStore = defineStore('dashboardTitle', () => {
     'Estoque': 'Gerencie todos os produtos disponíveis no sistema',
     'Usuários': 'Visualize e administre os usuários cadastrados',
     'Pedidos': 'Acompanhe os pedidos realizados no sistema',
-    'Fluxo do Caixa': 'Confira o fluxo de caixa do sistema',
+    'Fluxo de Caixa': 'Confira o fluxo de caixa do sistema',
     'Estatísticas': 'Visualize estatísticas e relatórios do sistema'
   }
 
   // Título dinâmico usando o name da rota
   const title = computed(() => {
-    const base = 'Painel'
+    const base = 'Painel Administrativo'
     // Se for a rota raiz do dashboard, mostra só 'Painel'
     if (!route.name || route.name === 'Painel Administrativo') return base
     return `${base} > ${route.name}`
+  })
+
+  const tableTitle = computed(() => {
+    if (!route.name) return 'Tabela Geral'
+    return `Tabela Geral - ${route.name}`
   })
 
   // Subtítulo baseado no name da rota
@@ -29,5 +34,5 @@ export const useDashboardTitleStore = defineStore('dashboardTitle', () => {
     return subtitleMap[route.name] || ''
   })
 
-  return { title, subtitle }
+  return { title, subtitle, tableTitle }
 })

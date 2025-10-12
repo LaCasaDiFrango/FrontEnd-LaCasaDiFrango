@@ -13,7 +13,6 @@ import { useToastStore } from './toast' // import da store do toast
 
 //admin
 import { useNavBarAdminStore } from './admin/navbar_admin'
-import { useActionSelectorStore } from './admin/button_action_admin'
 import { useDashboardStore } from './admin/dashboard'
 import { useDashboardTitleStore } from './admin/pages/dashboard_titles'
 
@@ -28,7 +27,6 @@ export {
   usePedidoStore,
   useUserStore,
   useNavBarAdminStore,
-  useActionSelectorStore,
   useUiStore,
   useDashboardStore,
   useDashboardTitleStore,

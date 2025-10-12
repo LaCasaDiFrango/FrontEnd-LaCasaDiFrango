@@ -126,15 +126,9 @@ const router = createRouter({
       props: {
         pageTitle: 'Estoque',
         dataKey: 'produtos',
-        columns: [
-          { key: 'id', label: 'ID' },
-          { key: 'nome', label: 'Produto' },
-          { key: 'preco', label: 'Preço' },
-          { key: 'quantidade', label: 'Qtd' }
-        ],
         actions: {
           add: () => console.log('Adicionar produto'),
-          addLabel: 'Novo Produto'
+          addLabel: 'Cadastrar Novo Produto'
         }
       }
     },
@@ -145,14 +139,9 @@ const router = createRouter({
       props: {
         pageTitle: 'Usuários',
         dataKey: 'usuarios',
-        columns: [
-          { key: 'id', label: 'ID' },
-          { key: 'nome', label: 'Nome' },
-          { key: 'email', label: 'Email' }
-        ],
         actions: {
           add: () => console.log('Adicionar usuário'),
-          addLabel: 'Novo Usuário'
+          addLabel: 'Cadastrar Novo Usuário'
         }
       }
     },
@@ -163,15 +152,9 @@ const router = createRouter({
       props: {
         pageTitle: 'Pedidos',
         dataKey: 'pedidos',
-        columns: [
-          { key: 'id', label: 'ID' },
-          { key: 'usuario', label: 'Usuário' },
-          { key: 'total', label: 'Total' },
-          { key: 'status', label: 'Status' }
-        ],
         actions: {
-          add: null,
-          addLabel: null
+          add: () => console.log('Adicionar pedido'),
+          addLabel: 'Cadastrar Novo Pedido'
         }
       }
     },
@@ -182,11 +165,6 @@ const router = createRouter({
       props: {
         pageTitle: 'Estatísticas',
         dataKey: 'estatisticas',
-        columns: [
-          { key: 'id', label: 'ID' },
-          { key: 'usuario', label: 'Usuário' },
-          { key: 'total', label: 'Total' }
-        ]
       }
     },
         {
@@ -196,11 +174,6 @@ const router = createRouter({
       props: {
         pageTitle: 'Fluxo de Caixa',
         dataKey: 'fluxo',
-        columns: [
-          { key: 'id', label: 'ID' },
-          { key: 'usuario', label: 'Usuário' },
-          { key: 'total', label: 'Total' }
-        ]
       }
     },
   ]

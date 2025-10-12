@@ -4,7 +4,7 @@ import { computed } from 'vue'
 import { ButtonDropdown } from '@/components/index' // ajuste import conforme sua estrutura
 
 const props = defineProps({
-  title: { type: String, default: 'Ação' },
+  acao: { type: String },
   showDropdown: { type: Boolean, default: false },
   options: { type: Array, default: () => [] }, // [{ label, action }]
   selectedOption: { type: [Object, String, Number, null], default: null }
@@ -12,7 +12,7 @@ const props = defineProps({
 
 const emit = defineEmits(['click', 'update:selectedOption'])
 
-// rótulo mostrado: label da option selecionada ou title fallback
+// rótulo mostrado: label da option selecionada ou acao fallback
 const displayedLabel = computed(() => {
   const s = props.selectedOption
   if (!s) return props.title
@@ -38,16 +38,19 @@ const onDropdownUpdate = (val) => {
 </script>
 
 <template>
-  <div class="flex flex-col sm:flex-row sm:items-center sm:gap-4 gap-2 relative ml-[5%]">
+  <div class="flex flex-col sm:flex-row sm:items-center sm:gap-4 gap-2 relative">
     <label class="text-lg text-gray-500 font-semibold">Ação:</label>
 
     <div class="flex items-center gap-2 relative">
       <button
-        class="flex items-center gap-2 bg-teal-500 hover:bg-teal-600 text-white font-medium py-3 px-5 rounded-md transition"
-        @click="onMainClick"
-      >
-        <span class="text-xl">＋</span>
-        <span class="text-xl font-normal">{{ displayedLabel }}</span>
+        class="flex items-center gap-2 text-black font-medium py-3 px-5 rounded" @click="onMainClick">
+        <span
+          class="text-2xl p-2 bg-gray-200 rounded flex justify-center items-center
+                 transition-colors duration-200 hover:bg-gray-800 hover:text-white"
+        >
+          ＋
+        </span>
+        <span class="text-xl font-semibold">{{ acao }}</span>
       </button>
 
       <ButtonDropdown
@@ -60,3 +63,4 @@ const onDropdownUpdate = (val) => {
     </div>
   </div>
 </template>
+
