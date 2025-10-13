@@ -11,6 +11,13 @@ store.initResizeListener()
     <aside class="min-h-screen bg-gray-100 p-5 flex flex-col gap-8">
       <NavbarAdminUser />
       <NavbarAdminMenu />
+      <div class="flex justify-center items-center w-full">
+                    <img
+        src="@/assets/img/logo.png"
+        alt="Logo"
+        class="fixed bottom-5 w-32 h-auto"
+      />
+      </div>
     </aside>
   </div>
   <div v-else>

@@ -6,8 +6,9 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
-  label: {
-    type: String,
+  columns: {
+    type: Array,
+    default: () => [], // [{ label: 'Preço', key: 'preco' }]
   },
   title: {
     type: String,
@@ -20,9 +21,11 @@ const filtro = ref('')
 // Lista filtrada
 const itemsList = computed(() => {
   if (!filtro.value) return props.items
-  return props.items.filter(item =>
-    item.nome.toLowerCase().includes(filtro.value.toLowerCase()) ||
-    item.id.toString().includes(filtro.value)
+  return props.items.filter(
+    (item) =>
+      item.nome.toLowerCase().includes(filtro.value.toLowerCase()) ||
+      item.id.toString().includes(filtro.value) ||
+      props.columns.some((col) => item[col.key]?.toString().toLowerCase().includes(search))
   )
 })
 </script>
@@ -41,21 +44,20 @@ const itemsList = computed(() => {
     </div>
 
     <!-- Tabela -->
-    <table class="w-full text-sm border-separate" style="border-spacing: 0 6px;">
+    <table class="w-full text-sm border-separate" style="border-spacing: 0 6px">
       <thead>
         <tr class="text-gray-500 border-b border-gray-200">
           <th class="py-2 px-3 text-center font-semibold w-[60px]">#</th>
           <th class="py-2 px-3 text-left font-semibold">Nome</th>
-          <th class="py-2 px-3 text-left font-semibold">{{ label }}</th>
+          <th v-for="col in columns" :key="col.key" class="py-2 px-3 text-center font-semibold">
+            {{ col.label }}
+          </th>
           <th class="py-2 px-3 text-center font-semibold w-[140px]">Administração</th>
         </tr>
       </thead>
 
       <!-- Usando transition-group -->
-      <transition-group
-        tag="tbody"
-        name="fade-slide"
-      >
+      <transition-group tag="tbody" name="fade-slide">
         <tr
           v-for="(p, index) in itemsList"
           :key="p.id || index"
@@ -63,12 +65,36 @@ const itemsList = computed(() => {
         >
           <td class="py-2 text-center text-gray-700 rounded-l-lg">{{ p.id }}</td>
           <td class="py-2 text-left font-medium text-gray-700">{{ p.nome }}</td>
-          <td class="py-2 text-left text-gray-800 font-semibold">{{ p.preco }}</td>
+          <td
+            v-for="col in columns"
+            :key="col.key"
+            class="py-2 text-center text-gray-800 font-semibold"
+          >
+            {{ p[col.key] }}
+          </td>
           <td class="py-2 text-center rounded-r-lg">
             <div class="flex justify-center items-center gap-3">
-              <button title="Editar"><img class="p-1 bg-[#facc15] w-7 h-auto rounded transition" src="@/assets/img/icons/edit.svg" alt="Edit"></button>
-              <button title="Excluir"><img class="p-1 bg-[#B91C1C] w-7 h-auto rounded transition" src="@/assets/img/icons/delete.svg" alt="Delete"></button>
-              <button title="Ver"><img class="p-1 bg-teal-500 w-7 h-auto rounded transition" src="@/assets/img/icons/view.svg" alt="View"></button>
+              <button title="Editar">
+                <img
+                  class="p-1 bg-[#facc15] w-7 h-auto rounded transition"
+                  src="@/assets/img/icons/edit.svg"
+                  alt="Edit"
+                />
+              </button>
+              <button title="Excluir">
+                <img
+                  class="p-1 bg-[#B91C1C] w-7 h-auto rounded transition"
+                  src="@/assets/img/icons/delete.svg"
+                  alt="Delete"
+                />
+              </button>
+              <button title="Ver">
+                <img
+                  class="p-1 bg-teal-500 w-7 h-auto rounded transition"
+                  src="@/assets/img/icons/view.svg"
+                  alt="View"
+                />
+              </button>
             </div>
           </td>
         </tr>

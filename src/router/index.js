@@ -129,7 +129,11 @@ const router = createRouter({
         actions: {
           add: () => console.log('Adicionar produto'),
           addLabel: 'Cadastrar Novo Produto'
-        }
+        },
+        columns: [
+          { key: 'quantidade', label: 'Quantidade' },
+          { key: 'preco', label: 'Preço' },
+        ],
       }
     },
     {
@@ -142,7 +146,10 @@ const router = createRouter({
         actions: {
           add: () => console.log('Adicionar usuário'),
           addLabel: 'Cadastrar Novo Usuário'
-        }
+        },
+        columns: [
+          { key: 'perfil', label: 'Perfil' },
+        ],
       }
     },
     {
@@ -155,7 +162,10 @@ const router = createRouter({
         actions: {
           add: () => console.log('Adicionar pedido'),
           addLabel: 'Cadastrar Novo Pedido'
-        }
+        },
+        columns: [
+          { key: 'status', label: 'Status' },
+        ],
       }
     },
     {

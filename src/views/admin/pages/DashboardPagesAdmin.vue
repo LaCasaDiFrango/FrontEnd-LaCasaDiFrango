@@ -27,7 +27,7 @@
           <TablePagesAdmin
             :title="dashboardTitleStore.tableTitle"
             :items="mockData"
-            label="Preço"
+            :columns="columns"
           />
         </div>
       </div>
@@ -58,20 +58,19 @@ const props = defineProps({
 })
 
 const mockData = [
-  { id: 28, nome: 'Camiseta Oversized', preco: 'R$ 149,90'},
-  { id: 52, nome: 'Tênis Street', preco: 'R$ 399,90'},
-  { id: 3, nome: 'Jaqueta Jeans', preco: 'R$ 249,90'},
-  { id: 54, nome: 'Calça Cargo', preco: 'R$ 199,90'},
-  { id: 55, nome: 'Mochila Urbana', preco: 'R$ 179,90'},
-  { id: 56, nome: 'Relógio Digital', preco: 'R$ 299,90'},
-  { id: 67, nome: 'Óculos de Sol', preco: 'R$ 129,90'},
-  { id: 40, nome: 'Tênis Casual', preco: 'R$ 349,90'},
-  { id: 9, nome: 'Camisa Polo', preco: 'R$ 159,90'},
-  { id: 10, nome: 'Bermuda Jeans', preco: 'R$ 189,90'},
-  { id: 11, nome: 'Jaqueta de Couro', preco: 'R$ 499,90'},
-  { id: 12, nome: 'Tênis Esportivo', preco: 'R$ 299,90'},
-  { id: 13, nome: 'Calça Jeans', preco: 'R$ 219,90'},
-  { id: 14, nome: 'Mochila Escolar', preco: 'R$ 159,90'},
-  { id: 15, nome: 'Relógio Analógico', preco: 'R$ 249,90'},
+  { id: 28, nome: 'Camiseta Oversized', preco: 'R$ 149,90', quantidade: 120, status: 'Ativo', perfil: 'Admin' },
+  { id: 29, nome: 'Calça Jogger', preco: 'R$ 199,90', quantidade: 80, status: 'Inativo', perfil: 'Usuário' },
+  { id: 30, nome: 'Tênis Running', preco: 'R$ 299,90', quantidade: 60, status: 'Ativo', perfil: 'Moderador' },
+  { id: 31, nome: 'Jaqueta Corta-Vento', preco: 'R$ 249,90', quantidade: 50  , status: 'Ativo', perfil: 'Admin' },
+  { id: 32, nome: 'Mochila de Couro', preco: 'R$ 399,90', quantidade: 30  , status: 'Ativo', perfil: 'Admin' },
+  { id: 33, nome: 'Relógio Esportivo', preco: 'R$ 199,90', quantidade: 70  , status: 'Ativo', perfil: 'Admin' },
+  { id: 34, nome: 'Óculos de Grau', preco: 'R$ 149,90', quantidade: 40  , status: 'Ativo', perfil: 'Admin' },
+  { id: 35, nome: 'Camiseta Básica', preco: 'R$ 99,90', quantidade: 200 , status: 'Ativo', perfil: 'Admin'  },
+  { id: 36, nome: 'Calça Social', preco: 'R$ 249,90', quantidade: 90  , status: 'Ativo', perfil: 'Admin' },
+  { id: 37, nome: 'Tênis Casual', preco: 'R$ 199,90', quantidade: 110 , status: 'Ativo', perfil: 'Admin'  },
+  { id: 38, nome: 'Jaqueta de Couro', preco: 'R$ 499,90', quantidade: 20  , status: 'Ativo', perfil: 'Admin' },
+  { id: 39, nome: 'Mochila Escolar', preco: 'R$ 179,90', quantidade: 150 , status: 'Ativo', perfil: 'Admin'  },
+  { id: 52, nome: 'Tênis Street', preco: 'R$ 399,90', quantidade: 75  , status: 'Ativo', perfil: 'Admin' },
+  { id: 53, nome: 'Camisa Social', preco: 'R$ 199,90', quantidade: 95  , status: 'Ativo', perfil: 'Admin' },
 ]
 </script>
