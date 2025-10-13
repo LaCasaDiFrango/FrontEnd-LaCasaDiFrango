@@ -2,63 +2,62 @@
 import { computed, ref } from 'vue'
 
 const props = defineProps({
-  items: {
-    type: Array,
-    default: () => [],
-  },
-  columns: {
-    type: Array,
-    default: () => [],
-  },
-  title: {
-    type: String,
-  },
+  items: { type: Array, default: () => [] },
+  columns: { type: Array, default: () => [] },
+  title: { type: String },
 })
 
 const filtro = ref('')
 
-// Lista filtrada
+// Filtra os itens pelo campo de busca
 const itemsList = computed(() => {
   if (!filtro.value) return props.items
-
-  return props.items.filter(item => {
-    return props.columns.some(col => {
-      const key = col.key
-      return item[key]?.toString().toLowerCase().includes(filtro.value.toLowerCase())
-    })
-  })
+  return props.items.filter(item =>
+    props.columns.some(col =>
+      (item[col.key]?.toString() ?? '').toLowerCase().includes(filtro.value.toLowerCase())
+    )
+  )
 })
 
-// Função para exibir o "Nome" correto
-const getDisplayName = (item) => {
-  return item.nome || item.name || item.usuario || item.email || '—'
-}
+// Define quais colunas não devem ser centralizadas
+const primaryKeys = ['nome', 'name', 'usuario', 'email']
 
-// Filtra colunas que não sejam nome/email/usuario
-const otherColumns = computed(() => {
-  const forbiddenKeys = ['nome', 'name', 'usuario', 'email']
-  return props.columns.filter(col => !forbiddenKeys.includes(col.key))
-})
+const otherColumns = computed(() =>
+  props.columns.filter(col => !primaryKeys.includes(col.key))
+)
 
-// Mapeamento de status
-const statusMapInverse = {
+// Mapas para valores legíveis
+const statusMap = {
   1: 'Carrinho',
   2: 'Realizado',
   3: 'Pago',
   4: 'Entregue'
 }
 
-// Função para mostrar o valor correto da célula
+const perfilMap = {
+  administrador: 'Administrador',
+  usuario: 'Usuário',
+}
+
+// Retorna o nome correto para exibir
+const getDisplayName = item => item.nome || item.usuario || item.email || '—'
+
+// Retorna o valor correto das outras colunas
 const getDisplayValue = (item, key) => {
-  if (key === 'status') {
-    return statusMapInverse[item[key]] || item[key] || '—'
+  if (key === 'status') return statusMap[item[key]] || item[key] || '—'
+  if (key === 'perfil') return perfilMap[item[key]] || item[key] || '—'
+  if (key === 'preco') {
+    const preco = Number(item[key] ?? 0)
+    return `R$ ${preco.toFixed(2).replace('.', ',')}` // Formato brasileiro
   }
   return item[key] ?? '—'
 }
 </script>
 
+
 <template>
   <div class="bg-white rounded-2xl shadow-md p-5 w-full min-h-[475px]">
+    <!-- Cabeçalho -->
     <div class="flex justify-between items-center mb-4">
       <h2 class="text-lg font-semibold text-gray-800">{{ title }}</h2>
       <input
@@ -83,21 +82,26 @@ const getDisplayValue = (item, key) => {
 
       <transition-group tag="tbody" name="fade-slide">
         <tr
-          v-for="(p, index) in itemsList"
-          :key="p.id || index"
+          v-for="(item, index) in itemsList"
+          :key="item.id || index"
           class="bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg"
         >
-          <td class="py-2 text-center text-gray-700 rounded-l-lg">{{ p.id }}</td>
-          <td class="py-2 text-left font-medium text-gray-700">{{ getDisplayName(p) }}</td>
+          <!-- ID -->
+          <td class="py-2 text-center text-gray-700 rounded-l-lg">{{ item.id }}</td>
 
+          <!-- Nome -->
+          <td class="py-2 text-left font-medium text-gray-700">{{ getDisplayName(item) }}</td>
+
+          <!-- Outras colunas -->
           <td
             v-for="col in otherColumns"
             :key="col.key"
             class="py-2 text-center text-gray-800 font-semibold"
           >
-            {{ getDisplayValue(p, col.key) }}
+            {{ getDisplayValue(item, col.key) }}
           </td>
 
+          <!-- Administração -->
           <td class="py-2 text-center rounded-r-lg">
             <div class="flex justify-center items-center gap-3">
               <button title="Editar">
@@ -132,7 +136,6 @@ const getDisplayValue = (item, key) => {
     </div>
   </div>
 </template>
-
 
 <style>
 .fade-slide-enter-active,
