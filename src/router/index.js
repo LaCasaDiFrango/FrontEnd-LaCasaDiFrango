@@ -109,7 +109,7 @@ const router = createRouter({
       name: 'historia',
       component: HistoriaView,
     },
-        {
+    {
       path: '/dashboard',
       name: 'admin',
       meta: { requiresAdmin: true },
@@ -119,15 +119,85 @@ const router = createRouter({
           name: 'Painel Administrativo',
           component: () => import('@/views/admin/HomeView.vue')
         },
-      ],
-    },
+        {
+          path: 'estoque',
+          name: 'Estoque',
+          component: () => import('@/views/admin/pages/DashboardPagesAdmin.vue'),
+          props: {
+            pageTitle: 'Estoque',
+            dataKey: 'produtos',
+            actions: {
+              add: () => console.log('Adicionar produto'),
+              addLabel: 'Cadastrar Novo Produto'
+            },
+            columns: [
+              { key: 'nome', label: 'Nome' },
+              { key: 'quantidade_em_estoque', label: 'Quantidade' },
+              { key: 'preco', label: 'Preço' },
+            ],
+          }
+        },
+        {
+          path: 'usuarios',
+          name: 'Usuários',
+          component: () => import('@/views/admin/pages/DashboardPagesAdmin.vue'),
+          props: {
+            pageTitle: 'Usuários',
+            dataKey: 'usuarios',
+            actions: {
+              add: () => console.log('Adicionar usuário'),
+              addLabel: 'Cadastrar Novo Usuário'
+            },
+            columns: [
+              { key: 'email', label: 'Email' },
+              { key: 'perfil', label: 'Perfil' },
+            ],
+          }
+        },
+        {
+          path: 'pedidos',
+          name: 'Pedidos',
+          component: () => import('@/views/admin/pages/DashboardPagesAdmin.vue'),
+          props: {
+            pageTitle: 'Pedidos',
+            dataKey: 'pedidos',
+            actions: {
+              add: () => console.log('Adicionar pedido'),
+              addLabel: 'Cadastrar Novo Pedido'
+            },
+            columns: [
+              { key: 'usuario', label: 'Nome' },
+              { key: 'status', label: 'Status' },
+            ],
+          }
+        },
+        {
+          path: 'estatisticas',
+          name: 'Estatísticas',
+          component: () => import('@/views/admin/pages/DashboardEstatisticasAdmin.vue'),
+          props: {
+            pageTitle: 'Estatísticas',
+            dataKey: 'estatisticas',
+          }
+        },
+        {
+          path: 'fluxo',
+          name: 'Fluxo de Caixa',
+          component: () => import('@/views/admin/pages/DashboardFluxoCaixaAdmin.vue'),
+          props: {
+            pageTitle: 'Fluxo de Caixa',
+            dataKey: 'fluxo',
+          }
+        },
+      ]
+    }
 
   ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
-      return savedPosition 
+      return savedPosition
     } else {
-      return { top: 0 } 
+      return { top: 0 }
     }
   }
 })
