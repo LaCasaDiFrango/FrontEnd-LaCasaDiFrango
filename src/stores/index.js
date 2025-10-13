@@ -15,6 +15,9 @@ import { useToastStore } from './toast' // import da store do toast
 import { useNavBarAdminStore } from './admin/navbar_admin'
 import { useDashboardStore } from './admin/dashboard'
 import { useDashboardTitleStore } from './admin/pages/dashboard_titles'
+import { usePedidosStore } from './admin/pages/pedidoStore'
+import { useProdutosStore } from './admin/pages/produtoStore'
+import { useUsuariosStore } from './admin/pages/usuarioStore'
 
 //loading
 import { useUiStore } from './ui'
@@ -30,4 +33,7 @@ export {
   useUiStore,
   useDashboardStore,
   useDashboardTitleStore,
+  usePedidosStore,
+  useProdutosStore,
+  useUsuariosStore,
 }

@@ -25,8 +25,8 @@
     <div class="flex w-full justify-center items-center">
         <div class="flex-[0.9]">
           <TablePagesAdmin
-            :title="dashboardTitleStore.tableTitle"
-            :items="mockData"
+            :title="pageTitle"
+            :items="items"
             :columns="columns"
           />
         </div>
@@ -36,41 +36,63 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { computed, watch } from 'vue'
 import { NavLateralAdmin, TitleAdmin, ButtonActionAdmin, InfoCardAdmin, TablePagesAdmin } from '@/components/index'
-import { useDashboardTitleStore, useDashboardStore } from '@/stores/index'
+import { useDashboardTitleStore, usePedidosStore, useProdutosStore, useUsuariosStore } from '@/stores/index'
 
 const dashboardTitleStore = useDashboardTitleStore()
-const dashboardStore = useDashboardStore()
-
-onMounted(() => {
-  dashboardStore.fetchDashboardData()
-})
 
 const props = defineProps({
   pageTitle: String,
-  dataKey: String,
+  dataKey: String, // 'produtos' | 'usuarios' | 'pedidos'
   columns: Array,
-  actions: {
-    type: Object,
-    default: () => ({ add: null, addLabel: null, dropdown: [] })
-  }
+  actions: Object
 })
 
-const mockData = [
-  { id: 28, nome: 'Camiseta Oversized', preco: 'R$ 149,90', quantidade: 120, status: 'Ativo', perfil: 'Admin' },
-  { id: 29, nome: 'Calça Jogger', preco: 'R$ 199,90', quantidade: 80, status: 'Inativo', perfil: 'Usuário' },
-  { id: 30, nome: 'Tênis Running', preco: 'R$ 299,90', quantidade: 60, status: 'Ativo', perfil: 'Moderador' },
-  { id: 31, nome: 'Jaqueta Corta-Vento', preco: 'R$ 249,90', quantidade: 50  , status: 'Ativo', perfil: 'Admin' },
-  { id: 32, nome: 'Mochila de Couro', preco: 'R$ 399,90', quantidade: 30  , status: 'Ativo', perfil: 'Admin' },
-  { id: 33, nome: 'Relógio Esportivo', preco: 'R$ 199,90', quantidade: 70  , status: 'Ativo', perfil: 'Admin' },
-  { id: 34, nome: 'Óculos de Grau', preco: 'R$ 149,90', quantidade: 40  , status: 'Ativo', perfil: 'Admin' },
-  { id: 35, nome: 'Camiseta Básica', preco: 'R$ 99,90', quantidade: 200 , status: 'Ativo', perfil: 'Admin'  },
-  { id: 36, nome: 'Calça Social', preco: 'R$ 249,90', quantidade: 90  , status: 'Ativo', perfil: 'Admin' },
-  { id: 37, nome: 'Tênis Casual', preco: 'R$ 199,90', quantidade: 110 , status: 'Ativo', perfil: 'Admin'  },
-  { id: 38, nome: 'Jaqueta de Couro', preco: 'R$ 499,90', quantidade: 20  , status: 'Ativo', perfil: 'Admin' },
-  { id: 39, nome: 'Mochila Escolar', preco: 'R$ 179,90', quantidade: 150 , status: 'Ativo', perfil: 'Admin'  },
-  { id: 52, nome: 'Tênis Street', preco: 'R$ 399,90', quantidade: 75  , status: 'Ativo', perfil: 'Admin' },
-  { id: 53, nome: 'Camisa Social', preco: 'R$ 199,90', quantidade: 95  , status: 'Ativo', perfil: 'Admin' },
-]
+// Mapa de stores
+const storesMap = {
+  produtos: useProdutosStore(),
+  usuarios: useUsuariosStore(),
+  pedidos: usePedidosStore()
+}
+
+// Mapa de fetch
+const fetchMap = {
+  produtos: () => storesMap.produtos.fetchProdutos?.(),
+  usuarios: () => storesMap.usuarios.fetchUsuarios?.(),
+  pedidos: () => storesMap.pedidos.fetchPedidos?.()
+}
+
+// Computed para store atual
+const store = computed(() => storesMap[props.dataKey])
+
+// Computed para items
+const items = computed(() => {
+  if (!store.value) return []
+  if (props.dataKey === 'produtos') return store.value.produtos
+  if (props.dataKey === 'usuarios') return store.value.usuarios
+  if (props.dataKey === 'pedidos') return store.value.pedidos
+  return []
+})
+
+// Watch para atualizar quando dataKey mudar
+watch(
+  () => props.dataKey,
+  async (newKey) => {
+    console.log('[DEBUG] dataKey mudou para:', newKey)
+    const fetchFn = fetchMap[newKey]
+    if (fetchFn) {
+      try {
+        store.value.loading = true
+        await fetchFn()
+      } catch (err) {
+        console.error(`[DashboardPagesAdmin] Erro ao carregar ${newKey}:`, err)
+      } finally {
+        store.value.loading = false
+      }
+    }
+  },
+  { immediate: true }
+)
 </script>
+

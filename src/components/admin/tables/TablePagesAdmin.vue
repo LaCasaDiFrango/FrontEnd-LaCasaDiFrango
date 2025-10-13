@@ -8,31 +8,57 @@ const props = defineProps({
   },
   columns: {
     type: Array,
-    default: () => [], // [{ label: 'Preço', key: 'preco' }]
+    default: () => [],
   },
   title: {
     type: String,
   },
 })
 
-// Campo de filtro
 const filtro = ref('')
 
 // Lista filtrada
 const itemsList = computed(() => {
   if (!filtro.value) return props.items
-  return props.items.filter(
-    (item) =>
-      item.nome.toLowerCase().includes(filtro.value.toLowerCase()) ||
-      item.id.toString().includes(filtro.value) ||
-      props.columns.some((col) => item[col.key]?.toString().toLowerCase().includes(search))
-  )
+
+  return props.items.filter(item => {
+    return props.columns.some(col => {
+      const key = col.key
+      return item[key]?.toString().toLowerCase().includes(filtro.value.toLowerCase())
+    })
+  })
 })
+
+// Função para exibir o "Nome" correto
+const getDisplayName = (item) => {
+  return item.nome || item.name || item.usuario || item.email || '—'
+}
+
+// Filtra colunas que não sejam nome/email/usuario
+const otherColumns = computed(() => {
+  const forbiddenKeys = ['nome', 'name', 'usuario', 'email']
+  return props.columns.filter(col => !forbiddenKeys.includes(col.key))
+})
+
+// Mapeamento de status
+const statusMapInverse = {
+  1: 'Carrinho',
+  2: 'Realizado',
+  3: 'Pago',
+  4: 'Entregue'
+}
+
+// Função para mostrar o valor correto da célula
+const getDisplayValue = (item, key) => {
+  if (key === 'status') {
+    return statusMapInverse[item[key]] || item[key] || '—'
+  }
+  return item[key] ?? '—'
+}
 </script>
 
 <template>
   <div class="bg-white rounded-2xl shadow-md p-5 w-full min-h-[475px]">
-    <!-- Cabeçalho com filtro -->
     <div class="flex justify-between items-center mb-4">
       <h2 class="text-lg font-semibold text-gray-800">{{ title }}</h2>
       <input
@@ -43,20 +69,18 @@ const itemsList = computed(() => {
       />
     </div>
 
-    <!-- Tabela -->
     <table class="w-full text-sm border-separate" style="border-spacing: 0 6px">
       <thead>
         <tr class="text-gray-500 border-b border-gray-200">
           <th class="py-2 px-3 text-center font-semibold w-[60px]">#</th>
           <th class="py-2 px-3 text-left font-semibold">Nome</th>
-          <th v-for="col in columns" :key="col.key" class="py-2 px-3 text-center font-semibold">
+          <th v-for="col in otherColumns" :key="col.key" class="py-2 px-3 text-center font-semibold">
             {{ col.label }}
           </th>
           <th class="py-2 px-3 text-center font-semibold w-[140px]">Administração</th>
         </tr>
       </thead>
 
-      <!-- Usando transition-group -->
       <transition-group tag="tbody" name="fade-slide">
         <tr
           v-for="(p, index) in itemsList"
@@ -64,14 +88,16 @@ const itemsList = computed(() => {
           class="bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg"
         >
           <td class="py-2 text-center text-gray-700 rounded-l-lg">{{ p.id }}</td>
-          <td class="py-2 text-left font-medium text-gray-700">{{ p.nome }}</td>
+          <td class="py-2 text-left font-medium text-gray-700">{{ getDisplayName(p) }}</td>
+
           <td
-            v-for="col in columns"
+            v-for="col in otherColumns"
             :key="col.key"
             class="py-2 text-center text-gray-800 font-semibold"
           >
-            {{ p[col.key] }}
+            {{ getDisplayValue(p, col.key) }}
           </td>
+
           <td class="py-2 text-center rounded-r-lg">
             <div class="flex justify-center items-center gap-3">
               <button title="Editar">
@@ -107,8 +133,8 @@ const itemsList = computed(() => {
   </div>
 </template>
 
+
 <style>
-/* Transição de fade + slide */
 .fade-slide-enter-active,
 .fade-slide-leave-active {
   transition: all 0.3s ease;
