@@ -25,7 +25,7 @@
     <div class="flex w-full justify-center items-center">
         <div class="flex-[0.9]">
           <TablePagesAdmin
-            :title="pageTitle"
+            :title="dashboardTitleStore.tableTitle"
             :items="items"
             :columns="columns"
           />
