@@ -13,7 +13,7 @@
         :acao="actions.addLabel"
         :showDropdown="!!actions.dropdown"
         :options="actions.dropdown"
-        @click="actions.add"
+        @click="handleAddClick"
       />
       <InfoCardAdmin
         title="Em construção"
@@ -39,6 +39,7 @@
 import { computed, watch } from 'vue'
 import { NavLateralAdmin, TitleAdmin, ButtonActionAdmin, InfoCardAdmin, TablePagesAdmin } from '@/components/index'
 import { useDashboardTitleStore, usePedidosStore, useProdutosStore, useUsuariosStore } from '@/stores/index'
+import { useRouter } from 'vue-router'
 
 const dashboardTitleStore = useDashboardTitleStore()
 
@@ -48,6 +49,14 @@ const props = defineProps({
   columns: Array,
   actions: Object
 })
+
+const router = useRouter()
+
+function handleAddClick() {
+  if (props.actions?.addRoute) {
+    router.push(props.actions.addRoute)
+  }
+}
 
 // Mapa de stores
 const storesMap = {

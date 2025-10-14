@@ -70,6 +70,7 @@ import InfoCardAdmin from "./admin/layouts/InfoCardAdmin.vue";
 import TopProdutosChart from "./admin/graficos/TopProdutosChart.vue";
 import TopProdutosTableAdmin from "./admin/tables/TopProdutosTableAdmin.vue";
 import TablePagesAdmin from "./admin/tables/TablePagesAdmin.vue";
+import ButtonCadastroAdmin from "./admin/buttons/ButtonCadastroAdmin.vue";
 
 //loading
 import LoadingPage from "./loading/LoadingPage.vue";
@@ -128,4 +129,5 @@ export {
   TopProdutosChart,
   TopProdutosTableAdmin,
   TablePagesAdmin,
+  ButtonCadastroAdmin,
 };

@@ -127,7 +127,7 @@ const router = createRouter({
             pageTitle: 'Estoque',
             dataKey: 'produtos',
             actions: {
-              add: () => console.log('Adicionar produto'),
+              addRoute: '/dashboard/estoque/cadastro-produto',
               addLabel: 'Cadastrar Novo Produto'
             },
             columns: [
@@ -145,7 +145,7 @@ const router = createRouter({
             pageTitle: 'Usuários',
             dataKey: 'usuarios',
             actions: {
-              add: () => console.log('Adicionar usuário'),
+              addRoute: '/dashboard/usuarios/cadastro-usuario',
               addLabel: 'Cadastrar Novo Usuário'
             },
             columns: [
@@ -162,7 +162,7 @@ const router = createRouter({
             pageTitle: 'Pedidos',
             dataKey: 'pedidos',
             actions: {
-              add: () => console.log('Adicionar pedido'),
+              addRoute: '/dashboard/pedidos/cadastro-pedido',
               addLabel: 'Cadastrar Novo Pedido'
             },
             columns: [
@@ -188,6 +188,21 @@ const router = createRouter({
             pageTitle: 'Fluxo de Caixa',
             dataKey: 'fluxo',
           }
+        },
+        {
+          path: 'usuarios/cadastro-usuario',
+          name: 'Cadastro de Usuários',
+          component: () => import('@/views/admin/pages/cadastro/CadastroUsuarioAdmin.vue'),
+        },
+        {
+          path: 'estoque/cadastro-produto',
+          name: 'Cadastro de Produtos',
+          component: () => import('@/views/admin/pages/cadastro/CasdastroProdutoAdmin.vue'),
+        },
+        {
+          path: 'pedidos/cadastro-pedido',
+          name: 'Cadastro de Pedidos',
+          component: () => import('@/views/admin/pages/cadastro/CadastroPedidoAdmin.vue'),
         },
       ]
     }
