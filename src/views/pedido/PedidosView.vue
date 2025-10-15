@@ -151,15 +151,18 @@ const removerItem = async (produtoId) => {
   box-sizing: border-box;
 }
 
+/* Área dos produtos */
 .pedidos {
   display: flex;
   flex-direction: column;
   gap: 1rem;
   width: 100%;
   overflow-y: auto;
-  max-height: calc(100vh - 210px);
+  flex: 1;
+  padding-bottom: 160px;
 }
 
+/* Cada produto */
 .item-selecionado {
   display: flex;
   justify-content: flex-start;
@@ -167,32 +170,53 @@ const removerItem = async (produtoId) => {
   position: relative;
   border-bottom: 1px solid #000;
   gap: 1rem;
-  padding: 1.5rem 1rem 2rem 1rem; /* espaço superior e direito para o botão delete */
+  padding: 1.5rem 3rem 2rem 1rem; /* espaço extra à direita p/ botão */
   width: 100%;
+  min-height: 90px;
+  background-color: #fff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  min-height: 70px;
+}
+
+.pedidos::-webkit-scrollbar {
+  width: 8px;
+}
+.pedidos::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 10px;
+}
+.pedidos::-webkit-scrollbar-thumb:hover {
+  background-color: #999;
 }
 
 .item-info {
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* permite quebra de linha */
   gap: 1rem;
+  flex: 1;
+  min-width: 0; /* importante para o texto quebrar */
 }
 
 .item-img {
   width: 48px;
   height: 48px;
+  flex-shrink: 0;
 }
 
 .sub-info {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  flex: 1;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: calc(100% - 60px); /* evita sobreposição com botão */
 }
 
 .item-nome {
   font-weight: 500;
   font-size: 1rem;
+  white-space: normal; /* quebra o texto em várias linhas */
+  line-height: 1.3;
 }
 
 .preco {
@@ -201,18 +225,19 @@ const removerItem = async (produtoId) => {
 }
 
 .remover-btn {
-  position: relative;
-  right: 0;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
   background-color: #B91C1C;
   border: none;
   padding: 0.35rem;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 5px;
   border: 1px solid #fff;
+  z-index: 0;
 }
 
 .remover-btn img {
@@ -222,8 +247,8 @@ const removerItem = async (produtoId) => {
 
 .quantidade-controles {
   position: absolute;
-  bottom: .5rem;
-  right: .5rem;
+  bottom: 0.5rem;
+  right: 0.5rem;
   display: flex;
   align-items: center;
   gap: 0.25rem;
@@ -275,4 +300,5 @@ const removerItem = async (produtoId) => {
   color: #fff;
   border-top: 2px solid #1d4523;
 }
+
 </style>
