@@ -15,6 +15,7 @@ import DetalhesPedidoView from '@/views/pedido/DetalhesPedidoView.vue'
 import DetalhesPagamentoView from '@/views/pagamento/DetalhesPagamentoView.vue'
 import AtualizarUsuario from '@/views/usuario/AtualizarUsuario.vue'
 import HistoriaView from '@/views/HistoriaView.vue'
+import { info } from 'autoprefixer'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -128,7 +129,9 @@ const router = createRouter({
             dataKey: 'produtos',
             actions: {
               addRoute: '/dashboard/estoque/cadastro-produto',
-              addLabel: 'Cadastrar Novo Produto'
+              addLabel: 'Cadastrar Novo Produto',
+              infoCardValue: '18 Relatórios Disponíveis',
+              infoCardSubtitle: 'Atualize o estoque regularmente para manter o controle dos produtos.'
             },
             columns: [
               { key: 'nome', label: 'Nome' },
@@ -146,7 +149,9 @@ const router = createRouter({
             dataKey: 'usuarios',
             actions: {
               addRoute: '/dashboard/usuarios/cadastro-usuario',
-              addLabel: 'Cadastrar Novo Usuário'
+              addLabel: 'Cadastrar Novo Usuário',
+              infoCardValue: '120 Usuários Ativos',
+              infoCardSubtitle: 'Gerencie os usuários e suas permissões de acesso.'
             },
             columns: [
               { key: 'email', label: 'Email' },
@@ -163,7 +168,9 @@ const router = createRouter({
             dataKey: 'pedidos',
             actions: {
               addRoute: '/dashboard/pedidos/cadastro-pedido',
-              addLabel: 'Cadastrar Novo Pedido'
+              addLabel: 'Cadastrar Novo Pedido',
+              infoCardValue: '75 Pedidos Realizados',
+              infoCardSubtitle: 'Monitore e gerencie os pedidos realizados pelos clientes.',
             },
             columns: [
               { key: 'usuario', label: 'Nome' },

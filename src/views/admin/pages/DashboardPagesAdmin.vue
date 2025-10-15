@@ -16,9 +16,10 @@
         @click="handleAddClick"
       />
       <InfoCardAdmin
-        title="Em construção"
-        :value="`Esta página está em construção.`"
-        :subtitle="`Por favor, volte mais tarde.`"
+        :icon="imageEstatisca"
+        title="Relatórios e Estatísticas"
+        :value="actions.infoCardValue"
+        :subtitle="actions.infoCardSubtitle"
       />
     </div>
     </div>
@@ -40,6 +41,7 @@ import { computed, watch } from 'vue'
 import { NavLateralAdmin, TitleAdmin, ButtonActionAdmin, InfoCardAdmin, TablePagesAdmin } from '@/components/index'
 import { useDashboardTitleStore, usePedidosStore, useProdutosStore, useUsuariosStore } from '@/stores/index'
 import { useRouter } from 'vue-router'
+import imageEstatisca from '@/assets/img/admin/statistics-svgrepo-com.svg'
 
 const dashboardTitleStore = useDashboardTitleStore()
 
