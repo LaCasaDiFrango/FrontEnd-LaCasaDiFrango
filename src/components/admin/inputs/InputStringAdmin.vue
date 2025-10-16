@@ -1,7 +1,15 @@
 <template>
   <div>
-    <label class="block mb-1 text-sm font-medium text-gray-700">{{ label }}</label>
-    <input :type="type" class="w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500" :value="modelValue" @input="$emit('action', $event.target.value)"/>
+    <label class="block mb-1 text-sm font-medium text-gray-600">
+      {{ label }}
+    </label>
+    <input
+      :type="type"
+      :value="modelValue"
+      :placeholder="placeholder"
+      @input="$emit('action', $event.target.value)"
+      class="w-full px-4 py-3 border border-gray-300 rounded-lg ring-1 ring-gray-400 bg-white text-sm placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-teal-600 focus:border-teal-600  transition duration-150"
+    />
   </div>
 </template>
 
@@ -12,7 +20,11 @@ defineProps({
   type: {
     type: String,
     default: 'text'
-  }
+  },
+  placeholder: {
+    type: String,
+    default: ''
+  },
 })
 
 defineEmits(['action'])
