@@ -1,3 +1,4 @@
+// stores/usuarios.js
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { user } from '@/api/index'
@@ -22,5 +23,16 @@ export const useUsuariosStore = defineStore('usuarios', () => {
     }
   }
 
-  return { usuarios, loading, error, fetchUsuarios }
+  async function cadastrarUsuario(usuarioData) {
+    try {
+      const response = await userService.create(usuarioData)
+      usuarios.value.push(response)
+      return response
+    } catch (err) {
+      console.error('[UsuariosStore] Erro ao cadastrar usuário:', err)
+      throw err
+    }
+  }
+
+  return { usuarios, loading, error, fetchUsuarios, cadastrarUsuario }
 })
