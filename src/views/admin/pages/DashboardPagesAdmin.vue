@@ -3,27 +3,25 @@
     <NavLateralAdmin />
 
     <main class="flex-1 p-6 space-y-6 overflow-hidden">
-      <TitleAdmin
-        :title="dashboardTitleStore.title"
-        :subtitle="dashboardTitleStore.subtitle"
-      />
-    <div class="flex w-full justify-center items-center">
-    <div class="flex flex-[0.9] gap-6 justify-between items-center">
-      <ButtonActionAdmin
-        :acao="actions.addLabel"
-        :showDropdown="!!actions.dropdown"
-        :options="actions.dropdown"
-        @click="handleAddClick"
-      />
-      <InfoCardAdmin
-        :icon="imageEstatisca"
-        title="Relatórios e Estatísticas"
-        :value="actions.infoCardValue"
-        :subtitle="actions.infoCardSubtitle"
-      />
-    </div>
-    </div>
-    <div class="flex w-full justify-center items-center">
+      <TitleAdmin :title="dashboardTitleStore.title" :subtitle="dashboardTitleStore.subtitle" />
+      <div class="flex w-full justify-center items-center">
+        <div class="flex flex-[0.9] gap-6 justify-between items-center">
+          <ButtonActionAdmin
+            :acao="actions.addLabel"
+            :showDropdown="!!actions.dropdown"
+            :options="dropdownOptions"
+            @click="handleAddClick"
+          />
+
+          <InfoCardAdmin
+            :icon="imageEstatisca"
+            title="Relatórios e Estatísticas"
+            :value="actions.infoCardValue"
+            :subtitle="actions.infoCardSubtitle"
+          />
+        </div>
+      </div>
+      <div class="flex w-full justify-center items-center">
         <div class="flex-[0.9]">
           <TablePagesAdmin
             :title="dashboardTitleStore.tableTitle"
@@ -38,8 +36,19 @@
 
 <script setup>
 import { computed, watch } from 'vue'
-import { NavLateralAdmin, TitleAdmin, ButtonActionAdmin, InfoCardAdmin, TablePagesAdmin } from '@/components/index'
-import { useDashboardTitleStore, usePedidosStore, useProdutosStore, useUsuariosStore } from '@/stores/index'
+import {
+  NavLateralAdmin,
+  TitleAdmin,
+  ButtonActionAdmin,
+  InfoCardAdmin,
+  TablePagesAdmin,
+} from '@/components/index'
+import {
+  useDashboardTitleStore,
+  usePedidosStore,
+  useProdutosStore,
+  useUsuariosStore,
+} from '@/stores/index'
 import { useRouter } from 'vue-router'
 import imageEstatisca from '@/assets/img/admin/statistics-svgrepo-com.svg'
 
@@ -49,7 +58,7 @@ const props = defineProps({
   pageTitle: String,
   dataKey: String, // 'produtos' | 'usuarios' | 'pedidos'
   columns: Array,
-  actions: Object
+  actions: Object,
 })
 
 const router = useRouter()
@@ -60,18 +69,33 @@ function handleAddClick() {
   }
 }
 
+const dropdownOptions = computed(() => {
+  if (!props.actions?.dropdown) return []
+  return props.actions.dropdown.map(opt => ({
+    ...opt,
+    action: () => {
+      if (opt.route) {
+        router.push(opt.route)   // redireciona para a rota desejada
+      } else if (typeof opt.action === 'function') {
+        opt.action()             // executa ação customizada
+      }
+    }
+  }))
+})
+
+
 // Mapa de stores
 const storesMap = {
   produtos: useProdutosStore(),
   usuarios: useUsuariosStore(),
-  pedidos: usePedidosStore()
+  pedidos: usePedidosStore(),
 }
 
 // Mapa de fetch
 const fetchMap = {
   produtos: () => storesMap.produtos.fetchProdutos?.(),
   usuarios: () => storesMap.usuarios.fetchUsuarios?.(),
-  pedidos: () => storesMap.pedidos.fetchPedidos?.()
+  pedidos: () => storesMap.pedidos.fetchPedidos?.(),
 }
 
 // Computed para store atual

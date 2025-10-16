@@ -131,7 +131,13 @@ const router = createRouter({
               addRoute: '/dashboard/estoque/cadastro-produto',
               addLabel: 'Cadastrar Novo Produto',
               infoCardValue: '18 Relatórios Disponíveis',
-              infoCardSubtitle: 'Atualize o estoque regularmente para manter o controle dos produtos.'
+              infoCardSubtitle: 'Atualize o estoque regularmente para manter o controle dos produtos.',
+              dropdown: [
+                {
+                  label: 'Alterar Estoque',
+                  route: '/dashboard/estoque/alterar-estoque' // a rota de alteração
+                }
+              ]
             },
             columns: [
               { key: 'nome', label: 'Nome' },
@@ -205,6 +211,11 @@ const router = createRouter({
           path: 'estoque/cadastro-produto',
           name: 'Cadastro de Produtos',
           component: () => import('@/views/admin/pages/cadastro/CasdastroProdutoAdmin.vue'),
+        },
+        {
+          path: 'estoque/alterar-estoque',
+          name: 'Alterar Estoque',
+          component: () => import('@/views/admin/pages/alterar/AlterarEstoqueAdmin.vue'),
         },
         {
           path: 'pedidos/cadastro-pedido',
