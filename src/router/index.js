@@ -136,7 +136,11 @@ const router = createRouter({
                 {
                   label: 'Alterar Estoque',
                   route: '/dashboard/estoque/alterar-estoque' // a rota de alteração
-                }
+                },
+                {
+                  label: 'Alterar Preço',
+                  route: '/dashboard/estoque/alterar-preco' // a rota de alteração de preço
+                },
               ]
             },
             columns: [
@@ -216,6 +220,11 @@ const router = createRouter({
           path: 'estoque/alterar-estoque',
           name: 'Alterar Estoque',
           component: () => import('@/views/admin/pages/alterar/AlterarEstoqueAdmin.vue'),
+        },
+        {
+          path: 'estoque/alterar-preco',
+          name: 'Alterar Preço',
+          component: () => import('@/views/admin/pages/alterar/AlterarPrecoAdmin.vue'),
         },
         {
           path: 'pedidos/cadastro-pedido',
