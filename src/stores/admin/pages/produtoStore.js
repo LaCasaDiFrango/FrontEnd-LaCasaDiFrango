@@ -1,3 +1,4 @@
+// stores/produtos.js
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { produto } from '@/api/index'
@@ -9,11 +10,22 @@ export const useProdutosStore = defineStore('produtos', () => {
   async function fetchProdutos() {
     try {
       const data = await produtoService.getAll()
-      produtos.value = data.results || data // dependendo do backend
+      produtos.value = data.results || data
     } catch (err) {
       console.error('[ProdutosStore] Erro:', err)
     }
   }
 
-  return { produtos, fetchProdutos }
+  async function cadastrarProduto(produtoData) {
+    try {
+      const response = await produtoService.create(produtoData)
+      produtos.value.push(response) // opcional: atualiza a lista
+      return response
+    } catch (err) {
+      console.error('[ProdutosStore] Erro ao cadastrar produto:', err)
+      throw err
+    }
+  }
+
+  return { produtos, fetchProdutos, cadastrarProduto }
 })
