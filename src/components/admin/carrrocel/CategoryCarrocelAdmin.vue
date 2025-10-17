@@ -5,7 +5,7 @@
         v-for="(item, index) in items"
         :key="index"
         class="carousel-item"
-        @click="scrollToSection(item.targetId)"
+        @click="$emit('categoria-selecionada', item.label)"
       >
         <div class="img-wrapper">
           <img :src="item.img" :alt="item.label" />
@@ -19,26 +19,18 @@
 <script setup>
 import { ref } from 'vue'
 
+defineEmits(['categoria-selecionada'])
+
 const carousel = ref(null)
 
 const items = [
   { img: new URL('@/assets/img/chicken-leg.png', import.meta.url).href, label: 'Frangos', targetId: 'frangos' },
   { img: new URL('@/assets/img/mashed-potatoes.png', import.meta.url).href, label: 'Maioneses', targetId: 'maioneses' },
-  { img: new URL('@/assets/img/ribs.png', import.meta.url).href, label: 'Costela', targetId: 'costela-assada' },
+  { img: new URL('@/assets/img/ribs.png', import.meta.url).href, label: 'Costela Assada', targetId: 'costela-assada' },
   { img: new URL('@/assets/img/soda.png', import.meta.url).href, label: 'Bebidas', targetId: 'bebidas' },
   { img: new URL('@/assets/img/zucchini.png', import.meta.url).href, label: 'Conservas', targetId: 'conservas' },
   { img: new URL('@/assets/img/migalhas.png', import.meta.url).href, label: 'Farofas', targetId: 'farofas' }
 ]
-
-// Rola até a seção correspondente
-const scrollToSection = (id) => {
-  const section = document.getElementById(id)
-  if (section) {
-    const offset = 80 // altura do header fixo
-    const top = section.getBoundingClientRect().top + window.scrollY - offset
-    window.scrollTo({ top, behavior: 'smooth' })
-  }
-}
 </script>
 
 <style scoped>
@@ -49,13 +41,12 @@ const scrollToSection = (id) => {
 
 .carousel-wrapper {
   display: flex;
-  justify-content: space-evenly; /* centraliza quando couber tudo */
-  flex-wrap: wrap; /* quebra linha se precisar */
+  justify-content: space-evenly;
+  flex-wrap: wrap;
   gap: 16px;
   scroll-behavior: smooth;
 }
 
-/* Itens */
 .carousel-item {
   flex: 0 1 auto;
   text-align: center;
@@ -70,7 +61,6 @@ const scrollToSection = (id) => {
   opacity: 0.9;
 }
 
-/* Imagem */
 .img-wrapper {
   display: flex;
   justify-content: center;
@@ -96,7 +86,7 @@ const scrollToSection = (id) => {
   font-weight: 500;
 }
 
-/* 🔹 Quando a tela for menor, ativa o carrossel horizontal */
+/* 🔹 Mobile: vira carrossel horizontal */
 @media (max-width: 768px) {
   .carousel-wrapper {
     flex-wrap: nowrap;
@@ -111,7 +101,7 @@ const scrollToSection = (id) => {
   }
 
   .carousel-item {
-    flex: 0 0 calc(33.333% - 10px); /* mostra 3 por vez no mobile */
+    flex: 0 0 calc(33.333% - 10px);
     scroll-snap-align: start;
   }
 }
