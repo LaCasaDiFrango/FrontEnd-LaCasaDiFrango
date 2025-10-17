@@ -21,7 +21,6 @@ import { ref } from 'vue'
 
 const carousel = ref(null)
 
-
 const items = [
   { img: new URL('@/assets/img/chicken-leg.png', import.meta.url).href, label: 'Frangos', targetId: 'frangos' },
   { img: new URL('@/assets/img/mashed-potatoes.png', import.meta.url).href, label: 'Maioneses', targetId: 'maioneses' },
@@ -31,13 +30,11 @@ const items = [
   { img: new URL('@/assets/img/migalhas.png', import.meta.url).href, label: 'Farofas', targetId: 'farofas' }
 ]
 
-
-
-// 🔹 Rolar até a seção correspondente na página
+// Rola até a seção correspondente
 const scrollToSection = (id) => {
   const section = document.getElementById(id)
   if (section) {
-    const offset = 80 // altura do header fixo (ajuste conforme seu layout)
+    const offset = 80 // altura do header fixo
     const top = section.getBoundingClientRect().top + window.scrollY - offset
     window.scrollTo({ top, behavior: 'smooth' })
   }
@@ -46,31 +43,21 @@ const scrollToSection = (id) => {
 
 <style scoped>
 .carousel-container {
-  display: flex;
-  align-items: center;
-  position: relative;
   width: 100%;
-  overflow: hidden;
   padding: 10px 0;
 }
 
 .carousel-wrapper {
   display: flex;
-  overflow-x: auto;
-  scroll-behavior: smooth;
+  justify-content: space-evenly; /* centraliza quando couber tudo */
+  flex-wrap: wrap; /* quebra linha se precisar */
   gap: 16px;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
+  scroll-behavior: smooth;
 }
 
-.carousel-wrapper::-webkit-scrollbar {
-  display: none;
-}
-
-
+/* Itens */
 .carousel-item {
-  flex: 0 0 calc(29.333% - 16px); /* mostra 3 por vez */
-  scroll-snap-align: start;
+  flex: 0 1 auto;
   text-align: center;
   border: none;
   background: transparent;
@@ -79,11 +66,11 @@ const scrollToSection = (id) => {
 }
 
 .carousel-item:hover {
-  transform: scale(1.05);
+  transform: scale(1.01) translateY(-3px);
   opacity: 0.9;
 }
 
-/* Wrapper da imagem */
+/* Imagem */
 .img-wrapper {
   display: flex;
   justify-content: center;
@@ -92,21 +79,40 @@ const scrollToSection = (id) => {
 }
 
 .carousel-item img {
-  width: 60px;
+  width: 80px;
   height: auto;
   object-fit: cover;
-  border-radius: 50%;
+  padding: 12px;
+  border-radius: 12px;
   background-color: #f0f0f0;
-  padding: 7px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Texto abaixo da imagem */
 .carousel-item span {
   display: block;
   margin-top: 6px;
   font-size: 14px;
   color: #333;
   font-weight: 500;
+}
+
+/* 🔹 Quando a tela for menor, ativa o carrossel horizontal */
+@media (max-width: 768px) {
+  .carousel-wrapper {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    justify-content: flex-start;
+    scrollbar-width: none;
+  }
+
+  .carousel-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+
+  .carousel-item {
+    flex: 0 0 calc(33.333% - 10px); /* mostra 3 por vez no mobile */
+    scroll-snap-align: start;
+  }
 }
 </style>
