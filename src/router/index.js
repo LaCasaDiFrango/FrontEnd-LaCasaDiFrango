@@ -231,6 +231,11 @@ const router = createRouter({
           name: 'Cadastro de Pedidos',
           component: () => import('@/views/admin/pages/cadastro/CadastroPedidoAdmin.vue'),
         },
+              {
+          path: 'pedidos/finalizar-pedido',
+          name: 'Finalizar Pedido',
+          component: () => import('@/views/admin/pages/cadastro/FinalizarPedidoAdmin.vue'),
+        },
       ]
     }
 

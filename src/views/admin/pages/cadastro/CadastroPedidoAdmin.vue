@@ -1,7 +1,7 @@
 <template>
   <div class="flex">
     <NavLateralAdmin />
-    <ResumoButton/>
+    <ResumoButton />
     <main class="flex-1 p-6 space-y-6 overflow-hidden">
       <TitleAdmin
         title="Painel Administrativo > Pedidos > Cadastrar Pedido"
@@ -27,13 +27,21 @@
           />
         </div>
       </div>
-<!-- Botão centralizado horizontalmente, mas sem alterar o resto -->
-<div class="flex justify-center">
-  <ButtonCadastroAdmin label="Finalizar Pedido" class="w-64 text-center" />
-</div>
-
-
-
+      <div class="flex justify-center">
+        <router-link
+          v-if="carrinhoStore && carrinhoStore.itens"
+          :to="{
+            name: 'Finalizar Pedido',
+            params: {
+              itens: carrinhoStore.itens,
+              total: carrinhoStore.total,
+            },
+          }"
+          class="w-64"
+        >
+          <ButtonCadastroAdmin label="Finalizar Pedido" class="w-full text-center" />
+        </router-link>
+      </div>
     </main>
   </div>
 </template>
@@ -48,10 +56,13 @@ import {
   ButtonCadastroAdmin,
   ResumoButton,
 } from '@/components/index'
+
 import { useCardapioStore, useUiStore } from '@/stores'
+import { useCarrinhoStore } from '@/stores/admin/carrinhoStore'
 
 const cardapioStore = useCardapioStore()
 const ui = useUiStore()
+const carrinhoStore = useCarrinhoStore()
 
 const categoriaSelecionada = ref(null)
 
@@ -68,7 +79,7 @@ const selecionarCategoria = (label) => {
   console.log('Label clicado:', label)
   console.log(
     'Categorias disponíveis:',
-    cardapioStore.categories.map((c) => c.categoryName)
+    cardapioStore.categories.map((c) => c.categoryName),
   )
 
   categoriaSelecionada.value = cardapioStore.categories.find((cat) => cat.categoryName === label)
@@ -84,8 +95,4 @@ const slugify = (str) =>
     .replace(/\s+/g, '-')
 </script>
 
-
-<style scoped>
-
-
-</style>
+<style scoped></style>
