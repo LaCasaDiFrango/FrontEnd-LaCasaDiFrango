@@ -1,13 +1,14 @@
 <script setup>
 import {ProductCardAdmin} from '@/components/index'
 
-defineProps({
+const props = defineProps({
   categoryName: String,
   items: Array,
   mostrarQuantidade: { type: Boolean, default: true },
   mostrarPreco: { type: Boolean, default: true },
 })
-
+// Adicione este console.log
+console.log('Props recebidas pelo CategoryBoxAdmin:', props.items) 
 </script>
 
 <template>
@@ -15,8 +16,8 @@ defineProps({
     <h3>{{ categoryName }}</h3>
     <div class="main">
 <ProductCardAdmin
-  v-for="(item, index) in items"
-  :key="index"
+  v-for="item in props.items"
+  :key="item.id"
   :id="item.id"
   :nome="item.nome"
   :quantidade=13
