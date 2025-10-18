@@ -1,11 +1,11 @@
 <template>
   <div class="flex">
     <NavLateralAdmin />
-
+    <ResumoButton/>
     <main class="flex-1 p-6 space-y-6 overflow-hidden">
       <TitleAdmin
         title="Painel Administrativo > Pedidos > Cadastrar Pedido"
-        subtitle="Alterar as informações de um produto no estoque"
+        subtitle="Adicionar produtos ao pedido do cliente"
       />
       <div class="flex w-full justify-center items-center">
         <div class="flex flex-[0.9] flex-col gap-6 justify-between items-center">
@@ -14,7 +14,7 @@
 
           <!-- Conteúdo Dinâmico -->
           <div v-if="!categoriaSelecionada" class="text-center text-gray-500 mt-6">
-            Clique em uma categoria para alterar a quantidade em estoque de um produto.
+            Clique em uma categoria para selecionar os produtos.
           </div>
 
           <CategoryBoxAdmin
@@ -46,6 +46,7 @@ import {
   CategoryCarrocelAdmin,
   CategoryBoxAdmin,
   ButtonCadastroAdmin,
+  ResumoButton,
 } from '@/components/index'
 import { useCardapioStore, useUiStore } from '@/stores'
 
@@ -82,6 +83,7 @@ const slugify = (str) =>
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/\s+/g, '-')
 </script>
+
 
 <style scoped>
 

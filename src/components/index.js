@@ -74,6 +74,8 @@ import ButtonCadastroAdmin from "./admin/buttons/ButtonCadastroAdmin.vue";
 import CategoryCarrocelAdmin from "./admin/carrrocel/CategoryCarrocelAdmin.vue";
 import CategoryBoxAdmin from "./admin/box/CategoryBoxAdmin.vue";
 import ProductCardAdmin from "./admin/card/ProductCardAdmin.vue";
+import ProductCardPedido from "./admin/card/ProdutoCardPedido.vue";
+import ResumoButton from "./admin/buttons/ResumoButton.vue";
 
 //loading
 import LoadingPage from "./loading/LoadingPage.vue";
@@ -136,4 +138,6 @@ export {
   CategoryCarrocelAdmin,
   CategoryBoxAdmin,
   ProductCardAdmin,
+  ProductCardPedido,
+  ResumoButton
 };
