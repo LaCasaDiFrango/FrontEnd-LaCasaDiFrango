@@ -1,13 +1,14 @@
 <script setup>
 import {ProductCardAdmin} from '@/components/index'
 
-defineProps({
+const props = defineProps({
   categoryName: String,
   items: Array,
   mostrarQuantidade: { type: Boolean, default: true },
   mostrarPreco: { type: Boolean, default: true },
 })
-
+// Adicione este console.log
+console.log('Props recebidas pelo CategoryBoxAdmin:', props.items) 
 </script>
 
 <template>
@@ -15,11 +16,11 @@ defineProps({
     <h3>{{ categoryName }}</h3>
     <div class="main">
 <ProductCardAdmin
-  v-for="(item, index) in items"
-  :key="index"
+  v-for="item in props.items"
+  :key="item.id"
   :id="item.id"
   :nome="item.nome"
-  :quantidade=13
+  :quantidade="item.quantidade_em_estoque"
   :image="item.image"
   :preco="item.preco"
   :mostrarQuantidade="mostrarQuantidade"
@@ -44,11 +45,18 @@ defineProps({
   font-weight: 600;
 }
 
-.categoriaCardapio .main{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: start;
-    align-items: center;
-    gap: 20px;
+.categoriaCardapio .main {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 20px;
 }
+
+.categoriaCardapio .main > * {
+  flex: 1 1 220px; /* largura base, mas ajustável */
+  max-width: 250px; /* impede que fiquem grandes demais */
+  display: flex;
+  justify-content: center;
+}
+
 </style>

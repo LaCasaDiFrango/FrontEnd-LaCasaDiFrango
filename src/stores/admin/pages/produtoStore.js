@@ -42,21 +42,59 @@ async function fetchProdutos() {
   }
 
   // Atualizar preço de um produto
-  async function atualizarPreco(id, novoPreco) {
-    try {
-      const valor = parseFloat(novoPreco) // garante número
-      const response = await produtoService.alterarPreco(id, valor)
-      // Atualiza store local
-      const index = produtos.value.findIndex(p => p.id === id)
-      if (index !== -1) {
-        produtos.value[index].preco = valor
-      }
-      return response
-    } catch (err) {
-      console.error('[ProdutosStore] Erro ao alterar preço:', err)
-      throw err
+// Dentro de stores/produtos.js
+async function atualizarPreco(id, precoParaEnviar) {
+  try {
+    const precoString = String(precoParaEnviar).replace(',', '.');
+    const valorNumerico = parseFloat(precoString);
+
+    if (isNaN(valorNumerico)) {
+      throw new Error('Formato de preço inválido.');
     }
+
+    // Envia para a API
+    await produtoService.alterarPreco(id, valorNumerico);
+
+    // --- LÓGICA DE ATUALIZAÇÃO CORRIGIDA ---
+    const index = produtos.value.findIndex(p => p.id === id);
+    if (index !== -1) {
+      // 1. Crie uma cópia do objeto antigo
+      const produtoAtualizado = { 
+        ...produtos.value[index], // Copia todas as propriedades (id, nome, image, etc.)
+      };
+
+      // 2. Modifique o preço NA CÓPIA
+      produtoAtualizado.preco = valorNumerico.toFixed(2); // ex: "13.90"
+
+      // 3. Substitua o objeto antigo no array pela nova cópia
+      produtos.value[index] = produtoAtualizado;
+
+       console.log(`[STORE] Produto ${id} atualizado. Novo preço no estado: ${produtos.value[index].preco}`);
+    }
+    // --- FIM DA CORREÇÃO ---
+    
+  } catch (err) {
+    console.error('[ProdutosStore] Erro ao alterar preço:', err);
+    throw err;
   }
+}
+
+async function ajustarQuantidade(id, quantidadeParaEnviar) {
+  try {
+    const quantidadeNumerica = parseInt(quantidadeParaEnviar, 10);
+    if (isNaN(quantidadeNumerica)) {
+      throw new Error("Formato de quantidade inválido.");
+    }
+    const data = await produtoService.ajustarEstoque(id, quantidadeNumerica);
+    const index = produtos.value.findIndex(p => p.id === id);
+    if (index !== -1) {
+      produtos.value[index].quantidade_em_estoque = data.novo_estoque;
+    }
+  } catch (err) {
+    console.error("[ProdutosStore] Erro ao ajustar quantidade:", err);
+    throw err;
+  }
+}
 
   // Deletar produto
   async function deletarProduto(id) {
@@ -78,5 +116,6 @@ async function fetchProdutos() {
     cadastrarProduto,
     atualizarPreco,
     deletarProduto,
+    ajustarQuantidade,
   }
 })
