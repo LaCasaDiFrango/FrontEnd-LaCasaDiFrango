@@ -79,6 +79,23 @@ async function atualizarPreco(id, precoParaEnviar) {
   }
 }
 
+async function ajustarQuantidade(id, quantidadeParaEnviar) {
+  try {
+    const quantidadeNumerica = parseInt(quantidadeParaEnviar, 10);
+    if (isNaN(quantidadeNumerica)) {
+      throw new Error("Formato de quantidade inválido.");
+    }
+    const data = await produtoService.ajustarEstoque(id, quantidadeNumerica);
+    const index = produtos.value.findIndex(p => p.id === id);
+    if (index !== -1) {
+      produtos.value[index].quantidade_em_estoque = data.novo_estoque;
+    }
+  } catch (err) {
+    console.error("[ProdutosStore] Erro ao ajustar quantidade:", err);
+    throw err;
+  }
+}
+
   // Deletar produto
   async function deletarProduto(id) {
     try {
@@ -99,5 +116,6 @@ async function atualizarPreco(id, precoParaEnviar) {
     cadastrarProduto,
     atualizarPreco,
     deletarProduto,
+    ajustarQuantidade,
   }
 })

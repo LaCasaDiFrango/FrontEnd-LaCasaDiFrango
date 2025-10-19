@@ -20,7 +20,7 @@ console.log('Props recebidas pelo CategoryBoxAdmin:', props.items)
   :key="item.id"
   :id="item.id"
   :nome="item.nome"
-  :quantidade=13
+  :quantidade="item.quantidade_em_estoque"
   :image="item.image"
   :preco="item.preco"
   :mostrarQuantidade="mostrarQuantidade"
@@ -45,11 +45,18 @@ console.log('Props recebidas pelo CategoryBoxAdmin:', props.items)
   font-weight: 600;
 }
 
-.categoriaCardapio .main{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: start;
-    align-items: center;
-    gap: 20px;
+.categoriaCardapio .main {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 20px;
 }
+
+.categoriaCardapio .main > * {
+  flex: 1 1 220px; /* largura base, mas ajustável */
+  max-width: 250px; /* impede que fiquem grandes demais */
+  display: flex;
+  justify-content: center;
+}
+
 </style>
