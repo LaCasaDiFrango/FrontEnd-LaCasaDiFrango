@@ -33,39 +33,73 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+
+import { ref, onMounted, computed } from 'vue'
 import {
   NavLateralAdmin,
   TitleAdmin,
   CategoryCarrocelAdmin,
   CategoryBoxAdmin,
 } from '@/components/index'
-import { useCardapioStore, useUiStore } from '@/stores'
+import { useUiStore, useProdutosStore } from '@/stores/index'
+import imgFrango from '@/assets/img/chicken-leg.png' // 1. IMPORTE A IMAGEM PADRÃO
 
-const cardapioStore = useCardapioStore()
 const ui = useUiStore()
-
+const produtosStore = useProdutosStore()
 const categoriaSelecionada = ref(null)
 
+// 2. DEFINA O BASE_URL
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+
+const categoriaMap = {
+  1: 'Frangos',
+  2: 'Maioneses',
+  3: 'Costela Assada',
+  4: 'Bebidas',
+  5: 'Conservas',
+  6: 'Farofas',
+}
+
+const categoriaOrdem = ['Frangos', 'Maioneses', 'Costela Assada', 'Bebidas', 'Conservas', 'Farofas']
+
+// 3. APLIQUE A LÓGICA DE TRANSFORMAÇÃO AQUI
+const categorias = computed(( ) => {
+  const agrupados = {}
+  for (const produto of produtosStore.produtos) {
+    const categoriaNome = categoriaMap[produto.categoria]
+    if (!categoriaNome) continue
+    if (!agrupados[categoriaNome]) agrupados[categoriaNome] = []
+
+    // Crie o objeto no formato correto, igual ao cardapioStore
+    agrupados[categoriaNome].push({
+      ...produto, // Mantém id, nome, preco, etc.
+      // Cria a propriedade 'image' que o componente filho espera
+      image: produto.imagem
+        ? (produto.imagem.startsWith('http' ) ? produto.imagem : `${BASE_URL}${produto.imagem}`)
+        : imgFrango,
+    })
+  }
+
+  return categoriaOrdem
+    .filter(cat => agrupados[cat])
+    .map(cat => ({
+      categoryName: cat,
+      items: agrupados[cat]
+    }))
+})
+
+// ... resto do seu script setup ...
 onMounted(async () => {
   ui.showLoading()
   try {
-    await cardapioStore.fetchProdutos()
+    await produtosStore.fetchProdutos()
   } finally {
     ui.hideLoading()
   }
 })
 
 const selecionarCategoria = (label) => {
-  console.log('Label clicado:', label)
-  console.log(
-    'Categorias disponíveis:',
-    cardapioStore.categories.map((c) => c.categoryName)
-  )
-
-  categoriaSelecionada.value = cardapioStore.categories.find((cat) => cat.categoryName === label)
-
-  console.log('Categoria encontrada:', categoriaSelecionada.value)
+  categoriaSelecionada.value = categorias.value.find(cat => cat.categoryName === label)
 }
 
 const slugify = (str) =>

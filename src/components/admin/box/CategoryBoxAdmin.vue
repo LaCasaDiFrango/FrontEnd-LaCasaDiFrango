@@ -1,7 +1,7 @@
 <script setup>
 import { ProductCardPedido, ProductCardAdmin } from '@/components/index'
 
-defineProps({
+const props = defineProps({
   categoryName: String,
   items: {
     type: Array,
@@ -46,3 +46,4 @@ defineProps({
     </div>
   </div>
 </template>
+

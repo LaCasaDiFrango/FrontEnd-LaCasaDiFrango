@@ -36,5 +36,11 @@ export default class ProdutoService {
   });
   return response.data;
 }
+async ajustarEstoque(id, quantidadeAjuste) {
+  const response = await axios.post(`/produtos/${id}/ajustar_estoque/`, {
+    quantidade_em_estoque: quantidadeAjuste,
+  });
+  return response.data;
+}
 
 }
