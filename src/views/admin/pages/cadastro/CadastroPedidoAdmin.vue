@@ -24,6 +24,7 @@
             :id="slugify(categoriaSelecionada.categoryName)"
             :mostrarQuantidade="true"
             :mostrarPreco="true"
+            tipo="pedido"
           />
         </div>
       </div>
