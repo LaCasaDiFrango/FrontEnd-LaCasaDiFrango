@@ -8,31 +8,27 @@
         subtitle="Verifique as informações antes de confirmar o pedido"
       />
 
-      <!-- Container dos Inputs e Resumo -->
       <div class="max-w-4xl mx-auto mt-12 space-y-8">
-        <!-- Dados do Cliente -->
+        <!-- Seleção do Cliente -->
         <div class="bg-white shadow-md rounded-2xl p-8 border border-gray-100">
           <h2 class="text-2xl font-bold text-gray-800 mb-8">Dados do Cliente</h2>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="grid grid-cols-1 md:grid-cols-1 gap-6">
             <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
-              <input
-                v-model="email"
-                type="email"
-                placeholder="Email do cliente"
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Selecione o Cliente</label>
+              <select
+                v-model="usuarioSelecionado"
                 class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-gray-400 transition"
-              />
-            </div>
-
-            <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-2">Usuário</label>
-              <input
-                v-model="usuario"
-                type="text"
-                placeholder="Nome do cliente"
-                class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-gray-400 transition"
-              />
+              >
+                <option value="" disabled>Escolha um usuário</option>
+                <option
+                  v-for="u in usuarios"
+                  :key="u.id || u.pk"
+                  :value="u.id || u.pk"
+                >
+                  {{ u.email || u.username }}
+                </option>
+              </select>
             </div>
           </div>
         </div>
@@ -62,9 +58,10 @@
         <div class="text-center">
           <button
             @click="finalizarPedido"
-            class="mt-4 bg-black text-white px-10 py-3.5 rounded-xl font-semibold hover:bg-gray-800 transition-transform transform hover:scale-105 shadow-md"
+            :disabled="carregando"
+            class="mt-4 bg-black text-white px-10 py-3.5 rounded-xl font-semibold hover:bg-gray-800 transition-transform transform hover:scale-105 shadow-md disabled:opacity-50"
           >
-            Finalizar Pedido
+            {{ carregando ? 'Finalizando...' : 'Finalizar Pedido' }}
           </button>
         </div>
       </div>
@@ -73,20 +70,71 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
 import { useCarrinhoStore } from '@/stores/admin/carrinhoStore'
 import { NavLateralAdmin, TitleAdmin } from '@/components/index'
 
 const carrinhoStore = useCarrinhoStore()
-const email = ref('')
-const usuario = ref('')
+const usuarios = ref([])
+const usuarioSelecionado = ref(null)
+const carregando = ref(false)
 
-function finalizarPedido() {
-  if (!email.value || !usuario.value) {
-    alert('Preencha os dados do cliente antes de finalizar!')
+const API_BASE = import.meta.env.VITE_API_URL 
+
+// Carrega usuários do backend
+onMounted(async () => {
+  try {
+    const response = await axios.get(`${API_BASE}/usuarios/`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+    console.log('Usuarios carregados:', response.data)
+    usuarios.value = response.data
+  } catch (erro) {
+    console.error('Erro ao carregar usuários:', erro.response?.data || erro.message)
+    alert('Não foi possível carregar a lista de usuários.')
+  }
+})
+
+// Finaliza pedido
+async function finalizarPedido() {
+  if (!usuarioSelecionado.value) {
+    alert('Selecione um usuário antes de finalizar!')
     return
   }
 
-  alert(`Pedido finalizado para ${usuario.value} (${email.value}). Total: R$${carrinhoStore.total.toFixed(2)}`)
+  if (carrinhoStore.itens.length === 0) {
+    alert('O carrinho está vazio!')
+    return
+  }
+
+  const pedido = {
+    usuario: usuarioSelecionado.value,
+    itens: carrinhoStore.itens.map(item => ({
+      produto: item.id,
+      quantidade: item.quantidade
+    }))
+  }
+
+  try {
+    carregando.value = true
+    const resposta = await axios.post(`${API_BASE}/pedidos/`, pedido, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+      }
+    })
+    alert('Pedido cadastrado com sucesso!')
+    console.log('Pedido enviado:', resposta.data)
+    carrinhoStore.itens = []
+    usuarioSelecionado.value = null
+  } catch (erro) {
+    console.error('Erro ao cadastrar pedido:', erro.response?.data || erro.message)
+    alert('Erro ao cadastrar pedido. Verifique se está autenticado e tente novamente.')
+  } finally {
+    carregando.value = false
+  }
 }
 </script>
