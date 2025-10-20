@@ -9,8 +9,29 @@ export const useProdutosStore = defineStore('produtos', () => {
   const totalPages = ref(1)
   const itemsPerPage = ref(10)
 
+  async function fetchProdutos() {
+  try {
+    const todosProdutos = []
+    let page = 1
+    let totalPages = 1
+
+    do {
+      const data = await produtoService.getAll({ page })
+      if (data.results?.length) {
+        todosProdutos.push(...data.results)
+      }
+      totalPages = data.total_pages || 1
+      page++
+    } while (page <= totalPages)
+
+    produtos.value = todosProdutos
+  } catch (err) {
+    console.error('[ProdutosStore] Erro:', err)
+  }
+}
+
   // 🔹 Buscar produtos (apenas uma página por vez)
-  async function fetchProdutos(page = 1) {
+  async function ProdutosPage(page = 1) {
     try {
       const data = await produtoService.getAll({ page, limit: itemsPerPage.value })
       produtos.value = data.results || []
@@ -24,7 +45,7 @@ export const useProdutosStore = defineStore('produtos', () => {
   // 🔹 Mudar página
   function setCurrentPage(page) {
     currentPage.value = page
-    fetchProdutos(page)
+    ProdutosPage(page)
   }
 
   // 🔹 Cadastrar novo produto
@@ -109,5 +130,6 @@ export const useProdutosStore = defineStore('produtos', () => {
     totalPages,
     itemsPerPage,
     setCurrentPage,
+    ProdutosPage,
   }
 })

@@ -104,7 +104,7 @@ const storesMap = {
 
 // Mapa de funções de fetch
 const fetchMap = {
-  produtos: (page) => storesMap.produtos.fetchProdutos?.(page),
+  produtos: (page) => storesMap.produtos.ProdutosPage?.(page),
   usuarios: (page) => storesMap.usuarios.fetchUsuarios?.(page),
   pedidos: (page) => storesMap.pedidos.fetchPedidos?.(page)
 }
