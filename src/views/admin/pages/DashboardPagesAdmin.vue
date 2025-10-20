@@ -3,12 +3,18 @@
     <NavLateralAdmin />
 
     <main class="flex-1 p-6 space-y-6 overflow-hidden">
-      <TitleAdmin :title="dashboardTitleStore.title" :subtitle="dashboardTitleStore.subtitle" />
+      <!-- Título e subtítulo do dashboard -->
+      <TitleAdmin
+        :title="dashboardTitleStore.title"
+        :subtitle="dashboardTitleStore.subtitle"
+      />
+
+      <!-- Cards e ações -->
       <div class="flex w-full justify-center items-center">
         <div class="flex flex-[0.9] gap-6 justify-between items-center">
           <ButtonActionAdmin
-            :acao="actions.addLabel"
-            :showDropdown="!!actions.dropdown"
+            :acao="props.actions.addLabel"
+            :showDropdown="!!props.actions.dropdown"
             :options="dropdownOptions"
             @click="handleAddClick"
           />
@@ -16,17 +22,24 @@
           <InfoCardAdmin
             :icon="imageEstatisca"
             title="Relatórios e Estatísticas"
-            :value="actions.infoCardValue"
-            :subtitle="actions.infoCardSubtitle"
+            :value="props.actions.infoCardValue"
+            :subtitle="props.actions.infoCardSubtitle"
           />
         </div>
       </div>
+
+      <!-- Tabela de itens -->
       <div class="flex w-full justify-center items-center">
         <div class="flex-[0.9]">
           <TablePagesAdmin
             :title="dashboardTitleStore.tableTitle"
             :items="items"
-            :columns="columns"
+            :currentPage="store.currentPage"
+            :totalPages="store.totalPages"
+            :itemsPerPage="store.itemsPerPage"
+            :loading="loading"
+            @page-change="store.setCurrentPage"
+            :columns="props.columns"
           />
         </div>
       </div>
@@ -35,24 +48,22 @@
 </template>
 
 <script setup>
-import { computed, watch } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import {
   NavLateralAdmin,
   TitleAdmin,
   ButtonActionAdmin,
   InfoCardAdmin,
-  TablePagesAdmin,
+  TablePagesAdmin
 } from '@/components/index'
 import {
   useDashboardTitleStore,
   usePedidosStore,
   useProdutosStore,
-  useUsuariosStore,
+  useUsuariosStore
 } from '@/stores/index'
 import { useRouter } from 'vue-router'
 import imageEstatisca from '@/assets/img/admin/statistics-svgrepo-com.svg'
-
-const dashboardTitleStore = useDashboardTitleStore()
 
 const props = defineProps({
   pageTitle: String,
@@ -62,72 +73,108 @@ const props = defineProps({
 })
 
 const router = useRouter()
+const dashboardTitleStore = useDashboardTitleStore()
+const loading = ref(false)
 
+// Handle botão "Adicionar"
 function handleAddClick() {
   if (props.actions?.addRoute) {
     router.push(props.actions.addRoute)
   }
 }
 
+// Dropdown genérico
 const dropdownOptions = computed(() => {
   if (!props.actions?.dropdown) return []
   return props.actions.dropdown.map(opt => ({
     ...opt,
     action: () => {
-      if (opt.route) {
-        router.push(opt.route)   // redireciona para a rota desejada
-      } else if (typeof opt.action === 'function') {
-        opt.action()             // executa ação customizada
-      }
+      if (opt.route) router.push(opt.route)
+      else if (typeof opt.action === 'function') opt.action()
     }
   }))
 })
-
 
 // Mapa de stores
 const storesMap = {
   produtos: useProdutosStore(),
   usuarios: useUsuariosStore(),
-  pedidos: usePedidosStore(),
+  pedidos: usePedidosStore()
 }
 
-// Mapa de fetch
+// Mapa de funções de fetch
 const fetchMap = {
-  produtos: () => storesMap.produtos.fetchProdutos?.(),
-  usuarios: () => storesMap.usuarios.fetchUsuarios?.(),
-  pedidos: () => storesMap.pedidos.fetchPedidos?.(),
+  produtos: (page) => storesMap.produtos.fetchProdutos?.(page),
+  usuarios: (page) => storesMap.usuarios.fetchUsuarios?.(page),
+  pedidos: (page) => storesMap.pedidos.fetchPedidos?.(page)
 }
 
-// Computed para store atual
+// Store atual
 const store = computed(() => storesMap[props.dataKey])
 
-// Computed para items
+// Itens da tabela (genérico)
 const items = computed(() => {
   if (!store.value) return []
-  if (props.dataKey === 'produtos') return store.value.produtos
-  if (props.dataKey === 'usuarios') return store.value.usuarios
-  if (props.dataKey === 'pedidos') return store.value.pedidos
+  const key = props.dataKey
+  if (key === 'produtos') return store.value.produtos || []
+  if (key === 'usuarios') return store.value.usuarios || []
+  if (key === 'pedidos') return store.value.pedidos || []
   return []
 })
 
-// Watch para atualizar quando dataKey mudar
+// Watch para recarregar ao mudar dataKey
 watch(
   () => props.dataKey,
-  async (newKey) => {
-    console.log('[DEBUG] dataKey mudou para:', newKey)
-    const fetchFn = fetchMap[newKey]
-    if (fetchFn) {
+  async (newKey, oldKey) => {
+    if (newKey && newKey !== oldKey) { // Garante que só executa se o dataKey realmente mudou
+      const fetchFn = fetchMap[newKey]
+      if (!fetchFn) return
+      loading.value = true
       try {
-        store.value.loading = true
-        await fetchFn()
+        // Resetar a página atual para 1 ao mudar o dataKey e buscar os dados
+        // Isso vai chamar fetchFn(1) via o watch de currentPage, se currentPage for diferente de 1
+        // Se currentPage já for 1, a fetch é feita diretamente aqui.
+        if (store.value.currentPage !== 1) {
+          store.value.setCurrentPage(1)
+        } else {
+          await fetchFn(1)
+        }
       } catch (err) {
         console.error(`[DashboardPagesAdmin] Erro ao carregar ${newKey}:`, err)
       } finally {
-        store.value.loading = false
+        loading.value = false
       }
     }
   },
   { immediate: true }
 )
+
+// Watch para chamar fetch quando a página atual da store é alterada
+watch(
+  () => store.value?.currentPage,
+  (newPage, oldPage) => {
+    // console.log(`[DashboardPagesAdmin] currentPage mudou para ${newPage}, oldPage: ${oldPage}`)
+    if (newPage && newPage !== oldPage) {
+      const fetchFn = fetchMap[props.dataKey]
+      if (fetchFn) {
+        fetchFn(newPage)
+      }
+    }
+  }
+)
+
+// Carrega os dados iniciais quando o componente é montado
+onMounted(() => {
+  // Se o dataKey não mudou (primeira carga), garante que a fetch inicial seja feita
+  if (!props.dataKey) return; // Evita erro se dataKey for undefined na montagem inicial
+  const fetchFn = fetchMap[props.dataKey]
+  if (fetchFn) {
+    // Se a página atual da store já for 1, chama fetchFn diretamente
+    // Caso contrário, setCurrentPage(1) será chamado pelo watch de dataKey ou um click do usuário
+    if (store.value.currentPage === 1) {
+      fetchFn(1)
+    }
+  }
+})
 </script>
 
