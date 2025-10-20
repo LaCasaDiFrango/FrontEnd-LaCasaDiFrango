@@ -24,6 +24,7 @@
             :id="slugify(categoriaSelecionada.categoryName)"
             :mostrarQuantidade="true"
             :mostrarPreco="false"
+            tipo="estoque"
           />
         </div>
       </div>
