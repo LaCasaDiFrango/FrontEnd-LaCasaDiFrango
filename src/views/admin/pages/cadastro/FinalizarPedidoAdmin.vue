@@ -2,31 +2,31 @@
   <div class="flex min-h-screen bg-gray-50">
     <NavLateralAdmin />
 
-    <main class="flex-1 p-10 overflow-auto">
+    <main class="flex-1 p-6 space-y-6 overflow-hidden">
       <TitleAdmin
-        title="Pedidos > Escolher Categoria produto > Finalizar Pedido"
+        title="Painel Administrativo > Pedidos > Cadastrar Pedido > Finalizar Pedido"
         subtitle="Verifique as informações antes de confirmar o pedido"
       />
 
       <div class="max-w-4xl mx-auto mt-12 space-y-8">
-        <!-- Seleção do Cliente -->
+        <!-- Seleção de Usuário -->
         <div class="bg-white shadow-md rounded-2xl p-8 border border-gray-100">
           <h2 class="text-2xl font-bold text-gray-800 mb-8">Dados do Cliente</h2>
 
-          <div class="grid grid-cols-1 md:grid-cols-1 gap-6">
+          <div class="grid grid-cols-1 gap-6">
             <div>
               <label class="block text-sm font-semibold text-gray-700 mb-2">Selecione o Cliente</label>
               <select
                 v-model="usuarioSelecionado"
                 class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-gray-400 transition"
               >
-                <option value="" disabled>Escolha um usuário</option>
+                <option value="">Escolha um usuário (ou deixei vazio para usar o logado)</option>
                 <option
                   v-for="u in usuarios"
                   :key="u.id || u.pk"
                   :value="u.id || u.pk"
                 >
-                  {{ u.email || u.username }}
+                  {{ u.email || u.name || `Usuário ${u.id}` }}
                 </option>
               </select>
             </div>
@@ -71,47 +71,46 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
 import { useCarrinhoStore } from '@/stores/admin/carrinhoStore'
+import { useToastStore } from '@/stores/index'
+import { pedido } from '@/api/index'
+import UserService from '@/api/usuario/user'
 import { NavLateralAdmin, TitleAdmin } from '@/components/index'
 
 const carrinhoStore = useCarrinhoStore()
+const toast = useToastStore()
+const carregando = ref(false)
 const usuarios = ref([])
 const usuarioSelecionado = ref(null)
-const carregando = ref(false)
 
-const API_BASE = import.meta.env.VITE_API_URL 
+const pedidoService = new pedido.default()
+const userService = new UserService()
 
-// Carrega usuários do backend
-onMounted(async () => {
+async function buscarUsuarios() {
   try {
-    const response = await axios.get(`${API_BASE}/usuarios/`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    })
-    console.log('Usuarios carregados:', response.data)
-    usuarios.value = response.data
+    const data = await userService.getAll()
+    usuarios.value = data.results // <- aqui pegamos o array correto
+    console.log('[DEBUG] Usuários carregados:', usuarios.value)
   } catch (erro) {
-    console.error('Erro ao carregar usuários:', erro.response?.data || erro.message)
-    alert('Não foi possível carregar a lista de usuários.')
+    console.error('Erro ao carregar usuários:', erro)
+    toast.error('Falha ao carregar usuários')
   }
+}
+
+
+onMounted(() => {
+  buscarUsuarios()
 })
 
-// Finaliza pedido
 async function finalizarPedido() {
-  if (!usuarioSelecionado.value) {
-    alert('Selecione um usuário antes de finalizar!')
-    return
-  }
-
   if (carrinhoStore.itens.length === 0) {
-    alert('O carrinho está vazio!')
+    toast.info('O carrinho está vazio!')
     return
   }
 
-  const pedido = {
-    usuario: usuarioSelecionado.value,
+  const pedidoData = {
+    usuario: usuarioSelecionado.value || undefined, // se não selecionar, backend usa CurrentUserDefault
+    status: 4, // ENTREGUE
     itens: carrinhoStore.itens.map(item => ({
       produto: item.id,
       quantidade: item.quantidade
@@ -120,21 +119,19 @@ async function finalizarPedido() {
 
   try {
     carregando.value = true
-    const resposta = await axios.post(`${API_BASE}/pedidos/`, pedido, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-        'Content-Type': 'application/json'
-      }
-    })
-    alert('Pedido cadastrado com sucesso!')
-    console.log('Pedido enviado:', resposta.data)
+    console.log('[DEBUG] Enviando pedido:', pedidoData)
+    const resposta = await pedidoService.create(pedidoData)
+    console.log('[DEBUG] Pedido criado:', resposta)
+
+    toast.success('Pedido cadastrado com sucesso!')
     carrinhoStore.itens = []
     usuarioSelecionado.value = null
   } catch (erro) {
     console.error('Erro ao cadastrar pedido:', erro.response?.data || erro.message)
-    alert('Erro ao cadastrar pedido. Verifique se está autenticado e tente novamente.')
+    toast.error('Erro ao cadastrar pedido. Verifique os dados e tente novamente.')
   } finally {
     carregando.value = false
   }
 }
+
 </script>
