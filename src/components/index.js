@@ -69,6 +69,13 @@ import TitleAdmin from "./admin/layouts/TitleAdmin.vue";
 import InfoCardAdmin from "./admin/layouts/InfoCardAdmin.vue";
 import TopProdutosChart from "./admin/graficos/TopProdutosChart.vue";
 import TopProdutosTableAdmin from "./admin/tables/TopProdutosTableAdmin.vue";
+import TablePagesAdmin from "./admin/tables/TablePagesAdmin.vue";
+import ButtonCadastroAdmin from "./admin/buttons/ButtonCadastroAdmin.vue";
+import CategoryCarrocelAdmin from "./admin/carrrocel/CategoryCarrocelAdmin.vue";
+import CategoryBoxAdmin from "./admin/box/CategoryBoxAdmin.vue";
+import ProductCardAdmin from "./admin/card/ProductCardAdmin.vue";
+import ProductCardPedido from "./admin/card/ProdutoCardPedido.vue";
+import ResumoButton from "./admin/buttons/ResumoButton.vue";
 
 //loading
 import LoadingPage from "./loading/LoadingPage.vue";
@@ -126,4 +133,11 @@ export {
   InfoCardAdmin,
   TopProdutosChart,
   TopProdutosTableAdmin,
+  TablePagesAdmin,
+  ButtonCadastroAdmin,
+  CategoryCarrocelAdmin,
+  CategoryBoxAdmin,
+  ProductCardAdmin,
+  ProductCardPedido,
+  ResumoButton
 };

@@ -22,10 +22,9 @@ function handleClick(to) {
 
       <!-- lista de labels -->
       <ul class="flex flex-col gap-2 pl-4"> <!-- desloca levemente para a direita -->
-        <li v-for="item in section.items" :key="item.to">
+        <li v-for="item in section.items" :key="item.to" @click.prevent="handleClick(item.to)">
           <a
             href="#"
-            @click.prevent="handleClick(item.to)"
             class="links"
             :class="[
               store.isCurrent(item.to)

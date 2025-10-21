@@ -30,4 +30,17 @@ export default class ProdutoService {
     const response = await axios.get('/produtos/mais_vendidos/');
     return response.data;
   }
+  async alterarPreco(id, novoPreco) {
+  const response = await axios.patch(`/produtos/${id}/alterar_preco/`, {
+    preco: novoPreco,
+  });
+  return response.data;
+}
+async ajustarEstoque(id, quantidadeAjuste) {
+  const response = await axios.post(`/produtos/${id}/ajustar_estoque/`, {
+    quantidade_em_estoque: quantidadeAjuste,
+  });
+  return response.data;
+}
+
 }
