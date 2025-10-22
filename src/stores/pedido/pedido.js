@@ -23,44 +23,59 @@ export const usePedidoStore = defineStore('pedido', () => {
     return pedido.itens.reduce((acc, i) => acc + i.quantidade * (i.produto?.preco || 0), 0)
   }
 
-  async function carregarPedidos() {
-    try {
-      const lista = await pedidoService.getAll()
-      pedidos.value = lista.map(p => {
-        const norm = normalizarPedido(p)
-        norm.total = calcularTotal(norm)
-        return norm
-      })
-    } catch (error) {
-      console.error('Erro ao carregar pedidos:', error)
-      toast.error('Erro ao carregar pedidos.')
+async function carregarPedidos() {
+  try {
+    const response = await pedidoService.getAll()
+    console.log('[DEBUG] Retorno getAll():', response)
+
+    const arrayPedidos = response?.data?.results
+    if (!Array.isArray(arrayPedidos)) {
+      throw new Error('getAll() retornou um tipo inválido: ' + typeof arrayPedidos)
     }
+
+    pedidos.value = arrayPedidos.map(p => {
+      const norm = normalizarPedido(p)
+      norm.total = calcularTotal(norm)
+      return norm
+    })
+  } catch (error) {
+    console.error('Erro ao carregar pedidos:', error)
+    toast.error('Erro ao carregar pedidos.')
   }
+}
 
-  async function carregarPedidoAtual() {
-    const authStore = useAuthStore()
-    const authUser = authStore.user
+async function carregarPedidoAtual() {
+  const authStore = useAuthStore()
+  const authUser = authStore.user
 
-    try {
-      const todosPedidos = (await pedidoService.getAll()).map(p => {
-        const norm = normalizarPedido(p)
-        norm.total = calcularTotal(norm)
-        return norm
-      })
+  try {
+    const response = await pedidoService.getAll()
+    console.log('[DEBUG] Retorno getAll() para pedidoAtual:', response)
 
-      const meusPedidos = todosPedidos.filter(p => {
-        const usuario = p.usuario
-        if (typeof usuario === 'string') return usuario === authUser.email
-        if (usuario && typeof usuario === 'object') return usuario.id === authUser.id || usuario.email === authUser.email
-        return false
-      })
-
-      pedidoAtual.value = meusPedidos.find(p => !p.finalizado && p.status === 1) || null
-    } catch (error) {
-      console.error('Erro ao carregar pedido atual:', error)
-      toast.error('Erro ao carregar pedido atual.')
+    const arrayPedidos = response?.data?.results
+    if (!Array.isArray(arrayPedidos)) {
+      throw new Error('getAll() retornou um tipo inválido para pedidoAtual: ' + typeof arrayPedidos)
     }
+
+    const todosPedidos = arrayPedidos.map(p => {
+      const norm = normalizarPedido(p)
+      norm.total = calcularTotal(norm)
+      return norm
+    })
+
+    const meusPedidos = todosPedidos.filter(p => {
+      const usuario = p.usuario
+      if (typeof usuario === 'string') return usuario === authUser.email
+      if (usuario && typeof usuario === 'object') return usuario.id === authUser.id || usuario.email === authUser.email
+      return false
+    })
+
+    pedidoAtual.value = meusPedidos.find(p => !p.finalizado && p.status === 1) || null
+  } catch (error) {
+    console.error('Erro ao carregar pedido atual:', error)
+    toast.error('Erro ao carregar pedido atual.')
   }
+}
 
   async function carregarPedidoPorCodigo(codigo) {
     try {
