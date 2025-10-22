@@ -33,38 +33,57 @@ export const useProdutoStore = defineStore('produto', () => {
     }
   }
 
-  async function criarPedido() {
-    try {
-      const dadosParaEnviar = {
-        itens: [
-          {
-            produto: produtoSelecionado.value.id,
-            quantidade: quantidade.value,
-          },
-        ],
-        status: 1, // "Carrinho"
-      }
+async function criarPedido() {
+  try {
+    const pedidoStore = usePedidoStore()
+    const toast = useToastStore()
 
-      console.log('[DEBUG criarPedido] Dados enviados para criação:', JSON.stringify(dadosParaEnviar, null, 2))
+    await pedidoStore.carregarPedidoAtual()
+    let carrinho = pedidoStore.pedidoAtual
 
-      const response = await pedidoService.create(dadosParaEnviar)
-      console.log('[DEBUG criarPedido] Resposta da API:', response)
-
-      const pedidoStore = usePedidoStore()
-      pedidoStore.pedidoAtual = response
-
-      toast.success(`${produtoSelecionado.value.nome} adicionado ao pedido!`)
-      router.push('/home/pedidos')
-    } catch (error) {
-      if (error.response) {
-        console.error('[DEBUG criarPedido] Erro da API:', error.response.data)
-        toast.error('Erro ao adicionar produto ao pedido.')
-      } else {
-        console.error('[DEBUG criarPedido] Erro inesperado:', error)
-        toast.error('Erro inesperado ao adicionar produto.')
-      }
+    const novoItem = {
+      produto: produtoSelecionado.value.id,
+      quantidade: quantidade.value,
     }
+
+if (carrinho && carrinho.status === 1) {
+  // Mapear itens existentes para apenas { produto: id, quantidade }
+const itensFormatados = (carrinho.itens || []).map(i => ({
+  produto: i.produto.id,
+  quantidade: i.quantidade
+}))
+
+// Verifica se o produto já existe
+const indexExistente = itensFormatados.findIndex(i => i.produto === produtoSelecionado.value.id)
+if (indexExistente >= 0) {
+  itensFormatados[indexExistente].quantidade += quantidade.value
+} else {
+  itensFormatados.push({
+    produto: produtoSelecionado.value.id,
+    quantidade: quantidade.value
+  })
+}
+
+  const payload = { itens: itensFormatados, status: 1 }
+
+  const response = await pedidoService.update(carrinho.id, payload)
+  pedidoStore.pedidoAtual = response
+  toast.success(`${produtoSelecionado.value.nome} adicionado ao pedido existente!`)
+  router.push("/home/pedidos/")
+    } else {
+      // Cria novo pedido se não houver um aberto
+      const dadosParaEnviar = { itens: [novoItem], status: 1 }
+      const response = await pedidoService.create(dadosParaEnviar)
+      pedidoStore.pedidoAtual = response
+      toast.success(`${produtoSelecionado.value.nome} adicionado a um novo pedido!`)
+    }
+  } catch (error) {
+    console.error('[criarPedido] Erro:', error)
+    toast.error('Erro ao adicionar produto ao pedido.')
   }
+}
+
+
 
   async function finalizarPedido(pedidoId) {
     try {
