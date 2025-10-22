@@ -1,9 +1,8 @@
 import axios from '@/plugins/axios';
 
 export default class UserService {
-  async getAll() {
-    const response = await axios.get('/usuarios/');
-    return response.data;
+  getAll(params) {
+    return axios.get('/usuarios/', { params })
   }
 
   async getById(id) {
