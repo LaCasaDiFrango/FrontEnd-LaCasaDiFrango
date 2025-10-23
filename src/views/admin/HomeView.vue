@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, computed } from 'vue'
 import { useDashboardStore } from '@/stores'
 
 import {
@@ -17,10 +17,15 @@ import imageEstoque from '@/assets/img/admin/inventorymajor-svgrepo-com.svg'
 import imageEstatisca from '@/assets/img/admin/statistics-svgrepo-com.svg'
 
 const dashboardStore = useDashboardStore()
+const isLoading = computed(() => dashboardStore.error === null && dashboardStore.lastUpdatedUsuarios === null)
 
 onMounted(() => {
   dashboardStore.fetchDashboardData()
 })
+
+// Helpers de formatação
+const formatNumber = n => n?.toLocaleString('pt-BR')
+const formatCurrency = v => v?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
 </script>
 
 <template>
@@ -33,102 +38,93 @@ onMounted(() => {
         subtitle="Veja um resumo do que há cadastrado no Sistema"
       />
 
-      <!-- Carrossel -->
-      <div class="overflow-x-auto hide-scrollbar">
-        <div class="flex gap-6 min-w-max px-2" style="scroll-snap-type: x mandatory">
-          <div class="py-2 flex-shrink-0 w-[325px] scroll-snap-align-start">
-            <InfoCardAdmin
-              title="Usuários"
-              :value="`${dashboardStore.usuarios} Clientes`"
-              :subtitle="
-                dashboardStore.lastUpdatedUsuarios
-                  ? `Atualizado às ${new Date(
-                      dashboardStore.lastUpdatedUsuarios
-                    ).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
-                  : 'Atualizando...'
-              "
-              :icon="imageUser"
-              color="bg-green-400"
-              link="/usuarios"
-            />
-          </div>
-
-          <div class="py-2 flex-shrink-0 w-[325px] scroll-snap-align-start">
-            <InfoCardAdmin
-              title="Estoque"
-              :value="`${dashboardStore.produtos} Produtos`"
-              :subtitle="
-                dashboardStore.lastUpdatedPedidos
-                  ? `Atualizado às ${new Date(dashboardStore.lastUpdatedPedidos).toLocaleTimeString(
-                      [],
-                      { hour: '2-digit', minute: '2-digit' }
-                    )}`
-                  : 'Atualizando...'
-              "
-              :icon="imageEstoque"
-              color="bg-yellow-400"
-              link="/estoque"
-            />
-          </div>
-
-          <div class="py-2 flex-shrink-0 w-[325px] scroll-snap-align-start">
-            <InfoCardAdmin
-              title="Fluxo de Caixa"
-              :value="`R$${dashboardStore.fluxo}`"
-              subtitle="Movimentação do dia"
-              :icon="imageFluxo"
-              color="bg-blue-400"
-              link="/fluxo"
-            />
-          </div>
-
-          <div class="py-2 flex-shrink-0 w-[325px] scroll-snap-align-start">
-            <InfoCardAdmin
-              title="Pedidos"
-              :value="`${dashboardStore.pedidos} Realizados`"
-              :subtitle="
-                dashboardStore.lastUpdatedPedidos
-                  ? `Atualizado às ${new Date(dashboardStore.lastUpdatedPedidos).toLocaleTimeString(
-                      [],
-                      { hour: '2-digit', minute: '2-digit' }
-                    )}`
-                  : 'Atualizando...'
-              "
-              :icon="imagePedido"
-              color="bg-orange-400"
-              link="/pedidos"
-            />
-          </div>
-          <div class="py-2 flex-shrink-0 scroll-snap-align-start">
-            <InfoCardAdmin
-              title="Estatísticas"
-              value="18 Relatórios"
-              subtitle="Veja as estatísticas e relatórios"
-              :icon="imageEstatisca"
-              color="bg-orange-400"
-              link="/estatisticas"
-            />
-          </div>
-        </div>
+      <div v-if="isLoading" class="flex justify-center items-center h-64 text-gray-500">
+        <span>Carregando dados do painel...</span>
       </div>
-      <div class="flex gap-6 items-end">
-        <div class="flex-[0.5]">
-          <TopProdutosTableAdmin :produtos="dashboardStore.produtosMaisVendidos" />
+
+      <template v-else>
+        <!-- Carrossel -->
+        <div class="overflow-x-auto hide-scrollbar">
+          <div class="flex gap-6 min-w-max px-2" style="scroll-snap-type: x mandatory">
+            <div
+              v-for="card in [
+                {
+                  title: 'Usuários',
+                  value: `${formatNumber(dashboardStore.usuarios)} Clientes`,
+                  subtitle: dashboardStore.lastUpdatedUsuarios,
+                  icon: imageUser,
+                  color: 'bg-green-400',
+                  link: '/usuarios',
+                },
+                {
+                  title: 'Estoque',
+                  value: `${formatNumber(dashboardStore.produtos)} Produtos`,
+                  subtitle: dashboardStore.lastUpdatedProdutos,
+                  icon: imageEstoque,
+                  color: 'bg-yellow-400',
+                  link: '/estoque',
+                },
+                {
+                  title: 'Fluxo de Caixa',
+                  value: formatCurrency(dashboardStore.fluxo),
+                  subtitle: 'Movimentação do dia',
+                  icon: imageFluxo,
+                  color: 'bg-blue-400',
+                  link: '/fluxo',
+                },
+                {
+                  title: 'Pedidos',
+                  value: `${formatNumber(dashboardStore.pedidos)} Realizados`,
+                  subtitle: dashboardStore.lastUpdatedPedidos,
+                  icon: imagePedido,
+                  color: 'bg-orange-400',
+                  link: '/pedidos',
+                },
+                {
+                  title: 'Estatísticas',
+                  value: '18 Relatórios',
+                  subtitle: 'Veja as estatísticas e relatórios',
+                  icon: imageEstatisca,
+                  color: 'bg-orange-400',
+                  link: '/estatisticas',
+                },
+              ]"
+              :key="card.title"
+              class="py-2 flex-shrink-0 w-[325px] scroll-snap-align-start"
+            >
+              <InfoCardAdmin
+                :title="card.title"
+                :value="card.value"
+                :subtitle="card.subtitle
+                  ? `Atualizado às ${new Date(card.subtitle).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
+                  : 'Atualizando...'"
+                :icon="card.icon"
+                :color="card.color"
+                :link="card.link"
+              />
+            </div>
+          </div>
         </div>
-        <div class="flex-[0.4]">
-<TopProdutosChart :chartData="dashboardStore.vendasPorCategoria" />
+
+        <!-- Tabelas e gráficos -->
+        <div class="flex gap-6 items-end">
+          <div class="flex-[0.5]">
+            <TopProdutosTableAdmin :produtos="dashboardStore.produtosMaisVendidos" />
+          </div>
+          <div class="flex-[0.4]">
+            <TopProdutosChart :chartData="dashboardStore.vendasPorCategoria" />
+          </div>
         </div>
-      </div>
+      </template>
     </main>
   </div>
 </template>
 
 <style scoped>
-/* Esconde a barra de rolagem, mas mantém o scroll funcional */
 .hide-scrollbar {
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none;
 }
 .hide-scrollbar::-webkit-scrollbar {
-  display: none; /* Chrome, Safari */
+  display: none;
 }
 </style>

@@ -1,65 +1,72 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { pedido } from '@/api/index'
-import { useToastStore, useAuthStore } from '@/stores/index' // import da store do toast
+import { useToastStore, useAuthStore } from '@/stores/index'
 
 export const usePedidoStore = defineStore('pedido', () => {
   const pedidos = ref([])
   const pedidoAtual = ref(null)
   const pedidoService = new pedido.default()
-  const toast = useToastStore() // store de toast
+  const toast = useToastStore()
 
-  const statusMap = {
-    'Carrinho': 1,
-    'Realizado': 2,
-    'Pago': 3,
-    'Entregue': 4
-  }
-
-  const statusMapInverse = {
-    1: 'Carrinho',
-    2: 'Realizado',
-    3: 'Pago',
-    4: 'Entregue'
-  }
+  const statusMap = { 'Carrinho': 1, 'Realizado': 2, 'Pago': 3, 'Entregue': 4 }
+  const statusMapInverse = { 1: 'Carrinho', 2: 'Realizado', 3: 'Pago', 4: 'Entregue' }
 
   function normalizarPedido(p) {
     if (!p) return null
     const statusNum = typeof p.status === 'string' ? statusMap[p.status] || p.status : p.status
-    return {
-      ...p,
-      status: statusNum,
-      statusNome: statusMapInverse[statusNum] || statusNum,
-      finalizado: p.finalizado ?? false
-    }
+    return { ...p, status: statusNum, statusNome: statusMapInverse[statusNum] || statusNum, finalizado: p.finalizado ?? false }
   }
 
-  async function carregarPedidos() {
-    try {
-      const lista = await pedidoService.getAll()
-      pedidos.value = lista.map(normalizarPedido)
-    } catch (error) {
-      console.error('Erro ao carregar pedidos:', error)
-      toast.error('Erro ao carregar pedidos.')
-    }
+  function calcularTotal(pedido) {
+    if (!pedido || !pedido.itens) return 0
+    return pedido.itens.reduce((acc, i) => acc + i.quantidade * (i.produto?.preco || 0), 0)
   }
 
- async function carregarPedidoAtual() {
+async function carregarPedidos() {
+  try {
+    const response = await pedidoService.getAll()
+    console.log('[DEBUG] Retorno getAll():', response)
+
+    const arrayPedidos = response?.data?.results
+    if (!Array.isArray(arrayPedidos)) {
+      throw new Error('getAll() retornou um tipo inválido: ' + typeof arrayPedidos)
+    }
+
+    pedidos.value = arrayPedidos.map(p => {
+      const norm = normalizarPedido(p)
+      norm.total = calcularTotal(norm)
+      return norm
+    })
+  } catch (error) {
+    console.error('Erro ao carregar pedidos:', error)
+    toast.error('Erro ao carregar pedidos.')
+  }
+}
+
+async function carregarPedidoAtual() {
   const authStore = useAuthStore()
   const authUser = authStore.user
 
   try {
-    const todosPedidos = (await pedidoService.getAll()).map(normalizarPedido)
+    const response = await pedidoService.getAll()
+    console.log('[DEBUG] Retorno getAll() para pedidoAtual:', response)
 
-    // filtra pedidos do usuário, independente se o backend retorna email ou objeto
+    const arrayPedidos = response?.data?.results
+    if (!Array.isArray(arrayPedidos)) {
+      throw new Error('getAll() retornou um tipo inválido para pedidoAtual: ' + typeof arrayPedidos)
+    }
+
+    const todosPedidos = arrayPedidos.map(p => {
+      const norm = normalizarPedido(p)
+      norm.total = calcularTotal(norm)
+      return norm
+    })
+
     const meusPedidos = todosPedidos.filter(p => {
       const usuario = p.usuario
-      if (typeof usuario === 'string') {
-        return usuario === authUser.email
-      }
-      if (usuario && typeof usuario === 'object') {
-        return usuario.id === authUser.id || usuario.email === authUser.email
-      }
+      if (typeof usuario === 'string') return usuario === authUser.email
+      if (usuario && typeof usuario === 'object') return usuario.id === authUser.id || usuario.email === authUser.email
       return false
     })
 
@@ -73,6 +80,7 @@ export const usePedidoStore = defineStore('pedido', () => {
   async function carregarPedidoPorCodigo(codigo) {
     try {
       const pedidoBuscado = normalizarPedido(await pedidoService.getById(codigo))
+      pedidoBuscado.total = calcularTotal(pedidoBuscado)
       pedidoAtual.value = pedidoBuscado
       return pedidoBuscado
     } catch (error) {
@@ -86,6 +94,7 @@ export const usePedidoStore = defineStore('pedido', () => {
   async function criarPedido(dados) {
     try {
       const novoPedido = await pedidoService.create(dados)
+      novoPedido.total = calcularTotal(novoPedido)
       pedidoAtual.value = novoPedido
       toast.success('Pedido criado com sucesso!')
       return novoPedido
@@ -101,6 +110,7 @@ export const usePedidoStore = defineStore('pedido', () => {
       const statusNum = typeof novoStatus === 'string' ? statusMap[novoStatus] : novoStatus
       const dadosAtualizados = { status: statusNum }
       const pedidoAtualizado = normalizarPedido(await pedidoService.update(id, dadosAtualizados))
+      pedidoAtualizado.total = calcularTotal(pedidoAtualizado)
 
       if (pedidoAtualizado.status !== statusMap['Carrinho']) {
         pedidoAtual.value = null
@@ -128,24 +138,22 @@ export const usePedidoStore = defineStore('pedido', () => {
   }
 
   async function removerItemDoPedido(pedidoId, produtoId) {
-  if (!pedidoId || !produtoId) {
-    toast.error('Pedido ou produto inválido.')
-    return
+    if (!pedidoId || !produtoId) {
+      toast.error('Pedido ou produto inválido.')
+      return
+    }
+
+    try {
+      await pedidoService.removerItem(pedidoId, produtoId)
+      toast.success('Item removido com sucesso!')
+      const pedidoAtualizado = normalizarPedido(await pedidoService.getById(pedidoId))
+      pedidoAtualizado.total = calcularTotal(pedidoAtualizado)
+      pedidoAtual.value = pedidoAtualizado
+    } catch (err) {
+      console.error('Erro ao remover item do pedido:', err)
+      toast.error('Erro ao remover item do pedido.')
+    }
   }
-
-  try {
-    await pedidoService.removerItem(pedidoId, produtoId)
-    toast.success('Item removido com sucesso!')
-
-    // ✅ Recarrega o pedido do backend para manter o estado sincronizado
-    const pedidoAtualizado = normalizarPedido(await pedidoService.getById(pedidoId))
-    pedidoAtual.value = pedidoAtualizado
-  } catch (err) {
-    console.error('Erro ao remover item do pedido:', err)
-    toast.error('Erro ao remover item do pedido.')
-  }
-}
-
 
   return {
     pedidos,

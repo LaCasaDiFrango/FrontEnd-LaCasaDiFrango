@@ -2,11 +2,10 @@
 import axios from '@/plugins/axios';
 
 export default class PedidoService {
-  async getAll() {
-    const response = await axios.get('/pedidos/');
-    // Retorne o array que está dentro de 'results'
-    return response.data.results;
+  getAll(params) {
+    return axios.get('/pedidos/', { params })
   }
+
 
 
   async getById(id) {
@@ -27,7 +26,7 @@ export default class PedidoService {
   }
 
   async update(id, data) {
-    const response = await axios.put(`/pedidos/${id}/`, data);
+    const response = await axios.patch(`/pedidos/${id}/`, data);
     return response.data;
   }
 
