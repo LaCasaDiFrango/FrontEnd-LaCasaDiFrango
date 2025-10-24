@@ -76,6 +76,7 @@ if (indexExistente >= 0) {
       const response = await pedidoService.create(dadosParaEnviar)
       pedidoStore.pedidoAtual = response
       toast.success(`${produtoSelecionado.value.nome} adicionado a um novo pedido!`)
+      router.push("/home/pedidos/")
     }
   } catch (error) {
     console.error('[criarPedido] Erro:', error)

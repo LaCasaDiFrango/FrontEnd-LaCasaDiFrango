@@ -4,10 +4,7 @@
 
     <main class="flex-1 p-6 space-y-6 overflow-hidden">
       <!-- Título e subtítulo do dashboard -->
-      <TitleAdmin
-        :title="dashboardTitleStore.title"
-        :subtitle="dashboardTitleStore.subtitle"
-      />
+      <TitleAdmin :title="dashboardTitleStore.title" :subtitle="dashboardTitleStore.subtitle" />
 
       <!-- Cards e ações -->
       <div class="flex w-full justify-center items-center">
@@ -19,11 +16,11 @@
             @click="handleAddClick"
           />
 
-          <InfoCardAdmin
+          <InfoCardAdmin class="min-w-[400px] "
             :icon="imageEstatisca"
-            title="Relatórios e Estatísticas"
-            :value="props.actions.infoCardValue"
-            :subtitle="props.actions.infoCardSubtitle"
+            :title="infoCardTitle"
+            :value="infoCardValue"
+            :subtitle="infoCardSubtitle"
           />
         </div>
       </div>
@@ -54,13 +51,14 @@ import {
   TitleAdmin,
   ButtonActionAdmin,
   InfoCardAdmin,
-  TablePagesAdmin
+  TablePagesAdmin,
 } from '@/components/index'
 import {
   useDashboardTitleStore,
   usePedidosStore,
   useProdutosStore,
-  useUsuariosStore
+  useUsuariosStore,
+  useDashboardStore,
 } from '@/stores/index'
 import { useRouter } from 'vue-router'
 import imageEstatisca from '@/assets/img/admin/statistics-svgrepo-com.svg'
@@ -70,6 +68,11 @@ const props = defineProps({
   dataKey: String, // 'produtos' | 'usuarios' | 'pedidos'
   columns: Array,
   actions: Object,
+})
+const dashboardStore = useDashboardStore()
+
+onMounted(() => {
+  dashboardStore.fetchDashboardData()
 })
 
 const router = useRouter()
@@ -83,15 +86,64 @@ function handleAddClick() {
   }
 }
 
+const infoCardValue = computed(() => {
+  const key = props.dataKey
+
+  // Formatação utilitária
+  const formatNumber = (n) => n?.toLocaleString('pt-BR')
+
+  if (key === 'usuarios') return `${formatNumber(dashboardStore.usuarios)} Usuários`
+  if (key === 'produtos') return `${formatNumber(dashboardStore.produtos)} Produtos`
+  if (key === 'pedidos') return `${formatNumber(dashboardStore.pedidos)} Realizados`
+
+  // Fallback: usa o valor fixo do router se não houver dados dinâmicos
+  return props.actions.infoCardValue
+})
+
+const infoCardSubtitle = computed(() => {
+  const key = props.dataKey
+
+  if (key === 'usuarios' && dashboardStore.lastUpdatedUsuarios)
+    return `Atualizado às ${new Date(dashboardStore.lastUpdatedUsuarios).toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    })}`
+
+  if (key === 'produtos' && dashboardStore.lastUpdatedProdutos)
+    return `Atualizado às ${new Date(dashboardStore.lastUpdatedProdutos).toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    })}`
+
+  if (key === 'pedidos' && dashboardStore.lastUpdatedPedidos)
+    return `Atualizado às ${new Date(dashboardStore.lastUpdatedPedidos).toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    })}`
+
+  // Fallback para o texto do router
+  return props.actions.infoCardSubtitle
+})
+
+const infoCardTitle = computed(() => {
+  const map = {
+    usuarios: 'Usuários Ativos',
+    produtos: 'Produtos em Estoque',
+    pedidos: 'Pedidos Realizados'
+  }
+  return map[props.dataKey] || props.pageTitle
+})
+
+
 // Dropdown genérico
 const dropdownOptions = computed(() => {
   if (!props.actions?.dropdown) return []
-  return props.actions.dropdown.map(opt => ({
+  return props.actions.dropdown.map((opt) => ({
     ...opt,
     action: () => {
       if (opt.route) router.push(opt.route)
       else if (typeof opt.action === 'function') opt.action()
-    }
+    },
   }))
 })
 
@@ -99,14 +151,14 @@ const dropdownOptions = computed(() => {
 const storesMap = {
   produtos: useProdutosStore(),
   usuarios: useUsuariosStore(),
-  pedidos: usePedidosStore()
+  pedidos: usePedidosStore(),
 }
 
 // Mapa de funções de fetch
 const fetchMap = {
   produtos: (page) => storesMap.produtos.ProdutosPage?.(page),
   usuarios: (page) => storesMap.usuarios.fetchUsuarios?.(page),
-  pedidos: (page) => storesMap.pedidos.fetchPedidos?.(page)
+  pedidos: (page) => storesMap.pedidos.fetchPedidos?.(page),
 }
 
 // Store atual
@@ -126,7 +178,8 @@ const items = computed(() => {
 watch(
   () => props.dataKey,
   async (newKey, oldKey) => {
-    if (newKey && newKey !== oldKey) { // Garante que só executa se o dataKey realmente mudou
+    if (newKey && newKey !== oldKey) {
+      // Garante que só executa se o dataKey realmente mudou
       const fetchFn = fetchMap[newKey]
       if (!fetchFn) return
       loading.value = true
@@ -166,7 +219,7 @@ watch(
 // Carrega os dados iniciais quando o componente é montado
 onMounted(() => {
   // Se o dataKey não mudou (primeira carga), garante que a fetch inicial seja feita
-  if (!props.dataKey) return; // Evita erro se dataKey for undefined na montagem inicial
+  if (!props.dataKey) return // Evita erro se dataKey for undefined na montagem inicial
   const fetchFn = fetchMap[props.dataKey]
   if (fetchFn) {
     // Se a página atual da store já for 1, chama fetchFn diretamente

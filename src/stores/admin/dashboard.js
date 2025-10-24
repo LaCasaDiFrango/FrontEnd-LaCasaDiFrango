@@ -26,26 +26,30 @@ export const useDashboardStore = defineStore('dashboard', () => {
   const categoriaService = new categoria.default()
 
   // === Função para buscar todos os itens paginados ===
-  async function fetchAllPaginated(serviceMethod) {
-    const allResults = []
-    try {
-      let page = 1
-      let totalPages = 1
+async function fetchAllPaginated(serviceMethod) {
+  const allResults = []
+  try {
+    let page = 1
+    let totalPages = 1
 
-      do {
-        const data = await serviceMethod({ page, page_size: 100 })
-        if (!data || !data.results) break
-        allResults.push(...data.results)
-        totalPages = data.total_pages || 1
-        page++
-      } while (page <= totalPages)
+    do {
+      const raw = await serviceMethod({ page, page_size: 100 })
+      const data = raw && raw.data !== undefined ? raw.data : raw // <-- adicionada a linha crucial
 
-      return allResults
-    } catch (err) {
-      console.error('[DashboardStore] fetchAllPaginated erro:', err)
-      throw err
-    }
+      if (!data || !Array.isArray(data.results)) break
+
+      allResults.push(...data.results)
+      totalPages = data.total_pages || 1
+      page++
+    } while (page <= totalPages)
+
+    return allResults
+  } catch (err) {
+    console.error('[DashboardStore] fetchAllPaginated erro:', err)
+    throw err
   }
+}
+
 
   // === Função principal ===
   async function fetchDashboardData() {
@@ -97,5 +101,6 @@ export const useDashboardStore = defineStore('dashboard', () => {
     lastUpdatedProdutos,
     lastUpdatedPedidos,
     fetchDashboardData,
+    fetchAllPaginated,
   }
 })
