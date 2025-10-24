@@ -12,7 +12,7 @@ export const useDashboardStore = defineStore('dashboard', () => {
 
   // === Estados adicionais ===
   const produtosMaisVendidos = ref([])
-  const vendasPorCategoria = ref(null) // 🟢 novo gráfico de vendas por categoria
+  const vendasPorCategoria = ref(null)
 
   // === Horários de atualização ===
   const lastUpdatedUsuarios = ref(null)
@@ -23,13 +23,33 @@ export const useDashboardStore = defineStore('dashboard', () => {
   const userService = new user.default()
   const produtoService = new produto.default()
   const pedidoService = new pedido.default()
-  const categoriaService = new categoria.default() // 🟢 novo
+  const categoriaService = new categoria.default()
 
-  // === Função auxiliar ===
-  function getTotalFromPagination(data) {
-    if (!data) return 0
-    return (data.total_pages - 1) * data.page_size + data.results.length
+  // === Função para buscar todos os itens paginados ===
+async function fetchAllPaginated(serviceMethod) {
+  const allResults = []
+  try {
+    let page = 1
+    let totalPages = 1
+
+    do {
+      const raw = await serviceMethod({ page, page_size: 100 })
+      const data = raw && raw.data !== undefined ? raw.data : raw // <-- adicionada a linha crucial
+
+      if (!data || !Array.isArray(data.results)) break
+
+      allResults.push(...data.results)
+      totalPages = data.total_pages || 1
+      page++
+    } while (page <= totalPages)
+
+    return allResults
+  } catch (err) {
+    console.error('[DashboardStore] fetchAllPaginated erro:', err)
+    throw err
   }
+}
+
 
   // === Função principal ===
   async function fetchDashboardData() {
@@ -43,49 +63,32 @@ export const useDashboardStore = defineStore('dashboard', () => {
         produtosVendidosData,
         vendasCategoriaData,
       ] = await Promise.all([
-        userService.getAll(),
-        produtoService.getAll(),
-        pedidoService.getAll(),
+        fetchAllPaginated(userService.getAll),
+        fetchAllPaginated(produtoService.getAll),
+        fetchAllPaginated(pedidoService.getAll),
         produtoService.getMaisVendidos(),
-        categoriaService.getVendasPorCategoria(), // 🟢 novo endpoint
+        categoriaService.getVendasPorCategoria(),
       ])
 
-      // === Usuários ===
-      const totalUsuarios = getTotalFromPagination(usuariosData)
-      if (totalUsuarios !== usuarios.value) {
-        usuarios.value = totalUsuarios
-        lastUpdatedUsuarios.value = new Date()
-      }
+      // === Atualização de estados ===
+      usuarios.value = usuariosData.length
+      produtos.value = produtosData.length
+      pedidos.value = pedidosData.filter(p => p.status === 2).length
 
-      // === Produtos ===
-      const totalProdutos = getTotalFromPagination(produtosData)
-      if (totalProdutos !== produtos.value) {
-        produtos.value = totalProdutos
-        lastUpdatedProdutos.value = new Date()
-      }
+      lastUpdatedUsuarios.value = new Date()
+      lastUpdatedProdutos.value = new Date()
+      lastUpdatedPedidos.value = new Date()
 
-      // === Pedidos ===
-      const totalPedidos = pedidosData.filter(p => p.status === 2).length
-      if (totalPedidos !== pedidos.value) {
-        pedidos.value = totalPedidos
-        lastUpdatedPedidos.value = new Date()
-      }
-
-      // === Produtos mais vendidos ===
       produtosMaisVendidos.value = produtosVendidosData
-
-      // === Vendas por categoria (para o gráfico) ===
       vendasPorCategoria.value = vendasCategoriaData
 
-      // === Fluxo de caixa (ainda fixo) ===
-      fluxo.value = 2700
+      fluxo.value = 2700 // placeholder
     } catch (err) {
       console.error('[DashboardStore] Erro ao buscar dados:', err)
       error.value = 'Falha ao carregar os dados do painel.'
     }
   }
 
-  // === Retorno da store ===
   return {
     usuarios,
     produtos,
@@ -93,10 +96,11 @@ export const useDashboardStore = defineStore('dashboard', () => {
     fluxo,
     error,
     produtosMaisVendidos,
-    vendasPorCategoria, // 🟢 exportado
+    vendasPorCategoria,
     lastUpdatedUsuarios,
     lastUpdatedProdutos,
     lastUpdatedPedidos,
     fetchDashboardData,
+    fetchAllPaginated,
   }
 })
