@@ -15,8 +15,8 @@
 import ChickenIcon from '@/assets/img/chicken-leg.png'
 
 const frangos = [
-  { label: 'Recheado R$65,00.', icon: ChickenIcon, url: '/home/produtos/18' },
-  { label: 'Sem Recheio R$55,00.', icon: ChickenIcon, url: '/home/produtos/17' }
+  { label: 'Recheado R$65,00.', icon: ChickenIcon, url: '/home/produtos/3' },
+  { label: 'Sem Recheio R$55,00.', icon: ChickenIcon, url: '/home/produtos/1' }
 ]
 </script>
 
