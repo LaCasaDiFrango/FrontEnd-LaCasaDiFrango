@@ -3,6 +3,19 @@ import HomeIcon from '@/assets/img/home.png'
 import ProdutosIcon from '@/assets/img/roasted-chicken.png'
 import PedidoIcon from '@/assets/img/bill.png'
 import PerfilIcon from '@/assets/img/people.png'
+import { computed } from 'vue'
+import { usePedidoStore } from '@/stores'
+
+const pedidoStore = usePedidoStore()
+
+// ✅ Computed para mostrar o número total de itens do pedidoAtual
+const qtdItens = computed(() => {
+  if (!pedidoStore.pedidoAtual?.itens) return 0
+  return pedidoStore.pedidoAtual.itens.reduce(
+    (acc, item) => acc + (item.quantidade || 1),
+    0
+  )
+})
 
 const links = [
   { to: '/home', img: HomeIcon, alt: 'Início', text: 'Início' },
@@ -15,9 +28,18 @@ const links = [
 <template>
   <nav>
     <ul>
-      <li v-for="(link, index) in links" :key="index">
-        <router-link :to="link.to">
+      <li v-for="(link, index) in links" :key="index" class="relative">
+        <router-link :to="link.to" class="relative flex flex-col items-center">
           <img :src="link.img" :alt="link.alt" />
+
+          <!-- ✅ Badge com número de produtos -->
+          <span
+            v-if="link.text === 'Pedido' && qtdItens > 0"
+            class="absolute top-0 right-4 min-w-[18px] h-[18px] flex items-center justify-center bg-red-500 text-white text-[11px] font-bold rounded-full animate-bounce"
+          >
+            {{ qtdItens }}
+          </span>
+
           <span>{{ link.text }}</span>
         </router-link>
       </li>
@@ -67,4 +89,15 @@ a {
   flex-direction: column;
   align-items: center;
 }
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+
+.animate-shake {
+  animation: shake 0.5s ease-in-out infinite;
+}
+
 </style>
