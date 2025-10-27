@@ -14,21 +14,17 @@
           <h2 class="text-2xl font-bold text-gray-800 mb-8">Dados do Cliente</h2>
 
           <div class="grid grid-cols-1 gap-6">
+            <SelectClienteAdmin v-model:selected="usuarioSelecionado" />
+
             <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-2">Selecione o Cliente</label>
-              <select
-                v-model="usuarioSelecionado"
-                class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-gray-400 transition"
+              <label class="block text-sm font-semibold text-gray-700 mb-2"
+                >Identificador (opcional)</label
               >
-                <option value="">Escolha um usuário (ou deixei vazio para usar o logado)</option>
-                <option
-                  v-for="u in usuarios"
-                  :key="u.id || u.pk"
-                  :value="u.id || u.pk"
-                >
-                  {{ u.email || u.name || `Usuário ${u.id}` }}
-                </option>
-              </select>
+              <input
+                v-model="identificador"
+                placeholder="Ex: Mesa 3, Cliente João..."
+                class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-gray-400 transition"
+              />
             </div>
           </div>
         </div>
@@ -43,14 +39,18 @@
               :key="item.id"
               class="flex justify-between border-b border-gray-200 pb-2"
             >
-              <span><strong>{{ item.quantidade }}</strong> {{ item.nome }}</span>
+              <span
+                ><strong>{{ item.quantidade }}</strong> {{ item.nome }}</span
+              >
               <span class="font-medium">R${{ (item.preco * item.quantidade).toFixed(2) }}</span>
             </li>
           </ul>
 
           <div class="flex justify-between text-lg font-semibold border-t pt-4">
             <span>Total:</span>
-            <span class="text-2xl font-bold text-gray-900">R${{ carrinhoStore.total.toFixed(2) }}</span>
+            <span class="text-2xl font-bold text-gray-900"
+              >R${{ carrinhoStore.total.toFixed(2) }}</span
+            >
           </div>
         </div>
 
@@ -75,7 +75,7 @@ import { useCarrinhoStore } from '@/stores/admin/carrinhoStore'
 import { useToastStore } from '@/stores/index'
 import { pedido } from '@/api/index'
 import UserService from '@/api/usuario/user'
-import { NavLateralAdmin, TitleAdmin } from '@/components/index'
+import { NavLateralAdmin, TitleAdmin, SelectClienteAdmin } from '@/components/index'
 
 const carrinhoStore = useCarrinhoStore()
 const toast = useToastStore()
@@ -88,19 +88,24 @@ const userService = new UserService()
 
 async function buscarUsuarios() {
   try {
-    const data = await userService.getAll()
-    usuarios.value = data.results // <- aqui pegamos o array correto
+    const response = await userService.getAll()
+    const data = response.data || response // garante compatibilidade
+    console.log('[DEBUG] Retorno getAll corrigido:', data)
+
+    // Corrige de acordo com o formato
+    usuarios.value = data.results || data
     console.log('[DEBUG] Usuários carregados:', usuarios.value)
   } catch (erro) {
-    console.error('Erro ao carregar usuários:', erro)
+    console.error('Erro ao carregar usuários:', erro.response?.data || erro.message)
     toast.error('Falha ao carregar usuários')
   }
 }
 
-
 onMounted(() => {
   buscarUsuarios()
 })
+
+const identificador = ref('')
 
 async function finalizarPedido() {
   if (carrinhoStore.itens.length === 0) {
@@ -108,24 +113,24 @@ async function finalizarPedido() {
     return
   }
 
-  const pedidoData = {
-    usuario: usuarioSelecionado.value || undefined, // se não selecionar, backend usa CurrentUserDefault
-    status: 4, // ENTREGUE
-    itens: carrinhoStore.itens.map(item => ({
-      produto: item.id,
-      quantidade: item.quantidade
-    }))
-  }
+const pedidoData = {
+  usuario: usuarioSelecionado.value?.id,
+  identificador: identificador.value?.trim() || undefined,
+  status: 4,
+  itens: carrinhoStore.itens.map((item) => ({
+    produto: item.id,
+    quantidade: item.quantidade,
+  })),
+}
+
 
   try {
     carregando.value = true
-    console.log('[DEBUG] Enviando pedido:', pedidoData)
     const resposta = await pedidoService.create(pedidoData)
-    console.log('[DEBUG] Pedido criado:', resposta)
-
-    toast.success('Pedido cadastrado com sucesso!')
+    toast.success(`Pedido criado com sucesso! ${resposta.identificador || ''}`)
     carrinhoStore.itens = []
     usuarioSelecionado.value = null
+    identificador.value = ''
   } catch (erro) {
     console.error('Erro ao cadastrar pedido:', erro.response?.data || erro.message)
     toast.error('Erro ao cadastrar pedido. Verifique os dados e tente novamente.')
@@ -133,5 +138,4 @@ async function finalizarPedido() {
     carregando.value = false
   }
 }
-
 </script>
