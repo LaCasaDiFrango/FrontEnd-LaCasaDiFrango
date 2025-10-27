@@ -28,6 +28,16 @@
             </div>
           </div>
         </div>
+        <div class="flex justify-center items-stretch gap-6">
+          <PedidoCupom title="Cupom" subtitle="Código de cupom" :img="couponImg" class="flex-1" customClass="cupom-style" />
+          <PedidoCupom
+            title="Formas de pagamentos"
+            :subtitle="metodoPagamento"
+            :img="creditCardImg"
+            class="flex-1"
+            customClass="pagamento-style"
+          />
+        </div>
 
         <!-- Resumo do Pedido -->
         <div class="bg-gray-100 p-8 rounded-2xl shadow-lg border border-gray-200">
@@ -75,7 +85,12 @@ import { useCarrinhoStore } from '@/stores/admin/carrinhoStore'
 import { useToastStore } from '@/stores/index'
 import { pedido } from '@/api/index'
 import UserService from '@/api/usuario/user'
-import { NavLateralAdmin, TitleAdmin, SelectClienteAdmin } from '@/components/index'
+import { NavLateralAdmin, TitleAdmin, SelectClienteAdmin, PedidoCupom } from '@/components/index'
+
+const couponImg = new URL('@/assets/img/coupon.svg', import.meta.url).href
+const creditCardImg = new URL('@/assets/img/credit-card.png', import.meta.url).href
+
+const metodoPagamento = ref('Pagar na Retirada')
 
 const carrinhoStore = useCarrinhoStore()
 const toast = useToastStore()
@@ -113,16 +128,15 @@ async function finalizarPedido() {
     return
   }
 
-const pedidoData = {
-  usuario: usuarioSelecionado.value?.id,
-  identificador: identificador.value?.trim() || undefined,
-  status: 4,
-  itens: carrinhoStore.itens.map((item) => ({
-    produto: item.id,
-    quantidade: item.quantidade,
-  })),
-}
-
+  const pedidoData = {
+    usuario: usuarioSelecionado.value?.id,
+    identificador: identificador.value?.trim() || undefined,
+    status: 4,
+    itens: carrinhoStore.itens.map((item) => ({
+      produto: item.id,
+      quantidade: item.quantidade,
+    })),
+  }
 
   try {
     carregando.value = true
