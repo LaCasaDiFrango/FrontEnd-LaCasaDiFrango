@@ -77,6 +77,7 @@ import ProductCardAdmin from "./admin/card/ProductCardAdmin.vue";
 import ProductCardPedido from "./admin/card/ProdutoCardPedido.vue";
 import ResumoButton from "./admin/buttons/ResumoButton.vue";
 import SelectClienteAdmin from "./search/SelectClienteAdmin.vue";
+import ViewModalAdmin from "./admin/modal/ViewModalAdmin.vue";
 
 //loading
 import LoadingPage from "./loading/LoadingPage.vue";
@@ -142,4 +143,5 @@ export {
   ProductCardPedido,
   ResumoButton,
   SelectClienteAdmin,
+  ViewModalAdmin,
 };

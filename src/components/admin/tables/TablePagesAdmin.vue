@@ -1,6 +1,8 @@
-<script setup>
+  <script setup>
 import { computed, ref } from 'vue'
+import { ViewModalAdmin } from "@/components/index"
 
+// Props
 const props = defineProps({
   items: { type: Array, default: () => [] },
   columns: { type: Array, default: () => [] },
@@ -8,58 +10,83 @@ const props = defineProps({
   currentPage: { type: Number, default: 1 },
   totalPages: { type: Number, default: 1 },
   itemsPerPage: { type: Number, default: 10 },
+    dataKey: { type: String, required: true },
 })
 
-const emit = defineEmits(['page-change'])
+// Emits
+const emit = defineEmits(['page-change', 'edit', 'delete', 'view'])
 
+// Estado
 const filtro = ref('')
+const selectedItem = ref(null)
+const showEditModal = ref(false)
+const showViewModal = ref(false)
 
-// Filtra os itens pelo campo de busca
+// Filtragem
 const itemsList = computed(() => {
   if (!filtro.value) return props.items
-  return props.items.filter(item =>
-    props.columns.some(col =>
+  return props.items.filter((item) =>
+    props.columns.some((col) =>
       (item[col.key]?.toString() ?? '').toLowerCase().includes(filtro.value.toLowerCase())
     )
   )
 })
 
-// Colunas que não devem ser centralizadas
+// Colunas
 const primaryKeys = ['nome', 'name', 'usuario', 'email']
+const otherColumns = computed(() => props.columns.filter((col) => !primaryKeys.includes(col.key)))
 
-const otherColumns = computed(() =>
-  props.columns.filter(col => !primaryKeys.includes(col.key))
-)
+// Mapas de exibição
+const statusMap = { 1: 'Carrinho', 2: 'Realizado', 3: 'Pago', 4: 'Entregue' }
+const perfilMap = { administrador: 'Administrador', usuario: 'Usuário' }
 
-// Mapas para exibição de valores legíveis
-const statusMap = {
-  1: 'Carrinho',
-  2: 'Realizado',
-  3: 'Pago',
-  4: 'Entregue',
-}
-
-const perfilMap = {
-  administrador: 'Administrador',
-  usuario: 'Usuário',
-}
-
-// Retorna o nome principal
-const getDisplayName = item => item.nome || item.usuario || item.email || '—'
-
-// Retorna valores legíveis ou formatados
+// Funções auxiliares
+const getDisplayName = (item) => item.nome || item.usuario || item.email || '—'
 const getDisplayValue = (item, key) => {
   if (key === 'status') return statusMap[item[key]] || item[key] || '—'
   if (key === 'perfil') return perfilMap[item[key]] || item[key] || '—'
-  if (key === 'preco') {
-    const preco = Number(item[key] ?? 0)
-    return `R$ ${preco.toFixed(2).replace('.', ',')}`
-  }
+  if (key === 'preco')
+    return `R$ ${Number(item[key] ?? 0)
+      .toFixed(2)
+      .replace('.', ',')}`
   return item[key] ?? '—'
 }
+
+// Ações
+const openEdit = (item) => {
+  selectedItem.value = item
+  showEditModal.value = true
+  emit('edit', item) // futuro backend
+}
+
+const openView = (item) => {
+  console.log('selectedItem', item)
+  console.log('dataKey', props.dataKey)
+  selectedItem.value = item
+  showViewModal.value = true
+  emit('view', item)
+}
+
+
+const deleteItem = (item) => {
+  if (confirm(`Tem certeza que deseja excluir o registro #${item.id}?`)) {
+    emit('delete', item)
+  }
+}
+
+const modalTitle = computed(() => {
+  if (!selectedItem.value) return ''
+  if (props.dataKey === 'pedidos') return `Detalhes do Pedido #${selectedItem.value.id}`
+  if (props.dataKey === 'produtos') return `Detalhes do Produto`
+  if (props.dataKey === 'usuarios') return `Detalhes do Usuário`
+  return 'Detalhes'
+})
+
+
+
 </script>
 
-<template>
+  <template>
   <div class="bg-white rounded-2xl shadow-md p-5 w-full min-h-[475px]">
     <!-- Cabeçalho -->
     <div class="flex justify-between items-center mb-4">
@@ -79,7 +106,11 @@ const getDisplayValue = (item, key) => {
           <tr class="text-gray-500 border-b border-gray-200">
             <th class="py-2 px-3 text-center font-semibold w-[60px]">#</th>
             <th class="py-2 px-3 text-left font-semibold">Nome</th>
-            <th v-for="col in otherColumns" :key="col.key" class="py-2 px-3 text-center font-semibold">
+            <th
+              v-for="col in otherColumns"
+              :key="col.key"
+              class="py-2 px-3 text-center font-semibold"
+            >
               {{ col.label }}
             </th>
             <th class="py-2 px-3 text-center font-semibold w-[140px]">Administração</th>
@@ -92,13 +123,8 @@ const getDisplayValue = (item, key) => {
             :key="item.id || index"
             class="bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg"
           >
-            <!-- ID -->
             <td class="py-2 text-center text-gray-700 rounded-l-lg">{{ item.id }}</td>
-
-            <!-- Nome -->
             <td class="py-2 text-left font-medium text-gray-700">{{ getDisplayName(item) }}</td>
-
-            <!-- Outras colunas -->
             <td
               v-for="col in otherColumns"
               :key="col.key"
@@ -107,26 +133,25 @@ const getDisplayValue = (item, key) => {
               {{ getDisplayValue(item, col.key) }}
             </td>
 
-            <!-- Ações -->
             <td class="py-2 text-center rounded-r-lg">
               <div class="flex justify-center items-center gap-3">
-                <button title="Editar">
+                <button @click="openEdit(item)" title="Editar">
                   <img
-                    class="p-1 bg-[#facc15] w-7 h-auto rounded transition hover:scale-105"
+                    class="p-1 bg-[#facc15] w-7 rounded transition hover:scale-105"
                     src="@/assets/img/icons/edit.svg"
                     alt="Edit"
                   />
                 </button>
-                <button title="Excluir">
+                <button @click="deleteItem(item)" title="Excluir">
                   <img
-                    class="p-1 bg-[#B91C1C] w-7 h-auto rounded transition hover:scale-105"
+                    class="p-1 bg-[#B91C1C] w-7 rounded transition hover:scale-105"
                     src="@/assets/img/icons/delete.svg"
                     alt="Delete"
                   />
                 </button>
-                <button title="Ver">
+                <button @click="openView(item)" title="Ver">
                   <img
-                    class="p-1 bg-teal-500 w-7 h-auto rounded transition hover:scale-105"
+                    class="p-1 bg-teal-500 w-7 rounded transition hover:scale-105"
                     src="@/assets/img/icons/view.svg"
                     alt="View"
                   />
@@ -138,7 +163,6 @@ const getDisplayValue = (item, key) => {
       </table>
     </div>
 
-    <!-- Nenhum registro -->
     <div v-if="itemsList.length === 0" class="text-center text-gray-400 mt-4 italic">
       Nenhum registro encontrado.
     </div>
@@ -152,9 +176,7 @@ const getDisplayValue = (item, key) => {
       >
         Anterior
       </button>
-      <span class="px-3 py-1 text-gray-800">
-        Página {{ currentPage }} de {{ totalPages }}
-      </span>
+      <span class="px-3 py-1 text-gray-800"> Página {{ currentPage }} de {{ totalPages }} </span>
       <button
         @click="emit('page-change', currentPage + 1)"
         :disabled="currentPage === totalPages"
@@ -163,10 +185,19 @@ const getDisplayValue = (item, key) => {
         Próxima
       </button>
     </div>
+    <ViewModalAdmin
+  :show="showViewModal"
+  :item="selectedItem"
+  :dataKey="dataKey"
+  :modalTitle="modalTitle"
+  @close="showViewModal = false"
+/>
+
   </div>
 </template>
 
-<style>
+
+  <style>
 .fade-slide-enter-active,
 .fade-slide-leave-active {
   transition: all 0s ease;

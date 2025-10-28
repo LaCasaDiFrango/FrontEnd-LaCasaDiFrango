@@ -37,6 +37,7 @@
             :loading="loading"
             @page-change="store.setCurrentPage"
             :columns="props.columns"
+                        :dataKey="props.dataKey"
           />
         </div>
       </div>
