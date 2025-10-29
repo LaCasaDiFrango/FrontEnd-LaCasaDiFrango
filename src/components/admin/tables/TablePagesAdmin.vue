@@ -56,8 +56,9 @@ const getDisplayValue = (item, key) => {
 const openEdit = (item) => {
   selectedItem.value = item
   showEditModal.value = true
-  emit('edit', item) // futuro backend
+  emit('edit', item)
 }
+
 
 const openView = (item) => {
   console.log('selectedItem', item)
@@ -185,13 +186,27 @@ const modalTitle = computed(() => {
         Próxima
       </button>
     </div>
-    <ViewModalAdmin
+<!-- Modal de visualizar -->
+<ViewModalAdmin
   :show="showViewModal"
   :item="selectedItem"
   :dataKey="dataKey"
   :modalTitle="modalTitle"
-  @close="showViewModal = false"
+  :startEditing="false"
+  @close="showViewModal = false"  
 />
+
+<!-- Modal de editar -->
+<ViewModalAdmin
+  :show="showEditModal"
+  :item="selectedItem"
+  :dataKey="dataKey"
+  :modalTitle="modalTitle"
+  :startEditing="true"
+  @close="showEditModal = false"
+/>
+
+
 
   </div>
 </template>
