@@ -62,5 +62,19 @@ async function fetchUsuarios(page = 1) {
     }
   }
 
-  return { usuarios, loading, error, fetchUsuarios, cadastrarUsuario, currentPage, totalPages, itemsPerPage, setCurrentPage }
+  async function updateUsuario(id, data) {
+  try {
+    const updated = await userService.update(id, data) // implementa endpoint PATCH/PUT
+    const index = usuarios.value.findIndex(u => u.id === id)
+    if (index !== -1) {
+      usuarios.value[index] = updated
+    }
+  } catch (err) {
+    console.error('[UsuariosStore] Erro ao atualizar usuário:', err)
+    throw err
+  }
+}
+
+
+  return { usuarios, loading, error, fetchUsuarios, cadastrarUsuario, currentPage, totalPages, itemsPerPage, setCurrentPage, updateUsuario }
 })

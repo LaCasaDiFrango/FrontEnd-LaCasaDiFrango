@@ -1,32 +1,38 @@
-  <script setup>
+<script setup>
 import { computed, ref } from 'vue'
 import { ViewModalAdmin } from "@/components/index"
+import { usePedidosStore, useUsuariosStore, useProdutosStore } from '@/stores/index'
 
 // Props
 const props = defineProps({
-  items: { type: Array, default: () => [] },
   columns: { type: Array, default: () => [] },
   title: { type: String },
-  currentPage: { type: Number, default: 1 },
-  totalPages: { type: Number, default: 1 },
-  itemsPerPage: { type: Number, default: 10 },
-    dataKey: { type: String, required: true },
+  dataKey: { type: String, required: true },
+  items: { type: Array, default: () => [] }, // Vem da view
+  currentPage: { type: Number, default: 1 }, // Vem da view
+  totalPages: { type: Number, default: 1 }, // Vem da view
 })
 
 // Emits
-const emit = defineEmits(['page-change', 'edit', 'delete', 'view'])
+const emit = defineEmits(['edit', 'view', 'delete', 'save'])
 
-// Estado
+// Stores para PATCH/PUT
+const pedidosStore = usePedidosStore()
+const usuariosStore = useUsuariosStore()
+const produtosStore = useProdutosStore()
+const storesMap = { pedidos: pedidosStore, usuarios: usuariosStore, produtos: produtosStore }
+
+// Estado interno
 const filtro = ref('')
 const selectedItem = ref(null)
 const showEditModal = ref(false)
 const showViewModal = ref(false)
 
-// Filtragem
+// Filtragem local
 const itemsList = computed(() => {
   if (!filtro.value) return props.items
-  return props.items.filter((item) =>
-    props.columns.some((col) =>
+  return props.items.filter(item =>
+    props.columns.some(col =>
       (item[col.key]?.toString() ?? '').toLowerCase().includes(filtro.value.toLowerCase())
     )
   )
@@ -34,58 +40,56 @@ const itemsList = computed(() => {
 
 // Colunas
 const primaryKeys = ['nome', 'name', 'usuario', 'email']
-const otherColumns = computed(() => props.columns.filter((col) => !primaryKeys.includes(col.key)))
+const otherColumns = computed(() => props.columns.filter(col => !primaryKeys.includes(col.key)))
 
 // Mapas de exibição
 const statusMap = { 1: 'Carrinho', 2: 'Realizado', 3: 'Pago', 4: 'Entregue' }
 const perfilMap = { administrador: 'Administrador', usuario: 'Usuário' }
 
-// Funções auxiliares
 const getDisplayName = (item) => item.nome || item.usuario || item.email || '—'
 const getDisplayValue = (item, key) => {
   if (key === 'status') return statusMap[item[key]] || item[key] || '—'
   if (key === 'perfil') return perfilMap[item[key]] || item[key] || '—'
-  if (key === 'preco')
-    return `R$ ${Number(item[key] ?? 0)
-      .toFixed(2)
-      .replace('.', ',')}`
+  if (key === 'preco') return `R$ ${Number(item[key] ?? 0).toFixed(2).replace('.', ',')}`
   return item[key] ?? '—'
 }
 
 // Ações
-const openEdit = (item) => {
-  selectedItem.value = item
-  showEditModal.value = true
-  emit('edit', item)
-}
+const openEdit = (item) => { selectedItem.value = item; showEditModal.value = true; emit('edit', item) }
+const openView = (item) => { selectedItem.value = item; showViewModal.value = true; emit('view', item) }
+const deleteItem = (item) => { if(confirm(`Deseja excluir #${item.id}?`)) emit('delete', item) }
 
-
-const openView = (item) => {
-  console.log('selectedItem', item)
-  console.log('dataKey', props.dataKey)
-  selectedItem.value = item
-  showViewModal.value = true
-  emit('view', item)
-}
-
-
-const deleteItem = (item) => {
-  if (confirm(`Tem certeza que deseja excluir o registro #${item.id}?`)) {
-    emit('delete', item)
-  }
-}
-
+// Modal title
 const modalTitle = computed(() => {
   if (!selectedItem.value) return ''
-  if (props.dataKey === 'pedidos') return `Detalhes do Pedido #${selectedItem.value.id}`
-  if (props.dataKey === 'produtos') return `Detalhes do Produto`
-  if (props.dataKey === 'usuarios') return `Detalhes do Usuário`
+  if (props.dataKey === 'pedidos') return `Pedido #${selectedItem.value.id}`
+  if (props.dataKey === 'produtos') return `Produto`
+  if (props.dataKey === 'usuarios') return `Usuário`
   return 'Detalhes'
 })
 
+// PATCH/PUT via tabela
+const handleSave = async (updatedItem) => {
+  const store = storesMap[props.dataKey]
+  try {
+    if (props.dataKey === 'produtos') {
+      await store.atualizarPreco(updatedItem.id, updatedItem.preco)
+      await produtosStore.atualizarQuantidadeAbsoluta(updatedItem.id, updatedItem.quantidade_em_estoque)
 
-
+    } else if (props.dataKey === 'usuarios') {
+      await store.updateUsuario(updatedItem.id, updatedItem)
+    } else if (props.dataKey === 'pedidos') {
+      await store.updatePedido(updatedItem.id, updatedItem)
+    }
+    showEditModal.value = false
+    emit('save', updatedItem)
+  } catch (err) {
+    console.error(err)
+    alert('Erro ao salvar item.')
+  }
+}
 </script>
+
 
   <template>
   <div class="bg-white rounded-2xl shadow-md p-5 w-full min-h-[475px]">
@@ -204,7 +208,9 @@ const modalTitle = computed(() => {
   :modalTitle="modalTitle"
   :startEditing="true"
   @close="showEditModal = false"
+  @save="handleSave"
 />
+
 
 
 
