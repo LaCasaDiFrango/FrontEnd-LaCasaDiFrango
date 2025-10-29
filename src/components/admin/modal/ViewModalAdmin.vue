@@ -35,7 +35,7 @@ const perfilBadgeClass = (perfil) => ({
 
 <template>
   <div v-if="show" class="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
-    <div class="relative bg-white rounded-2xl shadow-xl p-6 w-[550px] max-h-[80vh] flex flex-col overflow-y-auto">
+    <div class="relative bg-white rounded-2xl shadow-xl p-6 w-[750px] h-auto flex flex-col overflow-y-auto">
       
       <!-- Botão fechar -->
       <button
@@ -64,35 +64,41 @@ const perfilBadgeClass = (perfil) => ({
               {{ statusMap[item.status] }}
             </span>
           </div>
-          <h4 class="font-semibold text-gray-800 mb-2">Itens do Pedido</h4>
-          <table class="w-full text-sm border-separate" style="border-spacing: 0 6px">
-            <thead>
-              <tr class="text-gray-600 border-b border-gray-200">
-                <th class="text-left py-2 px-2">Produto</th>
-                <th class="text-center py-2 px-2">Qtd</th>
-                <th class="text-center py-2 px-2">Preço</th>
-                <th class="text-center py-2 px-2">Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="(i, idx) in item.itens"
-                :key="idx"
-                class="bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg"
-              >
-                <td class="py-2 px-2 flex items-center gap-3 text-gray-800">
-                  <img :src="i.produto.imagem" alt="Produto" class="w-10 h-10 object-cover rounded-lg" />
-                  <span>{{ i.produto.nome }}</span>
-                </td>
-                <td class="py-2 px-2 text-center font-medium">{{ i.quantidade }}</td>
-                <td class="py-2 px-2 text-center text-gray-700">R$ {{ formatPrice(i.produto.preco) }}</td>
-                <td class="py-2 px-2 text-center text-gray-700">R$ {{ formatPrice(i.total) }}</td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="mt-4 flex justify-end items-center font-bold text-green-700">
-            Total Geral: R$ {{ formatPrice(item.itens.reduce((acc,i)=>acc+Number(i.total),0)) }}
-          </div>
+<h4 class="font-semibold text-gray-800 mb-2">Itens do Pedido</h4>
+
+<!-- Área com scroll apenas para os itens -->
+<div class="max-h-[400px] overflow-y-auto rounded-lg border border-gray-200">
+  <table class="w-full text-sm border-separate" style="border-spacing: 0 6px">
+    <thead class="sticky top-0 bg-white z-10">
+      <tr class="text-gray-600 border-b border-gray-200">
+        <th class="text-left py-2 px-2">Produto</th>
+        <th class="text-center py-2 px-2">Qtd</th>
+        <th class="text-center py-2 px-2">Preço</th>
+        <th class="text-center py-2 px-2">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        v-for="(i, idx) in item.itens"
+        :key="idx"
+        class="bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg"
+      >
+        <td class="py-2 px-2 flex items-center gap-3 text-gray-800">
+          <img :src="i.produto.imagem" alt="Produto" class="w-10 h-10 object-cover rounded-lg" />
+          <span>{{ i.produto.nome }}</span>
+        </td>
+        <td class="py-2 px-2 text-center font-medium">{{ i.quantidade }}</td>
+        <td class="py-2 px-2 text-center text-gray-700">R$ {{ formatPrice(i.produto.preco) }}</td>
+        <td class="py-2 px-2 text-center text-gray-700">R$ {{ formatPrice(i.total) }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="mt-4 flex justify-end items-center font-bold text-green-700">
+  Total Geral: R$ {{ formatPrice(item.itens.reduce((acc,i)=>acc+Number(i.total),0)) }}
+</div>
+
         </template>
 
         <!-- Produto -->
