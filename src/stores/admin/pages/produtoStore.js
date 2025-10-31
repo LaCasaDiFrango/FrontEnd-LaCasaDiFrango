@@ -105,6 +105,31 @@ export const useProdutosStore = defineStore('produtos', () => {
     }
   }
 
+  // 🔹 Atualizar quantidade absoluta (modo edição direta)
+async function atualizarQuantidadeAbsoluta(id, novaQuantidade) {
+  try {
+    const quantidadeNumerica = parseInt(novaQuantidade, 10)
+    if (isNaN(quantidadeNumerica)) {
+      throw new Error('Formato de quantidade inválido.')
+    }
+
+    // PATCH direto no backend
+    const data = await produtoService.update(id, {
+      quantidade_em_estoque: quantidadeNumerica,
+    })
+
+    // Atualiza o valor localmente
+    const index = produtos.value.findIndex(p => p.id === id)
+    if (index !== -1) {
+      produtos.value[index].quantidade_em_estoque = data.quantidade_em_estoque
+    }
+  } catch (err) {
+    console.error('[ProdutosStore] Erro ao atualizar quantidade absoluta:', err)
+    throw err
+  }
+}
+
+
   // 🔹 Deletar produto
   async function deletarProduto(id) {
     try {
@@ -131,5 +156,6 @@ export const useProdutosStore = defineStore('produtos', () => {
     itemsPerPage,
     setCurrentPage,
     ProdutosPage,
+    atualizarQuantidadeAbsoluta,
   }
 })
