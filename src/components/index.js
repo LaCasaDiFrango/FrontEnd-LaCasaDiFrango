@@ -78,6 +78,7 @@ import ProductCardPedido from "./admin/card/ProdutoCardPedido.vue";
 import ResumoButton from "./admin/buttons/ResumoButton.vue";
 import SelectClienteAdmin from "./search/SelectClienteAdmin.vue";
 import ViewModalAdmin from "./admin/modal/ViewModalAdmin.vue";
+import ConfirmDeleteModal from "./admin/modal/ConfirmDeleteModal.vue";
 
 //loading
 import LoadingPage from "./loading/LoadingPage.vue";
@@ -144,4 +145,5 @@ export {
   ResumoButton,
   SelectClienteAdmin,
   ViewModalAdmin,
+  ConfirmDeleteModal,
 };

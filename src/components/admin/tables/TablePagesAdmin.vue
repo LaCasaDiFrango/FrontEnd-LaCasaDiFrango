@@ -1,6 +1,6 @@
 <script setup>
 import { computed, ref } from 'vue'
-import { ViewModalAdmin } from "@/components/index"
+import { ViewModalAdmin, ConfirmDeleteModal } from '@/components/index'
 import { usePedidosStore, useUsuariosStore, useProdutosStore } from '@/stores/index'
 
 // Props
@@ -27,12 +27,14 @@ const filtro = ref('')
 const selectedItem = ref(null)
 const showEditModal = ref(false)
 const showViewModal = ref(false)
+const showDeleteModal = ref(false)
+const itemToDelete = ref(null)
 
 // Filtragem local
 const itemsList = computed(() => {
   if (!filtro.value) return props.items
-  return props.items.filter(item =>
-    props.columns.some(col =>
+  return props.items.filter((item) =>
+    props.columns.some((col) =>
       (item[col.key]?.toString() ?? '').toLowerCase().includes(filtro.value.toLowerCase())
     )
   )
@@ -40,7 +42,7 @@ const itemsList = computed(() => {
 
 // Colunas
 const primaryKeys = ['nome', 'name', 'usuario', 'email']
-const otherColumns = computed(() => props.columns.filter(col => !primaryKeys.includes(col.key)))
+const otherColumns = computed(() => props.columns.filter((col) => !primaryKeys.includes(col.key)))
 
 // Mapas de exibição
 const statusMap = { 1: 'Carrinho', 2: 'Realizado', 3: 'Pago', 4: 'Entregue' }
@@ -50,14 +52,27 @@ const getDisplayName = (item) => item.nome || item.usuario || item.email || '—
 const getDisplayValue = (item, key) => {
   if (key === 'status') return statusMap[item[key]] || item[key] || '—'
   if (key === 'perfil') return perfilMap[item[key]] || item[key] || '—'
-  if (key === 'preco') return `R$ ${Number(item[key] ?? 0).toFixed(2).replace('.', ',')}`
+  if (key === 'preco')
+    return `R$ ${Number(item[key] ?? 0)
+      .toFixed(2)
+      .replace('.', ',')}`
   return item[key] ?? '—'
 }
 
 // Ações
-const openEdit = (item) => { selectedItem.value = item; showEditModal.value = true; emit('edit', item) }
-const openView = (item) => { selectedItem.value = item; showViewModal.value = true; emit('view', item) }
-const deleteItem = (item) => { if(confirm(`Deseja excluir #${item.id}?`)) emit('delete', item) }
+const openEdit = (item) => {
+  selectedItem.value = item
+  showEditModal.value = true
+  emit('edit', item)
+}
+const openView = (item) => {
+  selectedItem.value = item
+  showViewModal.value = true
+  emit('view', item)
+}
+const deleteItem = (item) => {
+  if (confirm(`Deseja excluir #${item.id}?`)) emit('delete', item)
+}
 
 // Modal title
 const modalTitle = computed(() => {
@@ -74,8 +89,10 @@ const handleSave = async (updatedItem) => {
   try {
     if (props.dataKey === 'produtos') {
       await store.atualizarPreco(updatedItem.id, updatedItem.preco)
-      await produtosStore.atualizarQuantidadeAbsoluta(updatedItem.id, updatedItem.quantidade_em_estoque)
-
+      await produtosStore.atualizarQuantidadeAbsoluta(
+        updatedItem.id,
+        updatedItem.quantidade_em_estoque
+      )
     } else if (props.dataKey === 'usuarios') {
       await store.updateUsuario(updatedItem.id, updatedItem)
     } else if (props.dataKey === 'pedidos') {
@@ -87,6 +104,16 @@ const handleSave = async (updatedItem) => {
     console.error(err)
     alert('Erro ao salvar item.')
   }
+}
+
+const openDeleteModal = (item) => {
+  itemToDelete.value = item
+  showDeleteModal.value = true
+}
+
+const confirmDelete = (item) => {
+  emit('delete', item)
+  showDeleteModal.value = false
 }
 </script>
 
@@ -147,13 +174,14 @@ const handleSave = async (updatedItem) => {
                     alt="Edit"
                   />
                 </button>
-                <button @click="deleteItem(item)" title="Excluir">
+                <button @click="openDeleteModal(item)" title="Excluir">
                   <img
                     class="p-1 bg-[#B91C1C] w-7 rounded transition hover:scale-105"
                     src="@/assets/img/icons/delete.svg"
                     alt="Delete"
                   />
                 </button>
+
                 <button @click="openView(item)" title="Ver">
                   <img
                     class="p-1 bg-teal-500 w-7 rounded transition hover:scale-105"
@@ -190,30 +218,34 @@ const handleSave = async (updatedItem) => {
         Próxima
       </button>
     </div>
-<!-- Modal de visualizar -->
-<ViewModalAdmin
-  :show="showViewModal"
-  :item="selectedItem"
-  :dataKey="dataKey"
-  :modalTitle="modalTitle"
-  :startEditing="false"
-  @close="showViewModal = false"  
-/>
+    <!-- Modal de visualizar -->
+    <ViewModalAdmin
+      :show="showViewModal"
+      :item="selectedItem"
+      :dataKey="dataKey"
+      :modalTitle="modalTitle"
+      :startEditing="false"
+      @close="showViewModal = false"
+    />
 
-<!-- Modal de editar -->
-<ViewModalAdmin
-  :show="showEditModal"
-  :item="selectedItem"
-  :dataKey="dataKey"
-  :modalTitle="modalTitle"
-  :startEditing="true"
-  @close="showEditModal = false"
-  @save="handleSave"
-/>
+    <!-- Modal de editar -->
+    <ViewModalAdmin
+      :show="showEditModal"
+      :item="selectedItem"
+      :dataKey="dataKey"
+      :modalTitle="modalTitle"
+      :startEditing="true"
+      @close="showEditModal = false"
+      @save="handleSave"
+    />
 
-
-
-
+    <ConfirmDeleteModal
+      :show="showDeleteModal"
+      :item="itemToDelete"
+      :title="`Excluir ${modalTitle}`"
+      @close="showDeleteModal = false"
+      @confirm="confirmDelete"
+    />
   </div>
 </template>
 

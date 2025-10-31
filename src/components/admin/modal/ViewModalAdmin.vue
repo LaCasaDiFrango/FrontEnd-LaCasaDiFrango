@@ -68,6 +68,7 @@ watch(
 </script>
 
 <template>
+    <transition name="fade">
   <div v-if="show" class="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
     <div class="relative bg-white rounded-2xl shadow-xl p-8 w-[750px] max-h-[90vh] flex flex-col">
       
@@ -336,4 +337,15 @@ watch(
       </div>
     </div>
   </div>
+  </transition>
 </template>
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
