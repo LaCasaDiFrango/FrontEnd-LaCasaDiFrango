@@ -122,9 +122,29 @@ const formatCurrency = v => v?.toLocaleString('pt-BR', { style: 'currency', curr
 
 <style scoped>
 .hide-scrollbar {
-  scrollbar-width: none;
+  overflow-x: auto;
+  scrollbar-width: thin;            /* Firefox */
+  scrollbar-color: #a3a3a3 #f1f1f1; /* cor do scroll e do fundo */
 }
+
+/* Chrome, Edge e Safari */
 .hide-scrollbar::-webkit-scrollbar {
-  display: none;
+  height: 8px;                      /* espessura do scroll horizontal */
 }
+
+.hide-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;              /* fundo da trilha */
+  border-radius: 8px;
+}
+
+.hide-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #a3a3a3;        /* cor da barra */
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.hide-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #6b6b6b;        /* cor ao passar o mouse */
+}
+
 </style>
