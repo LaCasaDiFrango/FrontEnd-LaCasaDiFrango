@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white shadow-md rounded-2xl p-4 w-full max-w-md mx-auto">
+  <div class=" p-4 w-full max-w-md mx-auto">
     <h2 class="text-lg font-semibold text-gray-800 mb-3 text-center">
       Usuários Ativos vs Inativos
     </h2>

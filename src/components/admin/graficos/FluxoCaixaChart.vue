@@ -72,6 +72,6 @@ onBeforeUnmount(() => {
 <style scoped>
 canvas {
   width: 100% !important;
-  height: 400px !important;
+  height: 480px !important;
 }
 </style>

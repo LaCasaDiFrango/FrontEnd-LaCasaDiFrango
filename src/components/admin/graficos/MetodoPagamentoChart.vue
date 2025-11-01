@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white shadow-md rounded-2xl p-4 w-full max-w-md mx-auto">
+  <div class="p-4 w-full max-w-md mx-auto">
     <h2 class="text-lg font-semibold text-gray-800 mb-3 text-center">
       Métodos de Pagamento Mais Usados
     </h2>
@@ -66,6 +66,6 @@ onBeforeUnmount(() => {
 <style scoped>
 canvas {
   width: 100% !important;
-  height: 300px !important;
+  height: 400px !important;
 }
 </style>
