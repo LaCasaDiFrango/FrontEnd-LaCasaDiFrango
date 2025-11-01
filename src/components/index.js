@@ -76,6 +76,12 @@ import CategoryBoxAdmin from "./admin/box/CategoryBoxAdmin.vue";
 import ProductCardAdmin from "./admin/card/ProductCardAdmin.vue";
 import ProductCardPedido from "./admin/card/ProdutoCardPedido.vue";
 import ResumoButton from "./admin/buttons/ResumoButton.vue";
+import EstoquePrevisaoChart from "./admin/graficos/EstoquePrevisaoChart.vue";
+import UserStatusChart from "./admin/graficos/UserStatusChart.vue";
+import MetodoPagamentoChart from "./admin/graficos/MetodoPagamentoChart.vue";
+import PedidosPorPeriodoChart from "./admin/graficos/PedidosPorPeriodoChart.vue";
+import FluxoCaixaChart from "./admin/graficos/FluxoCaixaChart.vue";
+import TopActiveUsersChart from "./admin/tables/TopActiveUsersChart.vue";
 
 //loading
 import LoadingPage from "./loading/LoadingPage.vue";
@@ -139,5 +145,11 @@ export {
   CategoryBoxAdmin,
   ProductCardAdmin,
   ProductCardPedido,
-  ResumoButton
+  ResumoButton,
+  EstoquePrevisaoChart,
+  UserStatusChart,
+  MetodoPagamentoChart,
+  PedidosPorPeriodoChart,
+  FluxoCaixaChart,
+  TopActiveUsersChart
 };
