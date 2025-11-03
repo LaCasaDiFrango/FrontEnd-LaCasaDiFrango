@@ -1,125 +1,79 @@
 <template>
-  <div class="bg-white shadow-md rounded-2xl p-4 w-full max-w-3xl mx-auto">
-    <h2 class="text-lg font-semibold text-gray-800 mb-3 text-center">
-      Top Usuários por Pedidos
-    </h2>
-    <canvas ref="chartRef" height="180"></canvas>
+  <div class="w-full max-w-4xl mx-auto p-4 bg-white shadow rounded-lg">
+    <h2 class="text-xl font-semibold mb-4 text-center">Top 10 Usuários Mais Ativos</h2>
+
+    <canvas ref="podioChart"></canvas>
+
+    <div v-if="loadingTopUsuarios" class="text-center mt-4">Carregando...</div>
+    <div v-if="errorTopUsuarios" class="text-red-500 text-center mt-4">{{ errorTopUsuarios }}</div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, watch } from "vue"
-import { usePedidosStore } from "@/stores/admin/pages/pedidoStore" // store que contém todos os pedidos
-import {
-  Chart,
-  LineController,
-  LineElement,
-  PointElement,
-  LinearScale,
-  CategoryScale,
-  Title,
-  Tooltip,
-  Filler,
-} from "chart.js"
+import { ref, onMounted, watch } from 'vue'
+import { Chart, registerables } from 'chart.js'
+import { useUsuariosStore } from '@/stores/index'
 
-Chart.register(LineController, LineElement, PointElement, LinearScale, CategoryScale, Title, Tooltip, Filler)
+Chart.register(...registerables)
 
-const chartRef = ref(null)
+const podioChart = ref(null)
 let chartInstance = null
 
-const pedidosStore = usePedidosStore()
+const usuariosStore = useUsuariosStore()
+const { topUsuarios, fetchTopUsuarios, loadingTopUsuarios, errorTopUsuarios } = usuariosStore
 
-const atualizarGrafico = () => {
-  // Conta pedidos por usuário
-  const contagem = {}
-  pedidosStore.pedidos.forEach(p => {
-    const usuario = p.usuario.nome // ou p.usuarioId se só tiver ID
-    contagem[usuario] = (contagem[usuario] || 0) + 1
+const renderChart = () => {
+  if (!podioChart.value) return
+  if (!topUsuarios.value || topUsuarios.value.length === 0) return // ✅ só renderiza se houver dados
+  if (chartInstance) chartInstance.destroy()
+
+  const labels = topUsuarios.value.map(u => u.name || u.email) // fallback se name não existir
+  const data = topUsuarios.value.map(u => u.total_pedidos || 0)
+
+  chartInstance = new Chart(podioChart.value, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Pedidos',
+        data,
+        backgroundColor: topUsuarios.value.map((_, idx) => {
+          if (idx === 0) return '#FFD700' // ouro
+          if (idx === 1) return '#C0C0C0' // prata
+          if (idx === 2) return '#CD7F32' // bronze
+          return '#4F46E5' // demais azul
+        }),
+        borderRadius: 6,
+      }]
+    },
+    options: {
+      indexAxis: 'y', // horizontal
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { enabled: true }
+      },
+      scales: {
+        x: { beginAtZero: true, title: { display: true, text: 'Pedidos' } },
+        y: { ticks: { font: { size: 14 } } }
+      }
+    }
   })
-
-  // Ordena e pega top 5
-  const topUsuarios = Object.entries(contagem)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 5)
-
-  const labels = topUsuarios.map(([nome]) => nome)
-  const data = topUsuarios.map(([, qtd]) => qtd)
-
-  const ctx = chartRef.value.getContext("2d")
-  const gradient = ctx.createLinearGradient(0, 0, 0, 180)
-  gradient.addColorStop(0, "rgba(59,130,246,0.4)")
-  gradient.addColorStop(1, "rgba(59,130,246,0.05)")
-
-  if (chartInstance) {
-    chartInstance.data.labels = labels
-    chartInstance.data.datasets[0].data = data
-    chartInstance.data.datasets[0].backgroundColor = gradient
-    chartInstance.update()
-  } else {
-    chartInstance = new Chart(ctx, {
-      type: "line",
-      data: {
-        labels,
-        datasets: [
-          {
-            label: "Pedidos",
-            data,
-            fill: true,
-            backgroundColor: gradient,
-            borderColor: "#3b82f6",
-            borderWidth: 2,
-            tension: 0.4,
-            pointBackgroundColor: "#fff",
-            pointBorderColor: "#3b82f6",
-            pointRadius: 5,
-            pointHoverRadius: 7,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            backgroundColor: "#111827",
-            titleColor: "#fff",
-            bodyColor: "#e5e7eb",
-            borderWidth: 1,
-            borderColor: "#3b82f6",
-            padding: 10,
-          },
-        },
-        scales: {
-          x: {
-            grid: { display: false },
-            ticks: { color: "#6b7280", font: { size: 12 } },
-          },
-          y: {
-            grid: { color: "rgba(107,114,128,0.1)" },
-            ticks: { color: "#6b7280", font: { size: 12 } },
-          },
-        },
-      },
-    })
-  }
 }
 
 onMounted(async () => {
-  await pedidosStore.fetchPedidos() // busca todos os pedidos
-  atualizarGrafico()
+  await fetchTopUsuarios()
+  // Renderiza automaticamente via watch
 })
 
-watch(() => pedidosStore.pedidos, atualizarGrafico, { deep: true })
-
-onBeforeUnmount(() => {
-  if (chartInstance) chartInstance.destroy()
+watch(topUsuarios, (newVal) => {
+  if (newVal && newVal.length > 0) renderChart()
 })
 </script>
 
 <style scoped>
 canvas {
   width: 100% !important;
-  height: 480px !important;
+  height: 400px !important;
 }
 </style>

@@ -29,4 +29,12 @@ export default class UserService {
     const response = await axios.get('/usuarios/ativos_inativos/');
     return response.data;
   }
+
+  // ==========================
+  // Novo método: top 10 usuários mais ativos
+  // ==========================
+  async maisAtivos() {
+    const response = await axios.get('/usuarios/mais_ativos/');
+    return response.data;
+  }
 }

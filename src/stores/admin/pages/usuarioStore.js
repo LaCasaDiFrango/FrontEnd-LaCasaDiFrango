@@ -19,6 +19,11 @@ export const useUsuariosStore = defineStore('usuarios', () => {
   const loadingGrafico = ref(false)
   const errorGrafico = ref(null)
 
+  // Gráfico top usuários
+  const topUsuarios = ref([])
+  const loadingTopUsuarios = ref(false)
+  const errorTopUsuarios = ref(null)
+
   // ==========================
   // Funções de usuários
   // ==========================
@@ -68,22 +73,36 @@ export const useUsuariosStore = defineStore('usuarios', () => {
   }
 
   async function fetchUsuariosAtivosInativos() {
-  loadingGrafico.value = true
-  errorGrafico.value = null
-  try {
-    const response = await userService.ativosInativos()
-    // ✅ CORREÇÃO: response já contém {ativos, inativos}
-    ativos.value = response.ativos ?? 0
-    inativos.value = response.inativos ?? 0
-  } catch (err) {
-    console.error('[UsuariosStore] Erro ao buscar ativos/inativos:', err)
-    errorGrafico.value = 'Erro ao carregar dados do gráfico.'
-  } finally {
-    loadingGrafico.value = false
+    loadingGrafico.value = true
+    errorGrafico.value = null
+    try {
+      const response = await userService.ativosInativos()
+      ativos.value = response.ativos ?? 0
+      inativos.value = response.inativos ?? 0
+    } catch (err) {
+      console.error('[UsuariosStore] Erro ao buscar ativos/inativos:', err)
+      errorGrafico.value = 'Erro ao carregar dados do gráfico.'
+    } finally {
+      loadingGrafico.value = false
+    }
   }
-}
 
-  
+  // ==========================
+  // Função para top 10 usuários mais ativos
+  // ==========================
+  async function fetchTopUsuarios() {
+    loadingTopUsuarios.value = true
+    errorTopUsuarios.value = null
+    try {
+      const response = await userService.maisAtivos() // chama o endpoint /usuarios/mais_ativos/
+      topUsuarios.value = response
+    } catch (err) {
+      console.error('[UsuariosStore] Erro ao buscar top usuários:', err)
+      errorTopUsuarios.value = 'Erro ao carregar dados do gráfico de top usuários.'
+    } finally {
+      loadingTopUsuarios.value = false
+    }
+  }
 
   return {
     usuarios,
@@ -95,11 +114,16 @@ export const useUsuariosStore = defineStore('usuarios', () => {
     totalPages,
     itemsPerPage,
     setCurrentPage,
-    // gráfico
+    // gráfico ativos/inativos
     ativos,
     inativos,
     loadingGrafico,
     errorGrafico,
-    fetchUsuariosAtivosInativos
+    fetchUsuariosAtivosInativos,
+    // gráfico top usuários
+    topUsuarios,
+    loadingTopUsuarios,
+    errorTopUsuarios,
+    fetchTopUsuarios
   }
 })
