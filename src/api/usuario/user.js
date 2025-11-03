@@ -24,4 +24,9 @@ export default class UserService {
     const response = await axios.delete(`/usuarios/${id}/`);
     return response.status === 204;
   }
+
+  async ativosInativos() {
+    const response = await axios.get('/usuarios/ativos_inativos/');
+    return response.data;
+  }
 }
