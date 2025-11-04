@@ -67,6 +67,16 @@ export default defineConfig({
       },
     }),
   ],
+
+  optimizeDeps: {
+    exclude: ['url'],
+  },
+  build: {
+    rollupOptions: {
+      external: ['url'],
+    },
+  },
+
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

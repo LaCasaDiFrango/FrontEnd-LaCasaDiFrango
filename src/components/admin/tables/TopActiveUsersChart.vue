@@ -1,79 +1,157 @@
 <template>
-  <div class="w-full max-w-4xl mx-auto p-4 bg-white shadow rounded-lg">
-    <h2 class="text-xl font-semibold mb-4 text-center">Top 10 Usuários Mais Ativos</h2>
+  <div class="w-full max-w-5xl mx-auto bg-gradient-to-br  p-8">
+    <h2 class="text-2xl font-bold text-gray-800 mb-8 text-center tracking-tight">
+      Usurios Mais Ativos
+    </h2>
 
-    <canvas ref="podioChart"></canvas>
+    <!-- Pódio -->
+    <div v-if="topTres.length" class="flex justify-center items-end gap-6 mb-10">
+      <div
+        v-for="(usuario, index) in topTres"
+        :key="usuario.id"
+        class="flex flex-col items-center text-center"
+      >
+        <div
+          class="relative w-24 flex items-center justify-center rounded-t-2xl text-white font-semibold shadow-lg transition-transform hover:-translate-y-1"
+          :class="podioClass(index)"
+          :style="{ height: podioHeight(index) }"
+        >
+          <span class="text-lg z-10 drop-shadow-sm">{{ usuario.total_pedidos }}</span>
+          <div class="absolute bottom-1 text-xs opacity-80">pedidos</div>
+        </div>
+        <div class="mt-2 text-sm text-gray-700 font-medium truncate w-24">
+          {{ usuario.name || 'Sem nome' }}
+        </div>
+        <div
+          class="mt-1 text-xs font-semibold text-gray-500"
+          :class="rankColor(index)"
+        >
+          {{ posicaoLabel(index) }}
+        </div>
+      </div>
+    </div>
 
-    <div v-if="loadingTopUsuarios" class="text-center mt-4">Carregando...</div>
-    <div v-if="errorTopUsuarios" class="text-red-500 text-center mt-4">{{ errorTopUsuarios }}</div>
+    <!-- Gráfico -->
+    <div v-if="loadingTopUsuarios" class="text-center py-8 text-gray-500 animate-pulse">
+      Carregando gráfico...
+    </div>
+
+    <div v-else-if="errorTopUsuarios" class="text-center py-8 text-red-500 font-medium">
+      {{ errorTopUsuarios }}
+    </div>
+
+    <div v-else class="relative h-[420px] bg-white rounded-2xl shadow-inner p-4">
+      <Bar :data="chartData" :options="chartOptions" />
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
-import { Chart, registerables } from 'chart.js'
-import { useUsuariosStore } from '@/stores/index'
+import { computed, onMounted } from 'vue'
+import { Bar } from 'vue-chartjs'
+import {
+  Chart as ChartJS,
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale
+} from 'chart.js'
+import { useUsuariosStore } from '@/stores/admin/pages/usuarioStore'
 
-Chart.register(...registerables)
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
-const podioChart = ref(null)
-let chartInstance = null
+const store = useUsuariosStore()
 
-const usuariosStore = useUsuariosStore()
-const { topUsuarios, fetchTopUsuarios, loadingTopUsuarios, errorTopUsuarios } = usuariosStore
+onMounted(() => {
+  store.fetchTopUsuarios()
+})
 
-const renderChart = () => {
-  if (!podioChart.value) return
-  if (!topUsuarios.value || topUsuarios.value.length === 0) return // ✅ só renderiza se houver dados
-  if (chartInstance) chartInstance.destroy()
+// Top 3 usuários
+const topTres = computed(() => store.topUsuarios.slice(0, 3))
 
-  const labels = topUsuarios.value.map(u => u.name || u.email) // fallback se name não existir
-  const data = topUsuarios.value.map(u => u.total_pedidos || 0)
+// Dados do gráfico
+const chartData = computed(() => ({
+  labels: store.topUsuarios.map(u => u.name || 'Sem nome'),
+  datasets: [
+    {
+      label: 'Total de Pedidos',
+      data: store.topUsuarios.map(u => u.total_pedidos),
+      backgroundColor: [
+        'rgba(255, 215, 0, 0.7)', // ouro
+        'rgba(192, 192, 192, 0.7)', // prata
+        'rgba(205, 127, 50, 0.7)', // bronze
+        ...Array(7).fill('rgba(59,130,246,0.5')
+      ],
+      borderRadius: 8,
+      borderWidth: 0,
+   
+    }
+  ]
+}))
 
-  chartInstance = new Chart(podioChart.value, {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [{
-        label: 'Pedidos',
-        data,
-        backgroundColor: topUsuarios.value.map((_, idx) => {
-          if (idx === 0) return '#FFD700' // ouro
-          if (idx === 1) return '#C0C0C0' // prata
-          if (idx === 2) return '#CD7F32' // bronze
-          return '#4F46E5' // demais azul
-        }),
-        borderRadius: 6,
-      }]
-    },
-    options: {
-      indexAxis: 'y', // horizontal
-      responsive: true,
-      plugins: {
-        legend: { display: false },
-        tooltip: { enabled: true }
-      },
-      scales: {
-        x: { beginAtZero: true, title: { display: true, text: 'Pedidos' } },
-        y: { ticks: { font: { size: 14 } } }
+// Opções do gráfico limpo
+const chartOptions = {
+  responsive: true,
+  maintainAspectRatio: true,
+  plugins: {
+    legend: { display: false },
+    tooltip: {
+      callbacks: {
+        label: ctx => `${ctx.parsed.y} pedidos`
       }
     }
-  })
+  },
+  scales: {
+    x: {
+      grid: { display: false },
+      border: { display: true },
+      ticks: {
+        color: '#4B5563',
+        font: { size: 11 }
+      }
+    },
+    y: {
+      beginAtZero: true,
+      grid: { display: false }, 
+      border: { display: false },
+      ticks: { display: false } 
+    }
+  }
 }
 
-onMounted(async () => {
-  await fetchTopUsuarios()
-  // Renderiza automaticamente via watch
-})
+// Estilo do pódio
+const podioClass = (index) => {
+  return [
+    index === 0 ? 'bg-gradient-to-t from-yellow-500 to-yellow-300' : '',
+    index === 1 ? 'bg-gradient-to-t from-gray-400 to-gray-200' : '',
+    index === 2 ? 'bg-gradient-to-t from-amber-700 to-amber-500' : '',
+    'transition-all'
+  ]
+}
 
-watch(topUsuarios, (newVal) => {
-  if (newVal && newVal.length > 0) renderChart()
-})
+const podioHeight = (index) => {
+  return index === 0 ? '150px' : index === 1 ? '110px' : '90px'
+}
+
+const rankColor = (index) => {
+  return index === 0
+    ? 'text-yellow-600'
+    : index === 1
+    ? 'text-gray-500'
+    : 'text-amber-700'
+}
+
+const posicaoLabel = (index) => {
+  return index === 0 ? '🥇 1º Lugar' : index === 1 ? '🥈 2º Lugar' : '🥉 3º Lugar'
+}
+
+const { loadingTopUsuarios, errorTopUsuarios } = store
 </script>
 
 <style scoped>
 canvas {
-  width: 100% !important;
-  height: 400px !important;
+  border-radius: 12px;
 }
 </style>
