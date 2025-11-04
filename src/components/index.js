@@ -82,6 +82,7 @@ import MetodoPagamentoChart from "./admin/graficos/MetodoPagamentoChart.vue";
 import PedidosPorPeriodoChart from "./admin/graficos/PedidosPorPeriodoChart.vue";
 import FluxoCaixaChart from "./admin/graficos/FluxoCaixaChart.vue";
 import TopActiveUsersChart from "./admin/tables/TopActiveUsersChart.vue";
+import PodioTop3 from "./admin/tables/PodioTop3.vue";
 
 //loading
 import LoadingPage from "./loading/LoadingPage.vue";
@@ -151,5 +152,6 @@ export {
   MetodoPagamentoChart,
   PedidosPorPeriodoChart,
   FluxoCaixaChart,
-  TopActiveUsersChart
+  TopActiveUsersChart,
+  PodioTop3,
 };

@@ -118,6 +118,9 @@
       Emitir Relatório
     </button>
   </div>
+  <div class="mt-4">
+  <PodioTop3 />
+  </div>
 </div>
 
       <!-- Gráfico com sombra -->
@@ -264,6 +267,7 @@ import {
   MetodoPagamentoChart,
   PedidosPorPeriodoChart,
   UserStatusChart,
+  PodioTop3,
 } from '@/components/index'
 
 import TopActiveUsersChart from '@/components/admin/tables/TopActiveUsersChart.vue'
