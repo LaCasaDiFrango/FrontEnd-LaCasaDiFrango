@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useCarrinhoStore } from '@/stores/admin/carrinhoStore'
 
 const carrinhoStore = useCarrinhoStore()
@@ -8,14 +8,26 @@ const mostrar = ref(false)
 function toggleResumo() {
   mostrar.value = !mostrar.value
 }
+
+// ✅ Computed para total de itens no carrinho
+const qtdItens = computed(() => {
+  return carrinhoStore.itens?.reduce((acc, item) => acc + (item.quantidade || 1), 0) || 0
+})
 </script>
 
 <template>
   <div class="fixed top-6 right-[calc(1.5rem+70px)] z-50"> <!-- move 70px para esquerda -->
     <!-- Botão com imagem -->
-    <button @click="toggleResumo" class="p-1 hover:scale-110 transition-transform">
+    <button @click="toggleResumo" class="relative p-1 hover:scale-110 transition-transform">
       <img src="@/assets/img/receipt.png" alt="Resumo" class="w-10 h-10" />
       
+      <!-- ✅ Badge com número de produtos -->
+      <span
+        v-if="qtdItens > 0"
+        class="absolute top-0 right-0 min-w-[18px] h-[18px] flex items-center justify-center bg-red-500 text-white text-[11px] font-bold rounded-full animate-pulse"
+      >
+        {{ qtdItens }}
+      </span>
     </button>
 
     <!-- Animação do resumo -->
@@ -55,3 +67,15 @@ function toggleResumo() {
     </transition>
   </div>
 </template>
+
+<style scoped>
+/* 🔥 Animação pulse igual ao nav de pedidos */
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.7; }
+}
+
+.animate-pulse {
+  animation: pulse 1s infinite;
+}
+</style>

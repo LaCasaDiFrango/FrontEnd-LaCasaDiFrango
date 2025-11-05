@@ -85,7 +85,19 @@ export const usePedidosStore = defineStore('pedidos', () => {
     }
   }
 
-  return {
+  async function updatePedido(id, data) {
+  try {
+    const updated = await pedidoService.update(id, data)
+    const index = pedidos.value.findIndex(p => p.id === id)
+    if (index !== -1) pedidos.value[index] = updated
+  } catch (err) {
+    console.error('[PedidosStore] Erro ao atualizar pedido:', err)
+    throw err
+  }
+}
+
+
+    return {
     pedidos,
     loading,
     error,
@@ -94,7 +106,7 @@ export const usePedidosStore = defineStore('pedidos', () => {
     totalPages,
     itemsPerPage,
     setCurrentPage,
-
+    updatePedido,
     ultimos7Dias,
     loadingGrafico,
     errorGrafico,

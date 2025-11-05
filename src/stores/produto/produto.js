@@ -69,6 +69,7 @@ if (indexExistente >= 0) {
   const response = await pedidoService.update(carrinho.id, payload)
   pedidoStore.pedidoAtual = response
   toast.success(`${produtoSelecionado.value.nome} adicionado ao pedido existente!`)
+  quantidade.value = 1
   router.push("/home/pedidos/")
     } else {
       // Cria novo pedido se não houver um aberto
@@ -76,6 +77,7 @@ if (indexExistente >= 0) {
       const response = await pedidoService.create(dadosParaEnviar)
       pedidoStore.pedidoAtual = response
       toast.success(`${produtoSelecionado.value.nome} adicionado a um novo pedido!`)
+      quantidade.value = 1
       router.push("/home/pedidos/")
     }
   } catch (error) {

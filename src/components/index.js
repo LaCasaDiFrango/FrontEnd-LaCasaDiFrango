@@ -83,6 +83,9 @@ import PedidosPorPeriodoChart from "./admin/graficos/PedidosPorPeriodoChart.vue"
 import FluxoCaixaChart from "./admin/graficos/FluxoCaixaChart.vue";
 import TopActiveUsersChart from "./admin/tables/TopActiveUsersChart.vue";
 import PodioTop3 from "./admin/tables/PodioTop3.vue";
+import SelectClienteAdmin from "./search/SelectClienteAdmin.vue";
+import ViewModalAdmin from "./admin/modal/ViewModalAdmin.vue";
+import ConfirmDeleteModal from "./admin/modal/ConfirmDeleteModal.vue";
 
 //loading
 import LoadingPage from "./loading/LoadingPage.vue";
@@ -154,4 +157,7 @@ export {
   FluxoCaixaChart,
   TopActiveUsersChart,
   PodioTop3,
+  SelectClienteAdmin,
+  ViewModalAdmin,
+  ConfirmDeleteModal,
 };
