@@ -113,14 +113,34 @@
   </p>
   </div>
   <!-- Botão de relatório -->
-  <div class="mt-9">
-    <button class="px-6 py-3 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition">
-      Emitir Relatório
+<!-- Seção de relatórios -->
+<div class="mt-6 w-full">
+  <h3 class="text-lg font-semibold text-gray-700 mb-3 border-b border-gray-200 pb-1">
+    Relatórios disponíveis
+  </h3>
+  <div class="flex justify-between items-center gap-3">
+    <!-- Botão PDF -->
+    <button
+      class="px-4 py-2 text-sm bg-blue-500 text-white rounded-md shadow hover:bg-blue-600 transition flex-1 flex items-center justify-center gap-2"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-auto" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M3 3v18h18V3H3zm15 15H6V6h12v12zM8 8h8v1H8V8zm0 3h8v1H8v-1zm0 3h5v1H8v-1z"/>
+      </svg>
+      PDF
+    </button>
+
+    <!-- Botão Excel -->
+    <button
+      class="px-4 py-2 text-sm bg-green-500 text-white rounded-md shadow hover:bg-green-600 transition flex-1 flex items-center justify-center gap-2"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-auto" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M3 3v18h18V3H3zm15 15H6V6h12v12zM8 8h2v8H8V8zm3 3h2v5h-2v-5zm3-2h2v7h-2V9z"/>
+      </svg>
+      Excel
     </button>
   </div>
-  <div class="mt-14">
-  <PodioTop3 />
-  </div>
+</div>
+
 </div>
 
       <!-- Gráfico com sombra -->
@@ -154,10 +174,32 @@
   </p>
 </div>
   <!-- Botão de relatório abaixo da div de texto -->
-  <div class="mt-4">
-    <button class="px-6 py-3 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition">
-      Emitir Relatório  
+<!-- Seção de relatórios -->
+<div class="mt-6 w-full">
+  <h3 class="text-lg font-semibold text-gray-700 mb-3 border-b border-gray-200 pb-1">
+    Relatórios disponíveis
+  </h3>
+  <div class="flex justify-between items-center gap-3">
+    <!-- Botão PDF -->
+    <button
+      class="px-4 py-2 text-sm bg-blue-500 text-white rounded-md shadow hover:bg-blue-600 transition flex-1 flex items-center justify-center gap-2"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-auto" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M3 3v18h18V3H3zm15 15H6V6h12v12zM8 8h8v1H8V8zm0 3h8v1H8v-1zm0 3h5v1H8v-1z"/>
+      </svg>
+      PDF
     </button>
+
+    <!-- Botão Excel -->
+    <button
+      class="px-4 py-2 text-sm bg-green-500 text-white rounded-md shadow hover:bg-green-600 transition flex-1 flex items-center justify-center gap-2"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-auto" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M3 3v18h18V3H3zm15 15H6V6h12v12zM8 8h2v8H8V8zm3 3h2v5h-2v-5zm3-2h2v7h-2V9z"/>
+      </svg>
+      Excel
+    </button>
+  </div>
   </div>
 </div>
 
@@ -189,10 +231,32 @@
           Gráficos ajudam a identificar produtos críticos e otimizar o fluxo logístico.
         </p>
         </div>
-          <div class="mt-4">
-    <button class="px-6 py-3 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition">
-      Emitir Relatório  
+<!-- Seção de relatórios -->
+<div class="mt-6 w-full">
+  <h3 class="text-lg font-semibold text-gray-700 mb-3 border-b border-gray-200 pb-1">
+    Relatórios disponíveis
+  </h3>
+  <div class="flex justify-between items-center gap-3">
+    <!-- Botão PDF -->
+    <button
+      class="px-4 py-2 text-sm bg-blue-500 text-white rounded-md shadow hover:bg-blue-600 transition flex-1 flex items-center justify-center gap-2"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-auto" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M3 3v18h18V3H3zm15 15H6V6h12v12zM8 8h8v1H8V8zm0 3h8v1H8v-1zm0 3h5v1H8v-1z"/>
+      </svg>
+      PDF
     </button>
+
+    <!-- Botão Excel -->
+    <button
+      class="px-4 py-2 text-sm bg-green-500 text-white rounded-md shadow hover:bg-green-600 transition flex-1 flex items-center justify-center gap-2"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-auto" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M3 3v18h18V3H3zm15 15H6V6h12v12zM8 8h2v8H8V8zm3 3h2v5h-2v-5zm3-2h2v7h-2V9z"/>
+      </svg>
+      Excel
+    </button>
+  </div>
   </div>
       </div>
       <div class="flex-[0_0_60%] bg-white rounded-2xl shadow-lg p-4">
@@ -232,10 +296,32 @@
           dos pagamentos recebidos.
         </p>
         </div>
-          <div class="mt-4">
-    <button class="px-6 py-3 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition">
-      Emitir Relatório  
+<!-- Seção de relatórios -->
+<div class="mt-6 w-full">
+  <h3 class="text-lg font-semibold text-gray-700 mb-3 border-b border-gray-200 pb-1">
+    Relatórios disponíveis
+  </h3>
+  <div class="flex justify-between items-center gap-3">
+    <!-- Botão PDF -->
+    <button
+      class="px-4 py-2 text-sm bg-blue-500 text-white rounded-md shadow hover:bg-blue-600 transition flex-1 flex items-center justify-center gap-2"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-auto" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M3 3v18h18V3H3zm15 15H6V6h12v12zM8 8h8v1H8V8zm0 3h8v1H8v-1zm0 3h5v1H8v-1z"/>
+      </svg>
+      PDF
     </button>
+
+    <!-- Botão Excel -->
+    <button
+      class="px-4 py-2 text-sm bg-green-500 text-white rounded-md shadow hover:bg-green-600 transition flex-1 flex items-center justify-center gap-2"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-auto" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M3 3v18h18V3H3zm15 15H6V6h12v12zM8 8h2v8H8V8zm3 3h2v5h-2v-5zm3-2h2v7h-2V9z"/>
+      </svg>
+      Excel
+    </button>
+  </div>
   </div>
       </div>
       <div class="flex-[0_0_60%] bg-white rounded-2xl shadow-lg p-4">
@@ -267,7 +353,6 @@ import {
   MetodoPagamentoChart,
   PedidosPorPeriodoChart,
   UserStatusChart,
-  PodioTop3,
 } from '@/components/index'
 
 import TopActiveUsersChart from '@/components/admin/tables/TopActiveUsersChart.vue'
@@ -331,26 +416,6 @@ const cards = computed(() => [
 </script>
 
 <style scoped>
-.hide-scrollbar {
-  overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #a3a3a3 #f1f1f1;
-}
-.hide-scrollbar::-webkit-scrollbar {
-  height: 8px;
-}
-.hide-scrollbar::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 8px;
-}
-.hide-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #a3a3a3;
-  border-radius: 8px;
-}
-.hide-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: #6b6b6b;
-}
-
 /* Transições */
 .fade-enter-active,
 .fade-leave-active {

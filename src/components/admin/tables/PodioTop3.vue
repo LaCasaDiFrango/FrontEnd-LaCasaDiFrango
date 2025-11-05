@@ -1,5 +1,5 @@
 <template>
-  <div v-if="topTres.length" class="flex justify-center items-end gap-8 mb-10 bg-white p-20 rounded-lg shadow-md ">
+  <div v-if="topTres.length" class="flex justify-center items-end gap-8 bg-white py-5 rounded-lg shadow-md ">
     <div
       v-for="(usuario, index) in topTres"
       :key="usuario.id"
