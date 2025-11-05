@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { pedido } from '@/api/index'
-import { handlePaginatedResponse } from '@/helpers/pagination'
 
 export const usePedidosStore = defineStore('pedidos', () => {
   const pedidoService = new pedido.default()
+
+  // pedidos normais paginados
   const pedidos = ref([])
   const currentPage = ref(1)
   const totalPages = ref(1)
@@ -12,44 +13,71 @@ export const usePedidosStore = defineStore('pedidos', () => {
   const loading = ref(false)
   const error = ref(null)
 
-async function fetchPedidos(page = 1) {
-  loading.value = true
-  error.value = null
-  try {
-    // Enviar page_size que seu backend espera
-    const raw = await pedidoService.getAll({ page, page_size: itemsPerPage.value })
+  // dados para gráfico últimos 7 dias
+  const ultimos7Dias = ref([])
+  const loadingGrafico = ref(false)
+  const errorGrafico = ref(null)
 
-    // Se o pedidoService usa axios, a resposta real pode estar em raw.data
-    const response = raw && raw.data !== undefined ? raw.data : raw
+  // fetch paginado
+  async function fetchPedidos(page = 1) {
+    loading.value = true
+    error.value = null
+    try {
+      const raw = await pedidoService.getAll({ page, page_size: itemsPerPage.value })
+      const response = raw && raw.data !== undefined ? raw.data : raw
 
-    console.log('[PedidosStore] raw resposta:', raw)
-    console.log('[PedidosStore] parsed response:', response)
-
-    if (response && response.results !== undefined) {
-      pedidos.value = response.results
-      currentPage.value = response.page ?? page
-      totalPages.value = response.total_pages ?? 1
-    } else if (Array.isArray(response)) {
-      pedidos.value = response
-      currentPage.value = page
-      totalPages.value = 1
-    } else {
-      console.warn('[PedidosStore] Formato inesperado:', response)
+      if (response && response.results !== undefined) {
+        pedidos.value = response.results
+        currentPage.value = response.page ?? page
+        totalPages.value = response.total_pages ?? 1
+      } else if (Array.isArray(response)) {
+        pedidos.value = response
+        currentPage.value = page
+        totalPages.value = 1
+      } else {
+        pedidos.value = []
+        currentPage.value = 1
+        totalPages.value = 1
+      }
+    } catch (err) {
+      console.error('[PedidosStore] Erro ao buscar pedidos:', err)
+      error.value = 'Erro ao carregar pedidos.'
       pedidos.value = []
       currentPage.value = 1
       totalPages.value = 1
+    } finally {
+      loading.value = false
     }
-  } catch (err) {
-    console.error('[PedidosStore] Erro ao buscar pedidos:', err)
-    error.value = 'Erro ao carregar pedidos.'
-    pedidos.value = []
-    currentPage.value = 1
-    totalPages.value = 1
-  } finally {
-    loading.value = false
   }
-}
 
+  // fetch para gráfico últimos 7 dias
+  async function fetchUltimos7Dias() {
+    loadingGrafico.value = true
+    errorGrafico.value = null
+    try {
+      const data = await pedidoService.ultimosPedidos()
+      // Garantir que o array tenha 7 dias, mesmo que alguns estejam zerados
+      const hoje = new Date()
+      const dias = []
+      for (let i = 6; i >= 0; i--) {
+        const dia = new Date()
+        dia.setDate(hoje.getDate() - i)
+        const diaStr = dia.toISOString().split('T')[0] // YYYY-MM-DD
+        const achado = data.find(d => d.dia === diaStr)
+        dias.push({
+          dia: diaStr,
+          total: achado ? achado.total : 0
+        })
+      }
+      ultimos7Dias.value = dias
+    } catch (err) {
+      console.error('[PedidosStore] Erro ao buscar últimos 7 dias:', err)
+      errorGrafico.value = 'Erro ao carregar gráfico de pedidos.'
+      ultimos7Dias.value = []
+    } finally {
+      loadingGrafico.value = false
+    }
+  }
 
   function setCurrentPage(page) {
     if (page > 0 && page <= totalPages.value && page !== currentPage.value) {
@@ -69,5 +97,19 @@ async function fetchPedidos(page = 1) {
 }
 
 
-  return { pedidos, loading, error, fetchPedidos, currentPage, totalPages, itemsPerPage, setCurrentPage, updatePedido }
+    return {
+    pedidos,
+    loading,
+    error,
+    fetchPedidos,
+    currentPage,
+    totalPages,
+    itemsPerPage,
+    setCurrentPage,
+    updatePedido,
+    ultimos7Dias,
+    loadingGrafico,
+    errorGrafico,
+    fetchUltimos7Dias
+  }
 })

@@ -30,4 +30,14 @@ export default class UserService {
     const response = await axios.delete(`/usuarios/${id}/`)
     return response.status === 204
   }
+
+  async ativosInativos() {
+    const response = await axios.get('/usuarios/ativos_inativos/');
+    return response.data;
+  }
+
+  async maisAtivos() {
+    const response = await axios.get('/usuarios/mais_ativos/');
+    return response.data;
+  }
 }
