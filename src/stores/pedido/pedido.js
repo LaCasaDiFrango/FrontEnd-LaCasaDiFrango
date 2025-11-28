@@ -105,25 +105,37 @@ async function carregarPedidoAtual() {
     }
   }
 
-  async function atualizarStatusPedido(id, novoStatus) {
-    try {
-      const statusNum = typeof novoStatus === 'string' ? statusMap[novoStatus] : novoStatus
-      const dadosAtualizados = { status: statusNum }
-      const pedidoAtualizado = normalizarPedido(await pedidoService.update(id, dadosAtualizados))
-      pedidoAtualizado.total = calcularTotal(pedidoAtualizado)
+ async function atualizarStatusPedido(id, novoStatus, observacao = null) {
+  try {
+    const statusNum = typeof novoStatus === 'string'
+      ? statusMap[novoStatus]
+      : novoStatus
 
-      if (pedidoAtualizado.status !== statusMap['Carrinho']) {
-        pedidoAtual.value = null
-        toast.success(`Pedido atualizado para ${statusMapInverse[statusNum]}`)
-      } else {
-        pedidoAtual.value = pedidoAtualizado
-      }
-    } catch (error) {
-      console.error('Erro ao atualizar status do pedido:', error)
-      toast.error('Erro ao atualizar status do pedido.')
-      throw error
+    const dadosAtualizados = {
+      status: statusNum,
+      observacao: observacao ?? undefined,
     }
+
+    const pedidoAtualizado = normalizarPedido(
+      await pedidoService.update(id, dadosAtualizados)
+    )
+
+    pedidoAtualizado.total = calcularTotal(pedidoAtualizado)
+
+    if (pedidoAtualizado.status !== statusMap['Carrinho']) {
+      pedidoAtual.value = null
+      toast.success(`Pedido atualizado para ${statusMapInverse[statusNum]}`)
+    } else {
+      pedidoAtual.value = pedidoAtualizado
+    }
+
+  } catch (error) {
+    console.error('Erro ao atualizar status do pedido:', error)
+    toast.error('Erro ao atualizar status do pedido.')
+    throw error
   }
+}
+
 
   async function finalizarPedido(id) {
     try {
