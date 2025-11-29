@@ -49,4 +49,14 @@ export default class PedidoService {
       return []; 
     }
   }
+  async totalVendas() {
+  try {
+    const response = await axios.get('/pedidos/stats/total-vendas/')
+    return response.data.total_vendas
+  } catch (err) {
+    console.error('[PedidoService.totalVendas] Erro:', err)
+    return 0
+  }
+}
+
 }

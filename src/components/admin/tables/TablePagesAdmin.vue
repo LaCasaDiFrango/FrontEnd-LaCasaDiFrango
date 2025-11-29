@@ -250,7 +250,7 @@ const confirmDelete = (item) => {
 </template>
 
 
-  <style>
+<style>
 .fade-slide-enter-active,
 .fade-slide-leave-active {
   transition: all 0s ease;
