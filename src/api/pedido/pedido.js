@@ -59,4 +59,15 @@ export default class PedidoService {
   }
 }
 
+async vendasUltimos7Dias() {
+  try {
+    const response = await axios.get('/pedidos/stats/vendas-7-dias/')
+    return response.data
+  } catch (err) {
+    console.error('[PedidoService.vendasUltimos7Dias] Erro:', err)
+    return []
+  }
+}
+
+
 }
