@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white shadow-md rounded-2xl p-4 w-full max-w-3xl mx-auto">
+  <div class="bg-white  rounded-2xl p-4 w-full max-w-3xl mx-auto">
     <h2 class="text-lg font-semibold text-gray-800 mb-3 text-center">
       Pedidos últimos 7 dias
     </h2>
