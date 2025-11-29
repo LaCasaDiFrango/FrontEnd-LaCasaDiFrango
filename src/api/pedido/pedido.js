@@ -49,4 +49,25 @@ export default class PedidoService {
       return []; 
     }
   }
+  async totalVendas() {
+  try {
+    const response = await axios.get('/pedidos/stats/total-vendas/')
+    return response.data.total_vendas
+  } catch (err) {
+    console.error('[PedidoService.totalVendas] Erro:', err)
+    return 0
+  }
+}
+
+async vendasUltimos7Dias() {
+  try {
+    const response = await axios.get('/pedidos/stats/vendas-7-dias/')
+    return response.data
+  } catch (err) {
+    console.error('[PedidoService.vendasUltimos7Dias] Erro:', err)
+    return []
+  }
+}
+
+
 }

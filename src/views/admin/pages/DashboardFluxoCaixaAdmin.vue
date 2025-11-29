@@ -4,31 +4,36 @@
 
     <main class="flex-1 p-6 space-y-6 overflow-hidden">
       <TitleAdmin :title="dashboardTitleStore.title" :subtitle="dashboardTitleStore.subtitle" />
-      <div class="flex w-full justify-center items-center p-0 h-[50%]">
-        <div class="grid grid-cols-2 gap-6 w-[60%]">
+
+      <div class="flex w-full justify-center items-center py-20">
+        <div class="grid grid-cols-2 gap-10 w-[70%]">
           <InfoCardAdmin
             :icon="imageDebito"
             title="Débito"
-            value="R$12.000,00"
+            value="R$1200,00"
             subtitle="Movimentação do dia"
+            class="min-h-[160px]"
           />
           <InfoCardAdmin
             :icon="imageCredito"
             title="Crédito"
-            value="R$12.000,00"
+            value="R$740,00"
             subtitle="Movimentação do dia"
+            class="min-h-[160px]"
           />
           <InfoCardAdmin
             :icon="imagePix"
             title="Pix"
-            value="R$12.000,00"
+            value="R$500,00"
             subtitle="Movimentação do dia"
+            class="min-h-[160px]"
           />
           <InfoCardAdmin
             :icon="imageDinheiro"
             title="Dinheiro"
-            value="R$12.000,00"
+            value="R$1002,00"
             subtitle="Movimentação do dia"
+            class="min-h-[160px]"
           />
         </div>
       </div>

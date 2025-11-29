@@ -4,10 +4,12 @@ import { user, produto, pedido, categoria } from '@/api/index'
 
 export const useDashboardStore = defineStore('dashboard', () => {
   // === Estados principais ===
+  const totalVendas = ref(0)
   const usuarios = ref(0)
   const produtos = ref(0)
   const pedidos = ref(0)
   const fluxo = ref(0)
+  
   const error = ref(null)
 
   // === Estados adicionais ===
@@ -51,43 +53,46 @@ async function fetchAllPaginated(serviceMethod) {
 }
 
 
-  // === Função principal ===
-  async function fetchDashboardData() {
-    error.value = null
+async function fetchDashboardData() {
+  error.value = null
 
-    try {
-      const [
-        usuariosData,
-        produtosData,
-        pedidosData,
-        produtosVendidosData,
-        vendasCategoriaData,
-      ] = await Promise.all([
-        fetchAllPaginated(userService.getAll),
-        fetchAllPaginated(produtoService.getAll),
-        fetchAllPaginated(pedidoService.getAll),
-        produtoService.getMaisVendidos(),
-        categoriaService.getVendasPorCategoria(),
-      ])
+  try {
+    const [
+      usuariosData,
+      produtosData,
+      pedidosData,
+      produtosVendidosData,
+      vendasCategoriaData,
+      totalVendasApi
+    ] = await Promise.all([
+      fetchAllPaginated(userService.getAll),
+      fetchAllPaginated(produtoService.getAll),
+      fetchAllPaginated(pedidoService.getAll),
+      produtoService.getMaisVendidos(),
+      categoriaService.getVendasPorCategoria(),
+      pedidoService.totalVendas()
+    ])
 
-      // === Atualização de estados ===
-      usuarios.value = usuariosData.length
-      produtos.value = produtosData.length
-      pedidos.value = pedidosData.filter(p => p.status === 2).length
+    usuarios.value = usuariosData.length
+    produtos.value = produtosData.length
+    pedidos.value = pedidosData.filter(p => p.status === 2).length
 
-      lastUpdatedUsuarios.value = new Date()
-      lastUpdatedProdutos.value = new Date()
-      lastUpdatedPedidos.value = new Date()
+    lastUpdatedUsuarios.value = new Date()
+    lastUpdatedProdutos.value = new Date()
+    lastUpdatedPedidos.value = new Date()
 
-      produtosMaisVendidos.value = produtosVendidosData
-      vendasPorCategoria.value = vendasCategoriaData
+    produtosMaisVendidos.value = produtosVendidosData
+    vendasPorCategoria.value = vendasCategoriaData
 
-      fluxo.value = 2700 // placeholder
-    } catch (err) {
-      console.error('[DashboardStore] Erro ao buscar dados:', err)
-      error.value = 'Falha ao carregar os dados do painel.'
-    }
+    // 🟢 Aqui está o fluxo de caixa real
+    fluxo.value = totalVendasApi ?? 0
+
+  } catch (err) {
+    console.error('[DashboardStore] Erro ao buscar dados:', err)
+    error.value = 'Falha ao carregar os dados do painel.'
   }
+}
+
 
   return {
     usuarios,
