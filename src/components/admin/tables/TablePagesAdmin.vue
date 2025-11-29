@@ -200,24 +200,54 @@ const confirmDelete = (item) => {
       Nenhum registro encontrado.
     </div>
 
-    <!-- Paginação -->
-    <div v-if="totalPages > 1" class="flex justify-center items-center mt-6 space-x-2">
-      <button
-        @click="emit('page-change', currentPage - 1)"
-        :disabled="currentPage === 1"
-        class="px-3 py-1 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        Anterior
-      </button>
-      <span class="px-3 py-1 text-gray-800"> Página {{ currentPage }} de {{ totalPages }} </span>
-      <button
-        @click="emit('page-change', currentPage + 1)"
-        :disabled="currentPage === totalPages"
-        class="px-3 py-1 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        Próxima
-      </button>
-    </div>
+   <!-- Paginação animada -->
+<div
+  v-if="totalPages > 1"
+  class="flex justify-center items-center mt-6 space-x-2 select-none"
+>
+  <!-- Botão anterior -->
+  <button
+    @click="emit('page-change', currentPage - 1)"
+    :disabled="currentPage === 1"
+    class="flex items-center justify-center w-9 h-9 rounded-full border border-gray-300 
+           text-gray-700 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed transition"
+    title="Página anterior"
+  >
+    ‹
+  </button>
+
+  <!-- Números -->
+  <transition-group
+    name="page-fade"
+    tag="div"
+    class="flex items-center space-x-1"
+  >
+    <button
+      v-for="page in totalPages"
+      :key="page"
+      @click="emit('page-change', page)"
+      class="w-9 h-9 flex items-center justify-center rounded-full border font-medium transition-all
+       duration-300 ease-out"
+      :class="page === currentPage
+        ? 'bg-[#1b3d1f] text-white border-[#1b3d1f] scale-110 shadow-md'
+        : 'border-gray-300 text-gray-700 hover:bg-gray-100'"
+    >
+      {{ page }}
+    </button>
+  </transition-group>
+
+  <!-- Botão próxima -->
+  <button
+    @click="emit('page-change', currentPage + 1)"
+    :disabled="currentPage === totalPages"
+    class="flex items-center justify-center w-9 h-9 rounded-full border border-gray-300 
+           text-gray-700 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed transition"
+    title="Próxima página"
+  >
+    ›
+  </button>
+</div>
+
     <!-- Modal de visualizar -->
     <ViewModalAdmin
       :show="showViewModal"
@@ -265,4 +295,5 @@ const confirmDelete = (item) => {
   opacity: 1;
   transform: translateY(0);
 }
+
 </style>
