@@ -120,24 +120,28 @@
   </h3>
   <div class="flex justify-between items-center gap-3">
     <!-- Botão PDF -->
-    <button
-      class="px-4 py-2 text-sm bg-blue-500 text-white rounded-md shadow hover:bg-blue-600 transition flex-1 flex items-center justify-center gap-2"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-auto" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M3 3v18h18V3H3zm15 15H6V6h12v12zM8 8h8v1H8V8zm0 3h8v1H8v-1zm0 3h5v1H8v-1z"/>
-      </svg>
-      PDF
-    </button>
+   <!-- Botão PDF -->
+<button
+  class="px-4 py-2 text-sm bg-blue-500 text-white rounded-md shadow hover:bg-blue-600 transition flex-1 flex items-center justify-center gap-2"
+  @click="baixarPDF('/relatorios/usuarios/pdf', 'usuarios.pdf')"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-auto" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M3 3v18h18V3H3zm15 15H6V6h12v12zM8 8h8v1H8V8zm0 3h8v1H8v-1zm0 3h5v1H8v-1z"/>
+  </svg>
+  PDF
+</button>
 
-    <!-- Botão Excel -->
-    <button
-      class="px-4 py-2 text-sm bg-green-500 text-white rounded-md shadow hover:bg-green-600 transition flex-1 flex items-center justify-center gap-2"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-auto" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M3 3v18h18V3H3zm15 15H6V6h12v12zM8 8h2v8H8V8zm3 3h2v5h-2v-5zm3-2h2v7h-2V9z"/>
-      </svg>
-      Excel
-    </button>
+<!-- Botão Excel -->
+<button
+  class="px-4 py-2 text-sm bg-green-500 text-white rounded-md shadow hover:bg-green-600 transition flex-1 flex items-center justify-center gap-2"
+  @click="baixarExcel('/relatorios/usuarios/excel', 'usuarios.xlsx')"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-auto" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M3 3v18h18V3H3zm15 15H6V6h12v12zM8 8h2v8H8V8zm3 3h2v5h-2v-5zm3-2h2v7h-2V9z"/>
+  </svg>
+  Excel
+</button>
+
   </div>
 </div>
 
@@ -180,25 +184,28 @@
     Relatórios disponíveis
   </h3>
   <div class="flex justify-between items-center gap-3">
-    <!-- Botão PDF -->
-    <button
-      class="px-4 py-2 text-sm bg-blue-500 text-white rounded-md shadow hover:bg-blue-600 transition flex-1 flex items-center justify-center gap-2"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-auto" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M3 3v18h18V3H3zm15 15H6V6h12v12zM8 8h8v1H8V8zm0 3h8v1H8v-1zm0 3h5v1H8v-1z"/>
-      </svg>
-      PDF
-    </button>
+  <!-- Botão PDF -->
+<button
+  class="px-4 py-2 text-sm bg-blue-500 text-white rounded-md shadow hover:bg-blue-600 transition flex-1 flex items-center justify-center gap-2"
+  @click="baixarPDF('/relatorios/pedidos/pdf', 'pedidos.pdf')"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-auto" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M3 3v18h18V3H3zm15 15H6V6h12v12zM8 8h8v1H8V8zm0 3h8v1H8v-1zm0 3h5v1H8v-1z"/>
+  </svg>
+  PDF
+</button>
 
-    <!-- Botão Excel -->
-    <button
-      class="px-4 py-2 text-sm bg-green-500 text-white rounded-md shadow hover:bg-green-600 transition flex-1 flex items-center justify-center gap-2"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-auto" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M3 3v18h18V3H3zm15 15H6V6h12v12zM8 8h2v8H8V8zm3 3h2v5h-2v-5zm3-2h2v7h-2V9z"/>
-      </svg>
-      Excel
-    </button>
+<!-- Botão Excel -->
+<button
+  class="px-4 py-2 text-sm bg-green-500 text-white rounded-md shadow hover:bg-green-600 transition flex-1 flex items-center justify-center gap-2"
+  @click="baixarExcel('/relatorios/pedidos/excel', 'pedidos.xlsx')"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-auto" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M3 3v18h18V3H3zm15 15H6V6h12v12zM8 8h2v8H8V8zm3 3h2v5h-2v-5zm3-2h2v7h-2V9z"/>
+  </svg>
+  Excel
+</button>
+
   </div>
   </div>
 </div>
@@ -238,24 +245,28 @@
   </h3>
   <div class="flex justify-between items-center gap-3">
     <!-- Botão PDF -->
-    <button
-      class="px-4 py-2 text-sm bg-blue-500 text-white rounded-md shadow hover:bg-blue-600 transition flex-1 flex items-center justify-center gap-2"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-auto" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M3 3v18h18V3H3zm15 15H6V6h12v12zM8 8h8v1H8V8zm0 3h8v1H8v-1zm0 3h5v1H8v-1z"/>
-      </svg>
-      PDF
-    </button>
+<!-- Botão PDF -->
+<button
+  class="px-4 py-2 text-sm bg-blue-500 text-white rounded-md shadow hover:bg-blue-600 transition flex-1 flex items-center justify-center gap-2"
+  @click="baixarPDF('/relatorios/estoque/pdf', 'estoque.pdf')"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-auto" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M3 3v18h18V3H3zm15 15H6V6h12v12zM8 8h8v1H8V8zm0 3h8v1H8v-1zm0 3h5v1H8v-1z"/>
+  </svg>
+  PDF
+</button>
 
-    <!-- Botão Excel -->
-    <button
-      class="px-4 py-2 text-sm bg-green-500 text-white rounded-md shadow hover:bg-green-600 transition flex-1 flex items-center justify-center gap-2"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-auto" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M3 3v18h18V3H3zm15 15H6V6h12v12zM8 8h2v8H8V8zm3 3h2v5h-2v-5zm3-2h2v7h-2V9z"/>
-      </svg>
-      Excel
-    </button>
+<!-- Botão Excel -->
+<button
+  class="px-4 py-2 text-sm bg-green-500 text-white rounded-md shadow hover:bg-green-600 transition flex-1 flex items-center justify-center gap-2"
+  @click="baixarExcel('/relatorios/estoque/excel', 'estoque.xlsx')"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-auto" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M3 3v18h18V3H3zm15 15H6V6h12v12zM8 8h2v8H8V8zm3 3h2v5h-2v-5zm3-2h2v7h-2V9z"/>
+  </svg>
+  Excel
+</button>
+
   </div>
   </div>
       </div>
@@ -343,6 +354,8 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useDashboardStore } from '@/stores'
+import { baixarPDF, baixarExcel } from "@/api/relatorios";
+
 
 import {
   NavLateralAdmin,
