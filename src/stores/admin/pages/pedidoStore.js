@@ -144,6 +144,16 @@ export const usePedidosStore = defineStore('pedidos', () => {
     }
   }
 
+  async function deletePedido(id) {
+  try {
+    await pedidoService.delete(id)
+    pedidos.value = pedidos.value.filter(p => p.id !== id)
+  } catch (err) {
+    console.error('[PedidosStore] Erro ao deletar pedido:', err)
+    throw err
+  }
+}
+
   // =============================
   // EXPORTAR PARA O COMPONENTE
   // =============================
@@ -157,7 +167,7 @@ export const usePedidosStore = defineStore('pedidos', () => {
     itemsPerPage,
     setCurrentPage,
     updatePedido,
-
+    deletePedido,
     // quantidade últimos 7 dias
     ultimos7Dias,
     loadingGraficoQuantidade,

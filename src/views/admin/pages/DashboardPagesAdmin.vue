@@ -29,16 +29,18 @@
       <div class="flex w-full justify-center items-center">
         <div class="flex-[0.9]">
           <TablePagesAdmin
-            :title="dashboardTitleStore.tableTitle"
-            :items="items"
-            :currentPage="store.currentPage"
-            :totalPages="store.totalPages"
-            :itemsPerPage="store.itemsPerPage"
-            :loading="loading"
-            @page-change="store.setCurrentPage"
-            :columns="props.columns"
-                        :dataKey="props.dataKey"
-          />
+  :title="dashboardTitleStore.tableTitle"
+  :items="items"
+  :currentPage="store.currentPage"
+  :totalPages="store.totalPages"
+  :itemsPerPage="store.itemsPerPage"
+  :loading="loading"
+  @page-change="store.setCurrentPage"
+  :columns="props.columns"
+  :dataKey="props.dataKey"
+  @delete="handleDelete"
+/>
+
         </div>
       </div>
     </main>
@@ -174,6 +176,24 @@ const items = computed(() => {
   if (key === 'pedidos') return store.value.pedidos || []
   return []
 })
+
+async function handleDelete(item) {
+  const key = props.dataKey
+  const storeAtual = store.value
+
+  try {
+    if (key === 'produtos') await storeAtual.deletarProduto(item.id)
+    if (key === 'usuarios') await storeAtual.deleteUsuario(item.id)
+    if (key === 'pedidos') await storeAtual.deletePedido(item.id)
+
+    // Recarregar a página atual
+    fetchMap[key]?.(storeAtual.currentPage)
+  } catch (err) {
+    console.error(err)
+    alert("Erro ao excluir")
+  }
+}
+
 
 // Watch para recarregar ao mudar dataKey
 watch(

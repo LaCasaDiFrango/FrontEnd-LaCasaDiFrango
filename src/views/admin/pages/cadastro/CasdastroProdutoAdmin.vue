@@ -66,6 +66,7 @@ import {
   ButtonCadastroAdmin,
 } from '@/components/index'
 import { useProdutosStore, useToastStore } from '@/stores/index'
+import router from '@/router'
 
 const produtosStore = useProdutosStore()
 const toast = useToastStore()
@@ -93,6 +94,7 @@ const handleCadastro = async () => {
     await produtosStore.cadastrarProduto(formData)
 
     toast.success('Produto cadastrado com sucesso!')
+    router.push('/dashboard/estoque')
     console.log('🧾 Dados a enviar:', {
   nome: nome.value,
   descricao: descricao.value,

@@ -85,7 +85,10 @@ import { useCarrinhoStore } from '@/stores/admin/carrinhoStore'
 import { useToastStore } from '@/stores/index'
 import { pedido } from '@/api/index'
 import UserService from '@/api/usuario/user'
+import { useRouter } from 'vue-router'
 import { NavLateralAdmin, TitleAdmin, SelectClienteAdmin, PedidoCupom } from '@/components/index'
+
+const router = useRouter()
 
 const couponImg = new URL('@/assets/img/coupon.svg', import.meta.url).href
 const creditCardImg = new URL('@/assets/img/credit-card.png', import.meta.url).href
@@ -142,6 +145,7 @@ async function finalizarPedido() {
     carregando.value = true
     const resposta = await pedidoService.create(pedidoData)
     toast.success(`Pedido criado com sucesso! ${resposta.identificador || ''}`)
+    router.push("/dashboard/pedidos")
     carrinhoStore.itens = []
     usuarioSelecionado.value = null
     identificador.value = ''

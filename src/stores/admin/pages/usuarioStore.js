@@ -117,6 +117,17 @@ export const useUsuariosStore = defineStore('usuarios', () => {
   }
 }
 
+async function deleteUsuario(id) {
+  try {
+    await userService.delete(id)
+    usuarios.value = usuarios.value.filter(u => u.id !== id)
+  } catch (err) {
+    console.error('[UsuariosStore] Erro ao deletar usuário:', err)
+    throw err
+  }
+}
+
+
 
   return {
     usuarios,
@@ -129,6 +140,7 @@ export const useUsuariosStore = defineStore('usuarios', () => {
     itemsPerPage,
     setCurrentPage,
     updateUsuario,
+    deleteUsuario,
     // gráfico ativos/inativos
     ativos,
     inativos,
