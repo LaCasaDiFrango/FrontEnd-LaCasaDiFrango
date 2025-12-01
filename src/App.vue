@@ -21,3 +21,32 @@ const menuLinks = [
 
 const route = useRoute()
 </script>
+<style>
+/* global CSS — coloque em um arquivo importado globalmente OU
+   em <style> (SEM scoped) dentro do componente */
+.hide-scrollbar {
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #60a5fa #f3f4f6; /* thumb track (Firefox) */
+}
+
+/* WebKit */
+.hide-scrollbar::-webkit-scrollbar{
+  height: 8px;
+}
+.hide-scrollbar::-webkit-scrollbar-track {
+  background: linear-gradient(to right, #f9fafb, #f3f4f6);
+  border-radius: 10px;
+}
+.hide-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #60a5fa, #3b82f6);
+  border-radius: 10px;
+  transition: background-color 0.18s ease, box-shadow 0.18s ease;
+}
+.hide-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #2563eb, #1d4ed8);
+  box-shadow: 0 0 6px rgba(0,0,0,0.25);
+}
+
+</style>

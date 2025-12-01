@@ -62,7 +62,7 @@ async function realizarPedido() {
     return
   }
   try {
-    await pedidoStore.atualizarStatusPedido(pedido.value.id, 'Realizado')
+    await pedidoStore.atualizarStatusPedido(pedido.value.id, 'Realizado', comentario.value)
     router.push('/home/perfil/historico-pedidos')
   } catch (error) {
     alert('Erro ao realizar pedido. Tente novamente.')

@@ -6,8 +6,6 @@ export default class PedidoService {
     return axios.get('/pedidos/', { params })
   }
 
-
-
   async getById(id) {
     const response = await axios.get(`/pedidos/${id}/`);
     return response.data;
@@ -18,7 +16,6 @@ export default class PedidoService {
     const response = await axios.post('/pedidos/', data)
     return response.data
   }
-
 
   async finalizar(id) {
     const response = await axios.post(`/pedidos/${id}/finalizar/`)
@@ -41,4 +38,36 @@ export default class PedidoService {
     })
     return response.data
   }
+
+  // 🔥 Novo método para os últimos 7 dias
+  async ultimosPedidos() {
+    try {
+      const response = await axios.get('/pedidos/ultimos-7-dias/');
+      return response.data;
+    } catch (error) {
+      console.error('[ERROR PedidoService.ultimosPedidos]', error);
+      return []; 
+    }
+  }
+  async totalVendas() {
+  try {
+    const response = await axios.get('/pedidos/stats/total-vendas/')
+    return response.data.total_vendas
+  } catch (err) {
+    console.error('[PedidoService.totalVendas] Erro:', err)
+    return 0
+  }
+}
+
+async vendasUltimos7Dias() {
+  try {
+    const response = await axios.get('/pedidos/stats/vendas-7-dias/')
+    return response.data
+  } catch (err) {
+    console.error('[PedidoService.vendasUltimos7Dias] Erro:', err)
+    return []
+  }
+}
+
+
 }
